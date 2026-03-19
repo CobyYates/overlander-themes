@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrailRig — The Off-Road Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rust: #C4501A;
+  --rust-dark: #9E3D10;
+  --rust-light: #E8763F;
+  --sand: #E8D5B0;
+  --sand-light: #F5EDD8;
+  --earth: #2C2015;
+  --earth-mid: #3D2E1A;
+  --earth-light: #574430;
+  --stone: #8C7B6B;
+  --stone-light: #B5A898;
+  --off-white: #F9F5EE;
+  --green: #2D4A2D;
+  --green-bright: #4A7C4A;
+  --text: #1A1208;
+  --text-mid: #4A3A28;
+  --text-light: #7A6A58;
+  --border: #E2D8CC;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--off-white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── GLOBAL ── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.4rem;
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--earth);
+  line-height: 1.0;
+}
+.section-title .accent { color: var(--rust); }
+.section-sub {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-top: 0.5rem;
+  max-width: 520px;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--earth);
+  border-bottom: 3px solid var(--rust);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  gap: 2rem;
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.7rem;
+  color: var(--sand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.logo span { color: var(--rust); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 1;
+}
+.nav-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone-light);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--sand); background: rgba(255,255,255,0.06); }
+.nav-link.active { color: var(--rust-light); }
+.nav-actions { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; }
+.nav-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-btn-ghost { background: transparent; border: 1.5px solid var(--earth-light); color: var(--stone-light); }
+.nav-btn-ghost:hover { border-color: var(--stone); color: var(--sand); }
+.nav-btn-solid { background: var(--rust); color: #fff; }
+.nav-btn-solid:hover { background: var(--rust-dark); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  height: clamp(520px, 80vh, 760px);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(to right, rgba(28,16,8,0.92) 40%, rgba(28,16,8,0.35) 100%),
+    url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=1600&q=80') center/cover no-repeat;
+}
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.hero-content {
+  position: relative;
+  padding-bottom: 5rem;
+  width: 100%;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rust-light);
+  margin-bottom: 1rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--rust);
+}
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin-bottom: 1.2rem;
+}
+.hero-title .line2 { color: var(--rust); display: block; }
+.hero-title .line3 { color: var(--sand); display: block; font-size: 0.55em; letter-spacing: 0.12em; margin-top: 0.2em; font-weight: 700; }
+.hero-desc {
+  font-size: 1rem;
+  color: var(--stone-light);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+.hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.hero-btn-primary { background: var(--rust); color: #fff; }
+.hero-btn-primary:hover { background: var(--rust-dark); transform: translateY(-1px); }
+.hero-btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.25); color: var(--sand); }
+.hero-btn-ghost:hover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.06); }
+
+.hero-stats {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  background: rgba(28,16,8,0.75);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-left: 1px solid rgba(255,255,255,0.07);
+}
+.hero-stat {
+  padding: 1rem 1.8rem;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  text-align: center;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1;
+}
+.hero-stat-val span { color: var(--rust-light); }
+.hero-stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-top: 2px;
+}
+
+/* ── SEARCH BAR ── */
+.search-bar-section {
+  background: var(--earth-mid);
+  border-bottom: 3px solid var(--earth-light);
+  padding: 1.1rem 0;
+}
+.search-inner {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+.search-tabs {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  padding: 3px;
+}
+.search-tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--stone);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.search-tab.active { background: var(--rust); color: #fff; }
+.search-tab:hover:not(.active) { color: var(--sand-light); }
+.search-field {
+  flex: 1;
+  display: flex;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid var(--earth-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.search-field input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 1rem;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sand-light);
+  height: 40px;
+}
+.search-field input::placeholder { color: var(--stone); }
+.search-selects {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.search-select {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid var(--earth-light);
+  border-radius: 4px;
+  color: var(--stone-light);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.82rem;
+  padding: 0 0.8rem;
+  height: 40px;
+  outline: none;
+  cursor: pointer;
+}
+.search-submit {
+  background: var(--rust);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 1.4rem;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-submit:hover { background: var(--rust-dark); }
+
+/* ── FEATURED LISTINGS ── */
+.featured-section { padding: 4rem 0; }
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+  gap: 1rem;
+}
+.view-all {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rust);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.view-all:hover { color: var(--rust-dark); }
+
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+.listing-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+  text-decoration: none;
+}
+.listing-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); border-color: var(--stone-light); }
+.listing-card.featured-large {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.listing-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--earth-mid);
+}
+.listing-card.featured-large .listing-img { height: 100%; }
+.listing-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.listing-card:hover .listing-img img { transform: scale(1.05); }
+.listing-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.badge-featured { background: var(--rust); color: #fff; }
+.badge-trailer { background: var(--green); color: #B8F0B8; }
+.badge-new { background: var(--earth); color: var(--sand); }
+.listing-save {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+}
+.listing-save:hover { background: var(--rust); }
+.listing-info { padding: 1rem 1.1rem; }
+.listing-card.featured-large .listing-info {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.listing-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.listing-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--earth);
+}
+.listing-card.featured-large .listing-price { font-size: 1.8rem; }
+.listing-price-obo { font-size: 0.72rem; color: var(--text-light); font-family: 'Barlow', sans-serif; font-weight: 400; }
+.listing-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--earth);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.listing-card.featured-large .listing-title { font-size: 1.35rem; margin-bottom: 0.7rem; }
+.listing-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-bottom: 0.7rem;
+  flex-wrap: wrap;
+}
+.listing-meta-sep { color: var(--stone-light); }
+.listing-mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+.listing-mod-chip {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 2px;
+  background: var(--sand-light);
+  color: var(--text-mid);
+}
+.listing-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+.listing-loc { display: flex; align-items: center; gap: 0.3rem; }
+.listing-views { display: flex; align-items: center; gap: 0.3rem; }
+
+/* ── CATEGORY STRIP ── */
+.category-strip {
+  background: var(--earth);
+  padding: 3rem 0;
+}
+.category-strip .section-title { color: var(--sand); }
+.category-strip .section-sub { color: var(--stone); }
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+.cat-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--earth-light);
+  border-radius: 6px;
+  padding: 1.2rem 0.8rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.cat-card:hover { background: rgba(196,80,26,0.15); border-color: var(--rust); transform: translateY(-2px); }
+.cat-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--earth-mid);
+  border-radius: 50%;
+  margin: 0 auto 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: 1px solid var(--earth-light);
+  transition: background 0.2s;
+}
+.cat-card:hover .cat-icon { background: var(--rust-dark); border-color: var(--rust); }
+.cat-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sand-light);
+  line-height: 1.2;
+}
+.cat-count {
+  font-size: 0.65rem;
+  color: var(--stone);
+  margin-top: 2px;
+}
+
+/* ── TRAILER LISTINGS ── */
+.trailer-section { padding: 4rem 0; background: var(--sand-light); }
+.trailer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+.trailer-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.trailer-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.trailer-img {
+  height: 160px;
+  overflow: hidden;
+  background: var(--earth-mid);
+  position: relative;
+}
+.trailer-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.trailer-card:hover .trailer-img img { transform: scale(1.05); }
+.trailer-info { padding: 0.9rem 1rem; }
+.trailer-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--earth);
+  margin-bottom: 2px;
+}
+.trailer-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--earth);
+  margin-bottom: 0.5rem;
+}
+.trailer-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+.trailer-spec {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 2px;
+  background: var(--sand-light);
+  color: var(--text-mid);
+}
+.trailer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── GEAR MARKETPLACE ── */
+.gear-section { padding: 4rem 0; }
+.gear-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.gear-featured-cat {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 320px;
+  cursor: pointer;
+}
+.gear-featured-cat img { width: 100%; height: 100%; object-fit: cover; }
+.gear-featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(28,16,8,0.9) 0%, transparent 55%);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+}
+.gear-featured-info { }
+.gear-featured-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust-light);
+  margin-bottom: 4px;
+}
+.gear-featured-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.gear-featured-count {
+  font-size: 0.8rem;
+  color: var(--stone-light);
+}
+
+.gear-cat-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.gear-cat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+}
+.gear-cat-row:hover { border-color: var(--rust); background: var(--sand-light); }
+.gear-cat-row-left { display: flex; align-items: center; gap: 0.8rem; }
+.gear-cat-row-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--sand-light);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.gear-cat-row-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--earth);
+}
+.gear-cat-row-brands { font-size: 0.72rem; color: var(--text-light); margin-top: 1px; }
+.gear-cat-row-right { display: flex; align-items: center; gap: 0.6rem; }
+.gear-cat-count-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--stone);
+  background: var(--sand-light);
+  border-radius: 10px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+}
+.gear-cat-arrow { color: var(--stone-light); }
+.gear-cat-row:hover .gear-cat-arrow { color: var(--rust); }
+
+/* product comparison preview */
+.compare-preview {
+  margin-top: 2rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.compare-preview-header {
+  background: var(--earth);
+  padding: 0.9rem 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.compare-preview-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sand-light);
+}
+.compare-preview-sub { font-size: 0.72rem; color: var(--stone); margin-top: 1px; }
+.compare-see-all {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rust-light);
+  text-decoration: none;
+}
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+}
+.compare-product {
+  padding: 1.1rem;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.compare-product:last-child { border-right: none; }
+.compare-img {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+}
+.compare-img img { max-height: 100%; max-width: 100%; object-fit: contain; }
+.compare-brand {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 2px;
+}
+.compare-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.compare-msrp {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--earth);
+  margin-bottom: 0.5rem;
+}
+.compare-cta {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  background: var(--rust);
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.compare-cta:hover { background: var(--rust-dark); }
+
+/* ── BLOG PREVIEW ── */
+.blog-section { padding: 4rem 0; background: var(--earth); }
+.blog-section .section-title { color: var(--sand); }
+.blog-section .section-sub { color: var(--stone); }
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+.blog-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--earth-light);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+.blog-card:hover { border-color: var(--rust); background: rgba(255,255,255,0.06); }
+.blog-img {
+  height: 200px;
+  overflow: hidden;
+  background: var(--earth-mid);
+  position: relative;
+}
+.blog-card.blog-small .blog-img { height: 140px; }
+.blog-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s; filter: brightness(0.85); }
+.blog-card:hover .blog-img img { transform: scale(1.04); filter: brightness(1); }
+.blog-cat-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--rust);
+  color: #fff;
+}
+.blog-info { padding: 1rem 1.1rem; }
+.blog-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--sand-light);
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+.blog-card.blog-large .blog-title { font-size: 1.25rem; }
+.blog-excerpt {
+  font-size: 0.8rem;
+  color: var(--stone);
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+.blog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--stone);
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--earth-light);
+}
+.blog-gear-links {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+.blog-gear-link {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 2px;
+  background: rgba(196,80,26,0.2);
+  color: var(--rust-light);
+  text-decoration: none;
+  border: 1px solid rgba(196,80,26,0.3);
+}
+
+/* ── AFFILIATE CTA ── */
+.affiliate-cta {
+  padding: 5rem 0;
+  background: var(--off-white);
+  position: relative;
+  overflow: hidden;
+}
+.affiliate-cta::before {
+  content: 'PARTNER';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(6rem, 20vw, 16rem);
+  color: var(--sand);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0.6;
+}
+.affiliate-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 4rem;
+  align-items: center;
+}
+.affiliate-left .section-title { font-size: clamp(2rem, 5vw, 3.2rem); }
+.affiliate-left .section-sub { font-size: 1rem; color: var(--text-mid); max-width: 100%; }
+.affiliate-perks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.affiliate-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.affiliate-perk-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--sand-light);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+}
+.affiliate-perk-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--earth);
+  margin-bottom: 2px;
+}
+.affiliate-perk-desc { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
+
+.affiliate-form-card {
+  background: var(--earth);
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.affiliate-form-card::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 160px; height: 160px;
+  background: var(--rust);
+  opacity: 0.1;
+  border-radius: 50%;
+}
+.affiliate-form-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: var(--sand);
+  margin-bottom: 4px;
+}
+.affiliate-form-sub { font-size: 0.8rem; color: var(--stone); margin-bottom: 1.4rem; }
+.form-field { margin-bottom: 0.8rem; }
+.form-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+.form-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid var(--earth-light);
+  border-radius: 4px;
+  color: var(--sand-light);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.55rem 0.8rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--rust); }
+.form-input::placeholder { color: var(--stone); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.form-submit {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--rust);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.4rem;
+}
+.form-submit:hover { background: var(--rust-dark); }
+.affiliate-brands {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
+}
+.affiliate-brand-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  padding: 3px 10px;
+  border: 1px solid var(--earth-light);
+  border-radius: 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--earth);
+  border-top: 3px solid var(--rust);
+  padding: 3rem 0 1.5rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.footer-brand .logo { display: block; margin-bottom: 0.7rem; font-size: 1.5rem; }
+.footer-tagline { font-size: 0.82rem; color: var(--stone); line-height: 1.6; max-width: 220px; }
+.footer-col-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 0.9rem;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.footer-links a {
+  font-size: 0.82rem;
+  color: var(--stone-light);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-links a:hover { color: var(--sand); }
+.footer-bottom {
+  border-top: 1px solid var(--earth-light);
+  padding-top: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--stone);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.footer-bottom a { color: var(--stone-light); text-decoration: none; }
+.footer-bottom a:hover { color: var(--sand); }
+.footer-affiliate-note { font-size: 0.7rem; color: var(--stone); margin-top: 0.3rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .cat-grid { grid-template-columns: repeat(4, 1fr); }
+  .compare-grid { grid-template-columns: repeat(2, 1fr); }
+  .compare-product:nth-child(2) { border-right: none; }
+  .compare-product:nth-child(3) { border-top: 1px solid var(--border); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 860px) {
+  .listings-grid { grid-template-columns: 1fr 1fr; }
+  .listing-card.featured-large { grid-column: span 2; grid-template-columns: 1fr; }
+  .listing-card.featured-large .listing-img { height: 220px; }
+  .trailer-grid { grid-template-columns: repeat(2, 1fr); }
+  .blog-grid { grid-template-columns: 1fr; }
+  .gear-intro { grid-template-columns: 1fr; }
+  .affiliate-inner { grid-template-columns: 1fr; }
+  .affiliate-cta::before { opacity: 0.3; }
+  .search-selects { display: none; }
+  .related-grid { grid-template-columns: 1fr 1fr; }
+  .hero-stats { position: static; margin-top: 2rem; }
+}
+@media (max-width: 600px) {
+  .listings-grid { grid-template-columns: 1fr; }
+  .listing-card.featured-large { grid-column: span 1; }
+  .trailer-grid { grid-template-columns: 1fr; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .nav-links { display: none; }
+  .affiliate-perks { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="logo">Trail<span>Rig</span></a>
+      <div class="nav-links">
+        <a href="#" class="nav-link active">Listings</a>
+        <a href="#" class="nav-link">Trailers</a>
+        <a href="#" class="nav-link">Gear & Mods</a>
+        <a href="#" class="nav-link">Blog</a>
+        <a href="#" class="nav-link">Brands</a>
+        <a href="#" class="nav-link">Sell With Us</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-btn nav-btn-ghost">Sign In</a>
+        <a href="#" class="nav-btn nav-btn-solid">Post a Listing</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="container hero-content">
+    <div class="hero-eyebrow">The Off-Road Marketplace</div>
+    <h1 class="hero-title">
+      Built Rigs.<br>
+      <span class="line2">Real Mods.</span>
+      <span class="line3">Buy. Sell. Compare. Explore.</span>
+    </h1>
+    <p class="hero-desc">The only classifieds built for the off-road community. Find fully-kitted 4x4s, overlanding trailers, and compare gear from the brands that build for the trail.</p>
+    <div class="hero-actions">
+      <a href="#" class="hero-btn hero-btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Listings
+      </a>
+      <a href="#" class="hero-btn hero-btn-ghost">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Shop Gear
+      </a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-val">2,<span>841</span></div>
+      <div class="hero-stat-label">Active Listings</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val"><span>640</span>+</div>
+      <div class="hero-stat-label">Gear Products</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val"><span>38</span></div>
+      <div class="hero-stat-label">Partner Brands</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val"><span>12</span>k</div>
+      <div class="hero-stat-label">Community Members</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEARCH BAR ── -->
+<div class="search-bar-section">
+  <div class="container">
+    <div class="search-inner">
+      <div class="search-tabs">
+        <button class="search-tab active">Vehicles</button>
+        <button class="search-tab">Trailers</button>
+        <button class="search-tab">Gear</button>
+      </div>
+      <div class="search-field">
+        <svg width="16" height="16" fill="none" stroke="var(--stone)" stroke-width="2" viewBox="0 0 24 24" style="margin-left:0.8rem;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search make, model, modification...">
+      </div>
+      <div class="search-selects">
+        <select class="search-select">
+          <option>Any Make</option>
+          <option>Toyota</option>
+          <option>Ford</option>
+          <option>Jeep</option>
+          <option>Ram</option>
+          <option>Chevrolet</option>
+        </select>
+        <select class="search-select">
+          <option>Any Price</option>
+          <option>Under $25k</option>
+          <option>$25k–$50k</option>
+          <option>$50k–$75k</option>
+          <option>$75k+</option>
+        </select>
+        <select class="search-select">
+          <option>Any Location</option>
+          <option>Utah</option>
+          <option>Arizona</option>
+          <option>Colorado</option>
+          <option>California</option>
+        </select>
+      </div>
+      <button class="search-submit">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED LISTINGS ── -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Featured Listings</div>
+        <h2 class="section-title">Hand-Picked <span class="accent">Builds</span></h2>
+      </div>
+      <a href="#" class="view-all">All Listings →</a>
+    </div>
+    <div class="listings-grid">
+
+      <!-- LARGE FEATURED -->
+      <a href="#" class="listing-card featured-large">
+        <div class="listing-img">
+          <span class="listing-badge badge-featured">Featured</span>
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80" alt="4Runner">
+        </div>
+        <div class="listing-info">
+          <div class="listing-price-row">
+            <div class="listing-price">$52,500</div>
+            <div class="listing-price-obo">OBO</div>
+          </div>
+          <div class="listing-title">2021 Toyota 4Runner TRD Pro — Full Overland Build</div>
+          <div class="listing-meta">
+            <span>38,422 mi</span><span class="listing-meta-sep">·</span>
+            <span>4WD</span><span class="listing-meta-sep">·</span>
+            <span>V6</span><span class="listing-meta-sep">·</span>
+            <span>Clean Title</span>
+          </div>
+          <div class="listing-mods">
+            <span class="listing-mod-chip">Suspension Lift</span>
+            <span class="listing-mod-chip">ARB Bumper</span>
+            <span class="listing-mod-chip">Warn Winch</span>
+            <span class="listing-mod-chip">iKamper RTT</span>
+            <span class="listing-mod-chip">+16 Mods</span>
+          </div>
+          <div class="listing-footer">
+            <span class="listing-loc">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Moab, UT
+            </span>
+            <span class="listing-views">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              1,248 views
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD 2 -->
+      <a href="#" class="listing-card">
+        <div class="listing-img">
+          <span class="listing-badge badge-new">New</span>
+          <span class="listing-save">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&q=80" alt="Bronco">
+        </div>
+        <div class="listing-info">
+          <div class="listing-price-row">
+            <div class="listing-price">$67,900</div>
+          </div>
+          <div class="listing-title">2022 Ford Bronco Wildtrak — Badlands Pkg</div>
+          <div class="listing-meta">
+            <span>14,200 mi</span><span class="listing-meta-sep">·</span><span>4WD</span>
+          </div>
+          <div class="listing-mods">
+            <span class="listing-mod-chip">Sasquatch Pkg</span>
+            <span class="listing-mod-chip">Roof Rack</span>
+            <span class="listing-mod-chip">Warn Winch</span>
+          </div>
+          <div class="listing-footer">
+            <span class="listing-loc"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Flagstaff, AZ</span>
+            <span class="listing-views"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 892 views</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD 3 -->
+      <a href="#" class="listing-card">
+        <div class="listing-img">
+          <span class="listing-save">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600&q=80" alt="Jeep">
+        </div>
+        <div class="listing-info">
+          <div class="listing-price-row">
+            <div class="listing-price">$41,500</div>
+          </div>
+          <div class="listing-title">2019 Jeep Wrangler Rubicon Unlimited</div>
+          <div class="listing-meta">
+            <span>52,100 mi</span><span class="listing-meta-sep">·</span><span>4WD</span>
+          </div>
+          <div class="listing-mods">
+            <span class="listing-mod-chip">4" Lift</span>
+            <span class="listing-mod-chip">37" Tires</span>
+            <span class="listing-mod-chip">Rock Sliders</span>
+          </div>
+          <div class="listing-footer">
+            <span class="listing-loc"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Durango, CO</span>
+            <span class="listing-views"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 441 views</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── MOD CATEGORIES ── -->
+<div class="category-strip">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:0">
+      <div>
+        <div class="section-eyebrow" style="color:var(--rust-light)">Browse by Mod</div>
+        <h2 class="section-title" style="color:var(--sand)">Shop by <span style="color:var(--rust)">Category</span></h2>
+      </div>
+      <a href="#" class="view-all" style="color:var(--rust-light)">All Categories →</a>
+    </div>
+    <div class="cat-grid">
+      <a href="#" class="cat-card"><div class="cat-icon">🛡️</div><div class="cat-name">Bumpers</div><div class="cat-count">84 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">⛺</div><div class="cat-name">Roof Tents</div><div class="cat-count">42 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🔩</div><div class="cat-name">Suspension</div><div class="cat-count">126 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🪝</div><div class="cat-name">Winches</div><div class="cat-count">38 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">💡</div><div class="cat-name">Lighting</div><div class="cat-count">91 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🔧</div><div class="cat-name">Recovery</div><div class="cat-count">67 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🛞</div><div class="cat-name">Tires & Wheels</div><div class="cat-count">203 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🏕️</div><div class="cat-name">Awnings</div><div class="cat-count">29 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🔋</div><div class="cat-name">Power & Solar</div><div class="cat-count">55 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">❄️</div><div class="cat-name">Fridges</div><div class="cat-count">24 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">📡</div><div class="cat-name">Comms & Nav</div><div class="cat-count">31 products</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🗄️</div><div class="cat-name">Storage</div><div class="cat-count">48 products</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TRAILERS ── -->
+<section class="trailer-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Off-Road Trailers</div>
+        <h2 class="section-title">Pull More. <span class="accent">Camp Better.</span></h2>
+        <p class="section-sub">Teardrop, expedition, and overland trailers — kitted and ready to haul.</p>
+      </div>
+      <a href="#" class="view-all">All Trailers →</a>
+    </div>
+    <div class="trailer-grid">
+      <a href="#" class="trailer-card">
+        <div class="trailer-img">
+          <span class="listing-badge badge-trailer" style="position:absolute;top:10px;left:10px;">Trailer</span>
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=75" alt="">
+        </div>
+        <div class="trailer-info">
+          <div class="trailer-price">$18,500</div>
+          <div class="trailer-name">2022 Turtleback Expedition II</div>
+          <div class="trailer-specs">
+            <span class="trailer-spec">Off-Road Axle</span>
+            <span class="trailer-spec">Solar</span>
+            <span class="trailer-spec">Fridge</span>
+            <span class="trailer-spec">Kitchen</span>
+          </div>
+          <div class="trailer-footer">
+            <span>Bozeman, MT</span>
+            <span>312 views</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="trailer-card">
+        <div class="trailer-img">
+          <span class="listing-badge badge-trailer" style="position:absolute;top:10px;left:10px;">Trailer</span>
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500&q=75" alt="">
+        </div>
+        <div class="trailer-info">
+          <div class="trailer-price">$31,900</div>
+          <div class="trailer-name">2023 Opus Air OP4 Camping Trailer</div>
+          <div class="trailer-specs">
+            <span class="trailer-spec">Rooftop Tent</span>
+            <span class="trailer-spec">Generator</span>
+            <span class="trailer-spec">Shower</span>
+          </div>
+          <div class="trailer-footer">
+            <span>Denver, CO</span>
+            <span>519 views</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="trailer-card">
+        <div class="trailer-img">
+          <span class="listing-badge badge-trailer" style="position:absolute;top:10px;left:10px;">Trailer</span>
+          <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=500&q=75" alt="">
+        </div>
+        <div class="trailer-info">
+          <div class="trailer-price">$11,200</div>
+          <div class="trailer-name">2020 Escapod Topo2 Teardrop</div>
+          <div class="trailer-specs">
+            <span class="trailer-spec">Teardrop</span>
+            <span class="trailer-spec">RTT Mount</span>
+            <span class="trailer-spec">Storage</span>
+          </div>
+          <div class="trailer-footer">
+            <span>Salt Lake City, UT</span>
+            <span>248 views</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="trailer-card">
+        <div class="trailer-img">
+          <span class="listing-badge badge-trailer" style="position:absolute;top:10px;left:10px;">Trailer</span>
+          <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=500&q=75" alt="">
+        </div>
+        <div class="trailer-info">
+          <div class="trailer-price">$22,750</div>
+          <div class="trailer-name">2021 Black Series HQ12 Camper</div>
+          <div class="trailer-specs">
+            <span class="trailer-spec">Hard Shell</span>
+            <span class="trailer-spec">Solar</span>
+            <span class="trailer-spec">Toilet</span>
+            <span class="trailer-spec">Fridge</span>
+          </div>
+          <div class="trailer-footer">
+            <span>Tucson, AZ</span>
+            <span>187 views</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── GEAR MARKETPLACE ── -->
+<section class="gear-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Gear Marketplace</div>
+        <h2 class="section-title">Compare <span class="accent">Brand vs. Brand</span></h2>
+        <p class="section-sub">Every category shows products from multiple partners side-by-side — specs, MSRP, and affiliate links all in one place.</p>
+      </div>
+      <a href="#" class="view-all">All Gear →</a>
+    </div>
+    <div class="gear-intro">
+      <a href="#" class="gear-featured-cat">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80" alt="Winches">
+        <div class="gear-featured-overlay">
+          <div class="gear-featured-info">
+            <div class="gear-featured-label">Featured Category</div>
+            <div class="gear-featured-title">Winches & Recovery</div>
+            <div class="gear-featured-count">38 products from 6 brands · Compare now →</div>
+          </div>
+        </div>
+      </a>
+      <div class="gear-cat-list">
+        <a href="#" class="gear-cat-row">
+          <div class="gear-cat-row-left">
+            <div class="gear-cat-row-icon">🛡️</div>
+            <div>
+              <div class="gear-cat-row-name">Bumpers & Armor</div>
+              <div class="gear-cat-row-brands">ARB, CBI, Expedition One, Iron Bull</div>
+            </div>
+          </div>
+          <div class="gear-cat-row-right">
+            <span class="gear-cat-count-badge">84</span>
+            <span class="gear-cat-arrow">›</span>
+          </div>
+        </a>
+        <a href="#" class="gear-cat-row">
+          <div class="gear-cat-row-left">
+            <div class="gear-cat-row-icon">⛺</div>
+            <div>
+              <div class="gear-cat-row-name">Rooftop Tents</div>
+              <div class="gear-cat-row-brands">iKamper, Roofnest, CVT, 23Zero</div>
+            </div>
+          </div>
+          <div class="gear-cat-row-right">
+            <span class="gear-cat-count-badge">42</span>
+            <span class="gear-cat-arrow">›</span>
+          </div>
+        </a>
+        <a href="#" class="gear-cat-row">
+          <div class="gear-cat-row-left">
+            <div class="gear-cat-row-icon">🔩</div>
+            <div>
+              <div class="gear-cat-row-name">Suspension Lifts</div>
+              <div class="gear-cat-row-brands">Old Man Emu, Bilstein, Fox, King</div>
+            </div>
+          </div>
+          <div class="gear-cat-row-right">
+            <span class="gear-cat-count-badge">126</span>
+            <span class="gear-cat-arrow">›</span>
+          </div>
+        </a>
+        <a href="#" class="gear-cat-row">
+          <div class="gear-cat-row-left">
+            <div class="gear-cat-row-icon">💡</div>
+            <div>
+              <div class="gear-cat-row-name">Lighting</div>
+              <div class="gear-cat-row-brands">Rigid, Baja Designs, KC HiLiTES</div>
+            </div>
+          </div>
+          <div class="gear-cat-row-right">
+            <span class="gear-cat-count-badge">91</span>
+            <span class="gear-cat-arrow">›</span>
+          </div>
+        </a>
+        <a href="#" class="gear-cat-row">
+          <div class="gear-cat-row-left">
+            <div class="gear-cat-row-icon">🔋</div>
+            <div>
+              <div class="gear-cat-row-name">Power & Solar</div>
+              <div class="gear-cat-row-brands">Renogy, Battle Born, Goal Zero</div>
+            </div>
+          </div>
+          <div class="gear-cat-row-right">
+            <span class="gear-cat-count-badge">55</span>
+            <span class="gear-cat-arrow">›</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Compare Preview -->
+    <div class="compare-preview">
+      <div class="compare-preview-header">
+        <div>
+          <div class="compare-preview-title">⚡ Winches — Brand Comparison</div>
+          <div class="compare-preview-sub">4 products · Sorted by MSRP</div>
+        </div>
+        <a href="#" class="compare-see-all">See All 38 Winches →</a>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-product">
+          <div class="compare-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=60" alt=""></div>
+          <div class="compare-brand">Warn</div>
+          <div class="compare-name">VR EVO 10-S Synthetic</div>
+          <div class="compare-msrp">$589</div>
+          <a href="#" class="compare-cta">Shop Now →</a>
+        </div>
+        <div class="compare-product">
+          <div class="compare-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=200&q=60" alt=""></div>
+          <div class="compare-brand">Smittybilt</div>
+          <div class="compare-name">X2O 10K Waterproof</div>
+          <div class="compare-msrp">$349</div>
+          <a href="#" class="compare-cta">Shop Now →</a>
+        </div>
+        <div class="compare-product">
+          <div class="compare-img"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=200&q=60" alt=""></div>
+          <div class="compare-brand">Superwinch</div>
+          <div class="compare-name">Tiger Shark 11500 SR</div>
+          <div class="compare-msrp">$429</div>
+          <a href="#" class="compare-cta">Shop Now →</a>
+        </div>
+        <div class="compare-product">
+          <div class="compare-img"><img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=200&q=60" alt=""></div>
+          <div class="compare-brand">Rough Country</div>
+          <div class="compare-name">PRO9500S Electric</div>
+          <div class="compare-msrp">$279</div>
+          <a href="#" class="compare-cta">Shop Now →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── BLOG ── -->
+<section class="blog-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow" style="color:var(--rust-light)">From the Trail</div>
+        <h2 class="section-title">Tips, Builds & <span style="color:var(--rust)">Reviews</span></h2>
+        <p class="section-sub">Expert guides linked directly to the gear reviewed — buy with confidence.</p>
+      </div>
+      <a href="#" class="view-all" style="color:var(--rust-light)">All Articles →</a>
+    </div>
+    <div class="blog-grid">
+      <a href="#" class="blog-card blog-large">
+        <div class="blog-img">
+          <span class="blog-cat-tag">Build Guide</span>
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80" alt="">
+        </div>
+        <div class="blog-info">
+          <div class="blog-title">The Complete Overland Build Guide: Everything You Need for a Weekend-Ready Rig</div>
+          <div class="blog-excerpt">From suspension and lighting to sleep systems and power — here's how to prioritize your build budget and which brands deliver the best value at each tier.</div>
+          <div class="blog-gear-links">
+            <a href="#" class="blog-gear-link">Old Man Emu BP-51</a>
+            <a href="#" class="blog-gear-link">iKamper Skycamp 3.0</a>
+            <a href="#" class="blog-gear-link">ARB Twin Compressor</a>
+            <a href="#" class="blog-gear-link">Warn VR EVO</a>
+          </div>
+          <div class="blog-footer">
+            <span>By Jake M. · Mar 12</span>
+            <span>12 min read · 4,820 views</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="blog-card blog-small">
+        <div class="blog-img">
+          <span class="blog-cat-tag">Gear Review</span>
+          <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=500&q=75" alt="">
+        </div>
+        <div class="blog-info">
+          <div class="blog-title">iKamper Skycamp 3.0 vs Roofnest Condor: Which RTT is Worth It?</div>
+          <div class="blog-excerpt">We tested both on a 5-day Moab trip.</div>
+          <div class="blog-gear-links">
+            <a href="#" class="blog-gear-link">iKamper Skycamp</a>
+            <a href="#" class="blog-gear-link">Roofnest Condor</a>
+          </div>
+          <div class="blog-footer">
+            <span>Mar 8 · 7 min</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="blog-card blog-small">
+        <div class="blog-img">
+          <span class="blog-cat-tag">Trail Report</span>
+          <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=500&q=75" alt="">
+        </div>
+        <div class="blog-info">
+          <div class="blog-title">Kokopelli Trail: What Your Rig Actually Needs to Complete It</div>
+          <div class="blog-excerpt">Minimum requirements and what gear failed us on our last attempt.</div>
+          <div class="blog-gear-links">
+            <a href="#" class="blog-gear-link">MAXTRAX MKII</a>
+            <a href="#" class="blog-gear-link">Rigid E-Series</a>
+          </div>
+          <div class="blog-footer">
+            <span>Feb 28 · 5 min</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── AFFILIATE CTA ── -->
+<section class="affiliate-cta" id="partner">
+  <div class="container">
+    <div class="affiliate-inner">
+      <div class="affiliate-left">
+        <div class="section-eyebrow">For Brands</div>
+        <h2 class="section-title">Get Your Products<br>In Front of <span class="accent">Real Wheelers</span></h2>
+        <p class="section-sub">TrailRig buyers are actively kitting out their vehicles. List your products in our gear marketplace, get featured in build guides, and drive affiliate revenue from a community that buys.</p>
+        <div class="affiliate-perks">
+          <div class="affiliate-perk">
+            <div class="affiliate-perk-icon">📊</div>
+            <div>
+              <div class="affiliate-perk-title">Side-by-Side Exposure</div>
+              <div class="affiliate-perk-desc">Your products appear next to competitors — let specs win customers.</div>
+            </div>
+          </div>
+          <div class="affiliate-perk">
+            <div class="affiliate-perk-icon">✍️</div>
+            <div>
+              <div class="affiliate-perk-title">Blog Integration</div>
+              <div class="affiliate-perk-desc">Products linked directly in reviews and trail guides read by active buyers.</div>
+            </div>
+          </div>
+          <div class="affiliate-perk">
+            <div class="affiliate-perk-icon">🏷️</div>
+            <div>
+              <div class="affiliate-perk-title">Listing Cross-Linking</div>
+              <div class="affiliate-perk-desc">When a vehicle lists your product as a mod, we link to your product page.</div>
+            </div>
+          </div>
+          <div class="affiliate-perk">
+            <div class="affiliate-perk-icon">📈</div>
+            <div>
+              <div class="affiliate-perk-title">Affiliate Tracking</div>
+              <div class="affiliate-perk-desc">Full click and conversion reporting dashboard. Pay only on performance.</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem">
+          <div class="section-eyebrow" style="margin-bottom:0.6rem">Current Partners</div>
+          <div class="affiliate-brands">
+            <span class="affiliate-brand-logo">Warn</span>
+            <span class="affiliate-brand-logo">ARB</span>
+            <span class="affiliate-brand-logo">Old Man Emu</span>
+            <span class="affiliate-brand-logo">iKamper</span>
+            <span class="affiliate-brand-logo">Rigid</span>
+            <span class="affiliate-brand-logo">MAXTRAX</span>
+            <span class="affiliate-brand-logo">Renogy</span>
+            <span class="affiliate-brand-logo">+ 31 more</span>
+          </div>
+        </div>
+      </div>
+      <div class="affiliate-form-card">
+        <div class="affiliate-form-title">Partner With Us</div>
+        <div class="affiliate-form-sub">Fill out the form and our team will reach out within 2 business days.</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">First Name</label>
+            <input class="form-input" type="text" placeholder="Jake">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" type="text" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Brand / Company</label>
+          <input class="form-input" type="text" placeholder="Warn Industries">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Work Email</label>
+          <input class="form-input" type="email" placeholder="jake@yourcompany.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Website</label>
+          <input class="form-input" type="url" placeholder="https://yourcompany.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Product Categories</label>
+          <input class="form-input" type="text" placeholder="Winches, Bumpers, Lighting...">
+        </div>
+        <button class="form-submit">Request Partnership →</button>
+        <div style="font-size:0.68rem;color:var(--stone);margin-top:0.6rem;text-align:center">No setup fees · Performance-based commissions · Cancel anytime</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Trail<span>Rig</span></a>
+        <div class="footer-tagline">The off-road marketplace for real builders. Find rigs, gear, and trailers — all in one place.</div>
+        <div class="footer-affiliate-note" style="margin-top:0.8rem">TrailRig participates in affiliate programs and may earn commissions on qualifying purchases.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Marketplace</div>
+        <ul class="footer-links">
+          <li><a href="#">Browse Vehicles</a></li>
+          <li><a href="#">Browse Trailers</a></li>
+          <li><a href="#">Gear & Mods</a></li>
+          <li><a href="#">Post a Listing</a></li>
+          <li><a href="#">Saved Listings</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <ul class="footer-links">
+          <li><a href="#">Mod Categories</a></li>
+          <li><a href="#">Brand Directory</a></li>
+          <li><a href="#">Trail Blog</a></li>
+          <li><a href="#">Build Guides</a></li>
+          <li><a href="#">Gear Reviews</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#partner">Partner With Us</a></li>
+          <li><a href="#">Affiliate Disclosure</a></li>
+          <li><a href="#">About TrailRig</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TrailRig LLC · All rights reserved</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Affiliate Policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Search tab switching
+  document.querySelectorAll('.search-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const placeholders = { 'Vehicles': 'Search make, model, modification...', 'Trailers': 'Search trailer brand, type, features...', 'Gear': 'Search products, brands, categories...' };
+      document.querySelector('.search-field input').placeholder = placeholders[tab.textContent] || '';
+    });
+  });
+</script>
+</body>
+</html>

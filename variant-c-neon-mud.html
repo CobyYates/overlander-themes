@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrailRig — Variant C: Neon Mud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#0C0E10;
+  --deep:#121619;
+  --panel:#181D21;
+  --panel2:#1F252B;
+  --panel3:#252D35;
+  --border:#2A333D;
+  --border2:#333D47;
+  --teal:#00D4C8;
+  --teal-dark:#00A89E;
+  --teal-dim:#007A74;
+  --teal-glow:rgba(0,212,200,0.1);
+  --teal-pale:rgba(0,212,200,0.06);
+  --amber:#F5A623;
+  --amber-dim:#B87D1A;
+  --red:#E84040;
+  --slate:#4A5568;
+  --slate-light:#718096;
+  --mist:#A0AEB8;
+  --mist-light:#C8D4DC;
+  --white:#E8EFF4;
+  --text:#CDD5DC;
+  --text-mid:#7A8A96;
+  --text-dim:#4A5868;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--void);color:var(--text);overflow-x:hidden}
+
+/* NOISE TEXTURE */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:256px 256px;
+}
+
+/* NAV */
+nav{background:var(--deep);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+.nav-inner{display:flex;align-items:center;height:58px;max-width:1400px;margin:0 auto;padding:0 2rem;gap:0}
+.logo-wrap{padding-right:2rem;margin-right:2rem;border-right:1px solid var(--border);flex-shrink:0}
+.logo{font-family:'Anton',sans-serif;font-size:1.55rem;letter-spacing:0.06em;color:var(--teal);text-decoration:none;display:flex;align-items:baseline;gap:0.4rem}
+.logo .dot{display:inline-block;width:7px;height:7px;background:var(--amber);border-radius:50%;margin-bottom:4px;flex-shrink:0}
+.logo-tagline{font-size:0.55rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);display:block;margin-top:-2px}
+.nav-links{display:flex;align-items:center;flex:1}
+.nav-link{font-size:0.78rem;font-weight:500;letter-spacing:0.04em;color:var(--text-mid);text-decoration:none;padding:0 1rem;height:58px;display:flex;align-items:center;transition:all 0.15s;border-bottom:2px solid transparent}
+.nav-link:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.nav-link.active{color:var(--teal);border-bottom-color:var(--teal)}
+.nav-actions{display:flex;align-items:center;gap:0.6rem;margin-left:auto}
+.n-btn{font-size:0.75rem;font-weight:700;letter-spacing:0.04em;padding:7px 16px;cursor:pointer;border:none;transition:all 0.15s;text-decoration:none;white-space:nowrap}
+.n-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-mid)}
+.n-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.n-teal{background:var(--teal);color:var(--void);font-weight:700}
+.n-teal:hover{background:#00EEE0}
+
+/* HERO — ASYMMETRIC BRUTALIST */
+.hero{min-height:680px;display:grid;grid-template-columns:55% 1fr;position:relative;border-bottom:1px solid var(--border)}
+.hero-left{position:relative;overflow:hidden;background:var(--panel)}
+.hero-left img{width:100%;height:100%;object-fit:cover;opacity:0.5;mix-blend-mode:luminosity}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,14,16,0.9) 0%,rgba(12,14,16,0.4) 100%)}
+.hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:3rem}
+.hero-eyebrow{font-size:0.65rem;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--teal)}
+.hero-title{font-family:'Anton',sans-serif;font-size:clamp(3.5rem,7vw,6.5rem);line-height:0.9;letter-spacing:0.02em;color:var(--white);margin-bottom:1rem}
+.hero-title .teal-line{display:block;color:var(--teal);text-shadow:0 0 60px rgba(0,212,200,0.3)}
+.hero-title .dim-line{display:block;color:var(--text-dim);font-size:0.4em;letter-spacing:0.2em;margin-top:0.5em}
+.hero-desc{font-size:0.88rem;color:var(--text-mid);line-height:1.7;max-width:380px;margin-bottom:2rem;font-weight:300}
+.hero-actions{display:flex;gap:0.7rem;flex-wrap:wrap}
+.h-btn{font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.8rem 1.6rem;text-decoration:none;cursor:pointer;border:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.5rem}
+.hb-teal{background:var(--teal);color:var(--void)}
+.hb-teal:hover{background:#00EEE0;box-shadow:0 0 24px rgba(0,212,200,0.3)}
+.hb-outline{background:transparent;border:1px solid var(--border2);color:var(--text-mid)}
+.hb-outline:hover{border-color:var(--teal);color:var(--teal)}
+
+.hero-right{display:grid;grid-template-rows:1fr 1fr;border-left:1px solid var(--border)}
+.hero-stat-panel{padding:2rem;border-bottom:1px solid var(--border);display:flex;flex-direction:column;justify-content:center}
+.hsp-title{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.2rem}
+.hsp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.hsp-item{}
+.hsp-num{font-family:'Anton',sans-serif;font-size:2rem;color:var(--teal);line-height:1;letter-spacing:0.02em}
+.hsp-num span{color:var(--amber)}
+.hsp-label{font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-top:2px}
+.hero-top-listing{position:relative;overflow:hidden;cursor:pointer}
+.hero-top-listing img{width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0.7);transition:all 0.4s}
+.hero-top-listing:hover img{filter:brightness(0.75) saturate(0.9);transform:scale(1.04)}
+.htl-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,14,16,0.9) 0%,transparent 50%);display:flex;align-items:flex-end;padding:1.4rem}
+.htl-badge{position:absolute;top:12px;right:12px;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;background:var(--amber);color:var(--void)}
+.htl-price{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--teal);letter-spacing:0.02em;line-height:1}
+.htl-name{font-size:0.75rem;font-weight:500;color:var(--mist);margin-top:2px}
+
+/* SEARCH */
+.search-bar{background:var(--deep);border-bottom:1px solid var(--border);padding:0}
+.search-inner{max-width:1400px;margin:0 auto;display:flex;height:52px;border-left:none}
+.s-tabs{display:flex;flex-shrink:0}
+.s-tab{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0 1.3rem;height:52px;display:flex;align-items:center;border:none;background:transparent;color:var(--text-dim);cursor:pointer;border-right:1px solid var(--border);transition:all 0.15s;white-space:nowrap}
+.s-tab.active{background:var(--teal-pale);color:var(--teal);border-bottom:2px solid var(--teal)}
+.s-tab:hover:not(.active){color:var(--text-mid)}
+.s-field{flex:1;display:flex;align-items:center;gap:0.5rem;padding:0 1.2rem;border-right:1px solid var(--border)}
+.s-field input{flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text);height:52px}
+.s-field input::placeholder{color:var(--text-dim)}
+.s-selects{display:flex}
+.s-select{background:transparent;border-right:1px solid var(--border);border-top:none;border-bottom:none;border-left:none;color:var(--text-mid);font-family:'DM Sans',sans-serif;font-size:0.75rem;padding:0 1rem;height:52px;outline:none;cursor:pointer}
+.s-go{background:var(--teal);border:none;color:var(--void);font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:700;padding:0 1.8rem;height:52px;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;transition:background 0.15s;flex-shrink:0}
+.s-go:hover{background:#00EEE0}
+
+/* LAYOUT UTIL */
+.wrap{max-width:1400px;margin:0 auto;padding:0 2rem}
+
+/* SECTION */
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem}
+.sec-eye{font-size:0.62rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--teal);margin-bottom:0.2rem}
+.sec-title{font-family:'Anton',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:0.02em;color:var(--white)}
+.sec-title .amber{color:var(--amber)}
+.sec-sub{font-size:0.8rem;color:var(--text-mid);margin-top:0.2rem;font-weight:300;max-width:450px}
+.view-all{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);text-decoration:none;white-space:nowrap;flex-shrink:0;padding-bottom:2px;border-bottom:1px solid var(--teal-dim)}
+.view-all:hover{color:#00EEE0;border-color:#00EEE0}
+
+/* LISTINGS */
+.listings-sec{padding:3.5rem 0}
+.listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.l-card{background:var(--panel);overflow:hidden;cursor:pointer;transition:background 0.2s;text-decoration:none;display:flex;flex-direction:column}
+.l-card:hover{background:var(--panel2)}
+.l-card.l-hero{grid-column:span 2;flex-direction:row}
+.l-img{overflow:hidden;background:var(--panel3);position:relative;height:220px;flex-shrink:0}
+.l-card.l-hero .l-img{height:100%;width:55%}
+.l-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(0.75);transition:all 0.35s}
+.l-card:hover .l-img img{filter:brightness(0.9) saturate(0.9);transform:scale(1.04)}
+.l-badge{position:absolute;top:0;left:0;font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px}
+.lb-teal{background:var(--teal);color:var(--void)}
+.lb-amber{background:var(--amber);color:var(--void)}
+.lb-dim{background:var(--panel3);border:1px solid var(--border2);color:var(--text-dim)}
+.l-info{padding:1.2rem 1.3rem;display:flex;flex-direction:column;gap:0.45rem;flex:1}
+.l-card.l-hero .l-info{padding:1.6rem}
+.l-price{font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--teal);letter-spacing:0.02em;line-height:1}
+.l-card.l-hero .l-price{font-size:2rem}
+.l-name{font-size:0.88rem;font-weight:600;color:var(--white);line-height:1.25}
+.l-card.l-hero .l-name{font-size:1rem}
+.l-meta{font-size:0.68rem;color:var(--text-dim);display:flex;gap:0.5rem;flex-wrap:wrap}
+.l-mods{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.l-mod{font-size:0.58rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;background:var(--teal-pale);color:var(--teal-dark);border:1px solid rgba(0,212,200,0.15)}
+.l-foot{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-dim);padding-top:0.6rem;border-top:1px solid var(--border);margin-top:auto}
+
+/* CATEGORIES — diagonal flow */
+.cat-sec{padding:3.5rem 0;background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.cat-scroll{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);margin-top:1.5rem}
+.cat-cell{background:var(--panel);padding:1.2rem 0.8rem;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;position:relative;overflow:hidden}
+.cat-cell::before{content:'';position:absolute;inset:0;background:var(--teal-glow);opacity:0;transition:opacity 0.2s}
+.cat-cell:hover::before{opacity:1}
+.cat-cell:hover .cat-em{filter:none;transform:scale(1.1)}
+.cat-em{font-size:1.5rem;display:block;margin-bottom:0.5rem;filter:grayscale(0.8);transition:all 0.2s;position:relative}
+.cat-name{font-size:0.72rem;font-weight:600;letter-spacing:0.04em;color:var(--mist);position:relative}
+.cat-count{font-size:0.58rem;color:var(--text-dim);margin-top:2px;position:relative}
+
+/* TRAILERS */
+.trailer-sec{padding:3.5rem 0}
+.trailer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:1.5rem}
+.tc{background:var(--panel);overflow:hidden;cursor:pointer;transition:background 0.2s;text-decoration:none}
+.tc:hover{background:var(--panel2)}
+.tc-img{height:155px;overflow:hidden;position:relative;background:var(--panel3)}
+.tc-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.65) saturate(0.6);transition:all 0.3s}
+.tc:hover .tc-img img{filter:brightness(0.85) saturate(0.85);transform:scale(1.04)}
+.tc-info{padding:0.9rem 1rem;border-top:1px solid var(--border)}
+.tc-price{font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--teal);line-height:1;letter-spacing:0.02em}
+.tc-name{font-size:0.78rem;font-weight:600;color:var(--white);margin:3px 0 0.4rem;line-height:1.2}
+.tc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:0.5rem}
+.tc-tag{font-size:0.55rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:2px 6px;background:var(--teal-pale);color:var(--teal-dark);border:1px solid rgba(0,212,200,0.12)}
+.tc-foot{font-size:0.62rem;color:var(--text-dim);display:flex;justify-content:space-between;padding-top:0.5rem;border-top:1px solid var(--border)}
+
+/* GEAR — big asymmetric layout */
+.gear-sec{padding:3.5rem 0;background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.gear-layout{display:grid;grid-template-columns:280px 1fr;gap:1px;background:var(--border);margin-top:1.5rem}
+.gear-nav{background:var(--panel)}
+.gear-nav-head{padding:0.8rem 1rem;border-bottom:1px solid var(--border);font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim)}
+.gear-nav-item{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.15s;text-decoration:none}
+.gear-nav-item:hover,.gear-nav-item.active{background:var(--teal-pale)}
+.gear-nav-item:hover .gni-name,.gear-nav-item.active .gni-name{color:var(--teal)}
+.gni-left{display:flex;align-items:center;gap:0.6rem}
+.gni-icon{font-size:1rem;filter:grayscale(0.5)}
+.gear-nav-item:hover .gni-icon{filter:none}
+.gni-name{font-size:0.82rem;font-weight:600;color:var(--text);transition:color 0.15s}
+.gni-brands{font-size:0.6rem;color:var(--text-dim);margin-top:1px}
+.gni-count{font-size:0.6rem;color:var(--text-dim);background:var(--panel3);padding:1px 6px;border:1px solid var(--border)}
+
+.gear-content{background:var(--panel);display:flex;flex-direction:column}
+.gear-hero-img{height:200px;overflow:hidden;position:relative;border-bottom:1px solid var(--border)}
+.gear-hero-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.5) saturate(0.5)}
+.gear-hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(12,14,16,0.8) 0%,transparent 60%);display:flex;align-items:center;padding:2rem}
+.gear-hero-text .g-cat-label{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.gear-hero-text .g-cat-title{font-family:'Anton',sans-serif;font-size:1.6rem;color:var(--white);letter-spacing:0.02em;line-height:1}
+.gear-hero-text .g-cat-sub{font-size:0.75rem;color:var(--text-mid);margin-top:4px}
+.gear-compare-head{padding:0.8rem 1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.gch-title{font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)}
+.gch-sub{font-size:0.6rem;color:var(--text-dim)}
+.compare-grid{display:grid;grid-template-columns:repeat(4,1fr);flex:1}
+.cp{padding:1rem;border-right:1px solid var(--border);text-align:center}
+.cp:last-child{border-right:none}
+.cp-img{height:85px;display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem}
+.cp-img img{max-height:100%;max-width:100%;object-fit:contain;filter:brightness(0.7)}
+.cp:hover .cp-img img{filter:brightness(1)}
+.cp-brand{font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal)}
+.cp-name{font-size:0.75rem;font-weight:600;color:var(--white);margin:2px 0 0.4rem;line-height:1.2}
+.cp-price{font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--amber);letter-spacing:0.02em;margin-bottom:0.5rem}
+.cp-btn{display:block;width:100%;padding:6px;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:transparent;border:1px solid var(--teal-dim);color:var(--teal-dark);cursor:pointer;text-decoration:none;transition:all 0.15s;text-align:center}
+.cp-btn:hover{background:var(--teal);color:var(--void);border-color:var(--teal)}
+
+/* BLOG — magazine grid */
+.blog-sec{padding:3.5rem 0}
+.blog-asymmetric{display:grid;grid-template-columns:1fr 360px;gap:1px;background:var(--border);margin-top:1.5rem}
+.blog-main{background:var(--panel);cursor:pointer;transition:background 0.2s;text-decoration:none}
+.blog-main:hover{background:var(--panel2)}
+.blog-main-img{height:260px;overflow:hidden;position:relative;background:var(--panel3)}
+.blog-main-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.7) saturate(0.75);transition:all 0.4s}
+.blog-main:hover .blog-main-img img{filter:brightness(0.85) saturate(0.9);transform:scale(1.03)}
+.blog-cat-tag{position:absolute;top:0;left:0;font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;background:var(--amber);color:var(--void)}
+.blog-main-info{padding:1.4rem}
+.bm-title{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:0.02em;color:var(--white);line-height:1.15;margin-bottom:0.6rem}
+.bm-excerpt{font-size:0.8rem;color:var(--text-mid);line-height:1.65;font-weight:300;margin-bottom:0.8rem}
+.bm-gear{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:0.8rem}
+.bm-gear-tag{font-size:0.6rem;font-weight:700;letter-spacing:0.06em;padding:2px 8px;background:var(--teal-pale);color:var(--teal-dark);border:1px solid rgba(0,212,200,0.15);text-decoration:none}
+.bm-foot{font-size:0.68rem;color:var(--text-dim);display:flex;justify-content:space-between;padding-top:0.7rem;border-top:1px solid var(--border)}
+
+.blog-side{display:grid;grid-template-rows:repeat(3,1fr)}
+.bs-card{background:var(--panel);border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s;text-decoration:none;display:grid;grid-template-columns:110px 1fr}
+.bs-card:last-child{border-bottom:none}
+.bs-card:hover{background:var(--panel2)}
+.bs-img{overflow:hidden;background:var(--panel3)}
+.bs-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0.6);transition:all 0.3s}
+.bs-card:hover .bs-img img{filter:brightness(0.8) saturate(0.8)}
+.bs-info{padding:0.9rem}
+.bs-cat{font-size:0.55rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.bs-title{font-size:0.8rem;font-weight:600;color:var(--white);line-height:1.3;margin-bottom:0.5rem}
+.bs-foot{font-size:0.62rem;color:var(--text-dim)}
+
+/* PARTNER CTA — dramatic full-bleed */
+.partner-sec{padding:5rem 0;position:relative;overflow:hidden;background:var(--panel)}
+.partner-sec::before{content:'PARTNER';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Anton',sans-serif;font-size:clamp(8rem,20vw,18rem);color:rgba(0,212,200,0.03);letter-spacing:0.05em;white-space:nowrap;pointer-events:none;line-height:1}
+.partner-grid{position:relative;display:grid;grid-template-columns:1fr 400px;gap:5rem;align-items:start}
+.pg-left .sec-eye{margin-bottom:0.4rem}
+.pg-title{font-family:'Anton',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:0.02em;color:var(--white);line-height:1.0;margin-bottom:0.8rem}
+.pg-title .teal{color:var(--teal)}
+.pg-desc{font-size:0.88rem;color:var(--text-mid);line-height:1.7;font-weight:300;margin-bottom:1.8rem;max-width:460px}
+.pg-perks{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.8rem}
+.pg-perk{background:var(--panel2);padding:1rem;position:relative}
+.pg-perk::after{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--teal)}
+.pg-perk-title{font-size:0.78rem;font-weight:700;color:var(--white);margin-bottom:3px}
+.pg-perk-desc{font-size:0.72rem;color:var(--text-mid);line-height:1.5;font-weight:300}
+.pg-brands-head{font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem}
+.pg-brands{display:flex;flex-wrap:wrap;gap:4px}
+.pg-brand{font-size:0.65rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel)}
+
+.partner-form-card{background:var(--panel2);border:1px solid var(--border2);padding:2rem}
+.pfc-teal-line{height:3px;background:var(--teal);margin:-2rem -2rem 1.5rem;box-shadow:0 0 20px rgba(0,212,200,0.3)}
+.pfc-title{font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:0.04em;color:var(--white);margin-bottom:2px}
+.pfc-sub{font-size:0.72rem;color:var(--text-dim);margin-bottom:1.3rem;font-weight:300}
+.f-label{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px}
+.f-input{width:100%;background:var(--panel3);border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.83rem;padding:8px 10px;outline:none;margin-bottom:0.7rem;transition:border-color 0.15s}
+.f-input:focus{border-color:var(--teal)}
+.f-input::placeholder{color:var(--text-dim)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.f-submit{width:100%;padding:0.85rem;background:var(--teal);border:none;color:var(--void);font-family:'DM Sans',sans-serif;font-size:0.83rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:0.3rem}
+.f-submit:hover{background:#00EEE0}
+.f-note{font-size:0.62rem;color:var(--text-dim);text-align:center;margin-top:0.5rem}
+
+/* FOOTER */
+footer{background:var(--deep);border-top:1px solid var(--border);padding:3rem 0 1.2rem}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem}
+.footer-logo{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--teal);letter-spacing:0.06em;text-decoration:none;display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem}
+.footer-logo .dot{width:6px;height:6px;background:var(--amber);border-radius:50%}
+.footer-tagline{font-size:0.75rem;color:var(--text-dim);line-height:1.6;max-width:200px;font-weight:300}
+.footer-aff{font-size:0.6rem;color:var(--text-dim);margin-top:0.6rem;opacity:0.6;line-height:1.5}
+.footer-col-title{font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.35rem}
+.footer-links a{font-size:0.75rem;color:var(--text-dim);text-decoration:none;transition:color 0.15s}
+.footer-links a:hover{color:var(--teal)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1rem;display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-dim);flex-wrap:wrap;gap:0.5rem}
+.footer-bottom a{color:var(--text-dim);text-decoration:none}
+.footer-bottom a:hover{color:var(--teal)}
+
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr}.hero-right{display:none}
+  .gear-layout{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr 1fr}
+  .blog-asymmetric{grid-template-columns:1fr}
+  .partner-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+@media(max-width:700px){
+  .listings-grid{grid-template-columns:1fr}.l-card.l-hero{grid-column:span 1;flex-direction:column}
+  .l-card.l-hero .l-img{height:200px;width:100%}
+  .trailer-grid{grid-template-columns:1fr 1fr}
+  .cat-scroll{grid-template-columns:repeat(3,1fr)}
+  .pg-perks{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .s-selects{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo-wrap">
+      <a href="#" class="logo">TRAIL<span class="dot"></span>RIG<span class="logo-tagline">Off-Road Marketplace</span></a>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active">Listings</a>
+      <a href="#" class="nav-link">Trailers</a>
+      <a href="#" class="nav-link">Gear</a>
+      <a href="#" class="nav-link">Blog</a>
+      <a href="#" class="nav-link">Brands</a>
+      <a href="#" class="nav-link">Partner</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="n-btn n-ghost">Sign In</a>
+      <a href="#" class="n-btn n-teal">+ Post Listing</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=1200&q=80" alt="">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">The Off-Road Marketplace</div>
+      <h1 class="hero-title">BUILT<br><span class="teal-line">RIGS.</span><span class="dim-line">Buy · Sell · Compare · Explore</span></h1>
+      <p class="hero-desc">Find fully-kitted 4x4s and trailers, compare gear from competing brands side-by-side, and connect with the off-road community.</p>
+      <div class="hero-actions">
+        <a href="#" class="h-btn hb-teal">Browse Listings ↗</a>
+        <a href="#" class="h-btn hb-outline">Shop Gear</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-panel">
+      <div class="hsp-title">// Live Market Data</div>
+      <div class="hsp-grid">
+        <div class="hsp-item"><div class="hsp-num">2,<span>841</span></div><div class="hsp-label">Active Listings</div></div>
+        <div class="hsp-item"><div class="hsp-num"><span>640</span>+</div><div class="hsp-label">Gear Products</div></div>
+        <div class="hsp-item"><div class="hsp-num"><span>38</span></div><div class="hsp-label">Partner Brands</div></div>
+        <div class="hsp-item"><div class="hsp-num"><span>12</span>k</div><div class="hsp-label">Members</div></div>
+      </div>
+    </div>
+    <a href="#" class="hero-top-listing">
+      <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=80" alt="">
+      <div class="htl-overlay">
+        <div>
+          <div class="htl-price">$52,500</div>
+          <div class="htl-name">2021 Toyota 4Runner TRD Pro Overland Build</div>
+        </div>
+      </div>
+      <span class="htl-badge">Featured</span>
+    </a>
+  </div>
+</section>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <div class="s-tabs">
+      <button class="s-tab active">Vehicles</button>
+      <button class="s-tab">Trailers</button>
+      <button class="s-tab">Gear</button>
+    </div>
+    <div class="s-field">
+      <svg width="14" height="14" fill="none" stroke="var(--text-dim)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search make, model, modification...">
+    </div>
+    <div class="s-selects">
+      <select class="s-select"><option>Any Make</option><option>Toyota</option><option>Ford</option><option>Jeep</option></select>
+      <select class="s-select"><option>Any Price</option><option>Under $25k</option><option>$25–50k</option><option>$50k+</option></select>
+      <select class="s-select"><option>Any Location</option><option>Utah</option><option>Arizona</option><option>Colorado</option></select>
+    </div>
+    <button class="s-go">Search ↗</button>
+  </div>
+</div>
+
+<section class="listings-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-eye">Featured Listings</div><div class="sec-title">Hand-Picked <span class="amber">Builds</span></div></div>
+      <a href="#" class="view-all">All Listings →</a>
+    </div>
+    <div class="listings-grid">
+      <a href="#" class="l-card l-hero">
+        <div class="l-img"><span class="l-badge lb-teal">Featured</span><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80" alt=""></div>
+        <div class="l-info">
+          <div class="l-price">$52,500</div>
+          <div class="l-name">2021 Toyota 4Runner TRD Pro — Full Overland Build</div>
+          <div class="l-meta"><span>38,422 mi</span><span>4WD</span><span>V6</span><span>Clean Title</span></div>
+          <div class="l-mods"><span class="l-mod">Suspension</span><span class="l-mod">ARB Bumper</span><span class="l-mod">Warn Winch</span><span class="l-mod">iKamper RTT</span><span class="l-mod">+16 Mods</span></div>
+          <div class="l-foot"><span>📍 Moab, UT</span><span>1,248 views</span></div>
+        </div>
+      </a>
+      <a href="#" class="l-card">
+        <div class="l-img"><span class="l-badge lb-amber">New</span><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&q=80" alt=""></div>
+        <div class="l-info">
+          <div class="l-price">$67,900</div>
+          <div class="l-name">2022 Ford Bronco Wildtrak</div>
+          <div class="l-meta"><span>14,200 mi</span><span>4WD</span></div>
+          <div class="l-mods"><span class="l-mod">Sasquatch</span><span class="l-mod">Roof Rack</span></div>
+          <div class="l-foot"><span>Flagstaff, AZ</span><span>892 views</span></div>
+        </div>
+      </a>
+      <a href="#" class="l-card">
+        <div class="l-img"><img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600&q=80" alt=""></div>
+        <div class="l-info">
+          <div class="l-price">$41,500</div>
+          <div class="l-name">2019 Jeep Wrangler Rubicon</div>
+          <div class="l-meta"><span>52,100 mi</span><span>4WD</span></div>
+          <div class="l-mods"><span class="l-mod">4" Lift</span><span class="l-mod">37" Tires</span></div>
+          <div class="l-foot"><span>Durango, CO</span><span>441 views</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cat-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-eye">Gear Marketplace</div><div class="sec-title">Browse by <span class="amber">Category</span></div></div>
+      <a href="#" class="view-all">All Categories →</a>
+    </div>
+    <div class="cat-scroll">
+      <a href="#" class="cat-cell"><span class="cat-em">🛡️</span><div class="cat-name">Bumpers</div><div class="cat-count">84 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">⛺</span><div class="cat-name">Roof Tents</div><div class="cat-count">42 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🔩</span><div class="cat-name">Suspension</div><div class="cat-count">126 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🪝</span><div class="cat-name">Winches</div><div class="cat-count">38 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">💡</span><div class="cat-name">Lighting</div><div class="cat-count">91 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🔧</span><div class="cat-name">Recovery</div><div class="cat-count">67 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🛞</span><div class="cat-name">Tires</div><div class="cat-count">203 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🏕️</span><div class="cat-name">Awnings</div><div class="cat-count">29 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🔋</span><div class="cat-name">Power</div><div class="cat-count">55 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">❄️</span><div class="cat-name">Fridges</div><div class="cat-count">24 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">📡</span><div class="cat-name">Comms</div><div class="cat-count">31 products</div></a>
+      <a href="#" class="cat-cell"><span class="cat-em">🗄️</span><div class="cat-name">Storage</div><div class="cat-count">48 products</div></a>
+    </div>
+  </div>
+</section>
+
+<section class="trailer-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-eye">Off-Road Trailers</div><div class="sec-title">Pull More. <span class="amber">Camp Better.</span></div></div>
+      <a href="#" class="view-all">All Trailers →</a>
+    </div>
+    <div class="trailer-grid">
+      <a href="#" class="tc"><div class="tc-img"><span class="l-badge lb-teal" style="position:absolute;top:0;left:0">Trailer</span><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=75" alt=""></div><div class="tc-info"><div class="tc-price">$18,500</div><div class="tc-name">2022 Turtleback Expedition II</div><div class="tc-tags"><span class="tc-tag">Solar</span><span class="tc-tag">Fridge</span><span class="tc-tag">Kitchen</span></div><div class="tc-foot"><span>Bozeman, MT</span><span>312 views</span></div></div></a>
+      <a href="#" class="tc"><div class="tc-img"><span class="l-badge lb-teal" style="position:absolute;top:0;left:0">Trailer</span><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500&q=75" alt=""></div><div class="tc-info"><div class="tc-price">$31,900</div><div class="tc-name">2023 Opus Air OP4</div><div class="tc-tags"><span class="tc-tag">RTT</span><span class="tc-tag">Generator</span><span class="tc-tag">Shower</span></div><div class="tc-foot"><span>Denver, CO</span><span>519 views</span></div></div></a>
+      <a href="#" class="tc"><div class="tc-img"><span class="l-badge lb-teal" style="position:absolute;top:0;left:0">Trailer</span><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=500&q=75" alt=""></div><div class="tc-info"><div class="tc-price">$11,200</div><div class="tc-name">2020 Escapod Topo2</div><div class="tc-tags"><span class="tc-tag">Teardrop</span><span class="tc-tag">RTT Mount</span></div><div class="tc-foot"><span>Salt Lake City, UT</span><span>248 views</span></div></div></a>
+      <a href="#" class="tc"><div class="tc-img"><span class="l-badge lb-teal" style="position:absolute;top:0;left:0">Trailer</span><img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=500&q=75" alt=""></div><div class="tc-info"><div class="tc-price">$22,750</div><div class="tc-name">2021 Black Series HQ12</div><div class="tc-tags"><span class="tc-tag">Solar</span><span class="tc-tag">Toilet</span><span class="tc-tag">Fridge</span></div><div class="tc-foot"><span>Tucson, AZ</span><span>187 views</span></div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="gear-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-eye">Gear Marketplace</div><div class="sec-title">Compare <span class="amber">Brand vs. Brand</span></div><div class="sec-sub">Every category shows products from multiple partners side-by-side.</div></div>
+      <a href="#" class="view-all">All Gear →</a>
+    </div>
+    <div class="gear-layout">
+      <div class="gear-nav">
+        <div class="gear-nav-head">Categories</div>
+        <a href="#" class="gear-nav-item active"><div class="gni-left"><span class="gni-icon">🛡️</span><div><div class="gni-name">Bumpers</div><div class="gni-brands">ARB, CBI, Exp. One</div></div></div><span class="gni-count">84</span></a>
+        <a href="#" class="gear-nav-item"><div class="gni-left"><span class="gni-icon">⛺</span><div><div class="gni-name">Roof Tents</div><div class="gni-brands">iKamper, Roofnest</div></div></div><span class="gni-count">42</span></a>
+        <a href="#" class="gear-nav-item"><div class="gni-left"><span class="gni-icon">🔩</span><div><div class="gni-name">Suspension</div><div class="gni-brands">OME, Fox, Bilstein</div></div></div><span class="gni-count">126</span></a>
+        <a href="#" class="gear-nav-item"><div class="gni-left"><span class="gni-icon">🪝</span><div><div class="gni-name">Winches</div><div class="gni-brands">Warn, Smittybilt</div></div></div><span class="gni-count">38</span></a>
+        <a href="#" class="gear-nav-item"><div class="gni-left"><span class="gni-icon">💡</span><div><div class="gni-name">Lighting</div><div class="gni-brands">Rigid, Baja, KC</div></div></div><span class="gni-count">91</span></a>
+        <a href="#" class="gear-nav-item"><div class="gni-left"><span class="gni-icon">🔋</span><div><div class="gni-name">Power & Solar</div><div class="gni-brands">Renogy, Battle Born</div></div></div><span class="gni-count">55</span></a>
+      </div>
+      <div class="gear-content">
+        <div class="gear-hero-img">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="">
+          <div class="gear-hero-overlay"><div class="gear-hero-text"><div class="g-cat-label">Featured Category</div><div class="g-cat-title">Winches &amp; Recovery</div><div class="g-cat-sub">38 products from 6 brands — compare now →</div></div></div>
+        </div>
+        <div class="gear-compare-head">
+          <div><div class="gch-title">Winches — Brand Comparison</div><div class="gch-sub">4 products · Sorted by MSRP</div></div>
+          <a href="#" class="view-all" style="font-size:0.62rem">See all 38 →</a>
+        </div>
+        <div class="compare-grid">
+          <div class="cp"><div class="cp-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=60" alt=""></div><div class="cp-brand">Warn</div><div class="cp-name">VR EVO 10-S</div><div class="cp-price">$589</div><a href="#" class="cp-btn">Shop →</a></div>
+          <div class="cp"><div class="cp-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=200&q=60" alt=""></div><div class="cp-brand">Smittybilt</div><div class="cp-name">X2O 10K Waterproof</div><div class="cp-price">$349</div><a href="#" class="cp-btn">Shop →</a></div>
+          <div class="cp"><div class="cp-img"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=200&q=60" alt=""></div><div class="cp-brand">Superwinch</div><div class="cp-name">Tiger Shark 11500</div><div class="cp-price">$429</div><a href="#" class="cp-btn">Shop →</a></div>
+          <div class="cp"><div class="cp-img"><img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=200&q=60" alt=""></div><div class="cp-brand">Rough Country</div><div class="cp-name">PRO9500S Electric</div><div class="cp-price">$279</div><a href="#" class="cp-btn">Shop →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blog-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-eye">From the Trail</div><div class="sec-title">Tips, Builds &amp; <span class="amber">Reviews</span></div></div>
+      <a href="#" class="view-all">All Articles →</a>
+    </div>
+    <div class="blog-asymmetric">
+      <a href="#" class="blog-main">
+        <div class="blog-main-img"><span class="blog-cat-tag">Build Guide</span><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80" alt=""></div>
+        <div class="blog-main-info">
+          <div class="bm-title">The Complete Overland Build Guide: Everything You Need for a Weekend-Ready Rig</div>
+          <div class="bm-excerpt">From suspension and lighting to sleep systems — how to prioritize your budget and which brands deliver real value at each tier.</div>
+          <div class="bm-gear"><a href="#" class="bm-gear-tag">OME BP-51</a><a href="#" class="bm-gear-tag">iKamper Skycamp 3.0</a><a href="#" class="bm-gear-tag">ARB Compressor</a><a href="#" class="bm-gear-tag">Warn VR EVO</a></div>
+          <div class="bm-foot"><span>Jake M. · Mar 12</span><span>12 min · 4,820 views</span></div>
+        </div>
+      </a>
+      <div class="blog-side">
+        <a href="#" class="bs-card">
+          <div class="bs-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=300&q=75" alt=""></div>
+          <div class="bs-info"><div class="bs-cat">Gear Review</div><div class="bs-title">iKamper vs Roofnest: Which RTT is Worth It?</div><div class="bs-foot">Mar 8 · 7 min</div></div>
+        </a>
+        <a href="#" class="bs-card">
+          <div class="bs-img"><img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=300&q=75" alt=""></div>
+          <div class="bs-info"><div class="bs-cat">Trail Report</div><div class="bs-title">Kokopelli Trail: What Your Rig Actually Needs</div><div class="bs-foot">Feb 28 · 5 min</div></div>
+        </a>
+        <a href="#" class="bs-card">
+          <div class="bs-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=75" alt=""></div>
+          <div class="bs-info"><div class="bs-cat">Buyer's Guide</div><div class="bs-title">Best Winches Under $500 — Tested & Ranked</div><div class="bs-foot">Feb 20 · 9 min</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="partner-sec" id="partner">
+  <div class="wrap">
+    <div class="partner-grid">
+      <div class="pg-left">
+        <div class="sec-eye">For Brands</div>
+        <h2 class="pg-title">Get Your Products<br>In Front of <span class="teal">Real Wheelers</span></h2>
+        <p class="pg-desc">TrailRig buyers are actively kitting out their vehicles. List in our gear marketplace, get featured in build guides, and drive affiliate revenue from a community that buys.</p>
+        <div class="pg-perks">
+          <div class="pg-perk"><div class="pg-perk-title">Side-by-Side Exposure</div><div class="pg-perk-desc">Products appear next to competitors — let specs win customers.</div></div>
+          <div class="pg-perk"><div class="pg-perk-title">Blog Integration</div><div class="pg-perk-desc">Products linked in reviews and trail guides read by active buyers.</div></div>
+          <div class="pg-perk"><div class="pg-perk-title">Listing Cross-Links</div><div class="pg-perk-desc">Vehicle mod tags automatically link back to your product page.</div></div>
+          <div class="pg-perk"><div class="pg-perk-title">Affiliate Tracking</div><div class="pg-perk-desc">Full dashboard. Pay on performance only. No setup fees.</div></div>
+        </div>
+        <div class="pg-brands-head">Current Partners</div>
+        <div class="pg-brands"><span class="pg-brand">Warn</span><span class="pg-brand">ARB</span><span class="pg-brand">Old Man Emu</span><span class="pg-brand">iKamper</span><span class="pg-brand">Rigid</span><span class="pg-brand">MAXTRAX</span><span class="pg-brand">Renogy</span><span class="pg-brand">+ 31 more</span></div>
+      </div>
+      <div class="partner-form-card">
+        <div class="pfc-teal-line"></div>
+        <div class="pfc-title">Partner With Us</div>
+        <div class="pfc-sub">Our team will reach out within 2 business days.</div>
+        <div class="f-row"><div><label class="f-label">First Name</label><input class="f-input" placeholder="Jake"></div><div><label class="f-label">Last Name</label><input class="f-input" placeholder="Smith"></div></div>
+        <label class="f-label">Brand / Company</label><input class="f-input" placeholder="Warn Industries">
+        <label class="f-label">Work Email</label><input class="f-input" type="email" placeholder="jake@company.com">
+        <label class="f-label">Website</label><input class="f-input" placeholder="https://...">
+        <label class="f-label">Product Categories</label><input class="f-input" placeholder="Winches, Bumpers, Lighting...">
+        <button class="f-submit">Request Partnership ↗</button>
+        <div class="f-note">No setup fees · Performance commissions · Cancel anytime</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="#" class="footer-logo">TRAIL<span class="dot"></span>RIG</a><div class="footer-tagline">The off-road marketplace for real builders.</div><div class="footer-aff">TrailRig participates in affiliate programs and may earn commissions on qualifying purchases.</div></div>
+      <div><div class="footer-col-title">Marketplace</div><ul class="footer-links"><li><a href="#">Browse Vehicles</a></li><li><a href="#">Browse Trailers</a></li><li><a href="#">Gear & Mods</a></li><li><a href="#">Post a Listing</a></li></ul></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="#">Mod Categories</a></li><li><a href="#">Brand Directory</a></li><li><a href="#">Trail Blog</a></li><li><a href="#">Build Guides</a></li></ul></div>
+      <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#">Partner With Us</a></li><li><a href="#">Affiliate Policy</a></li><li><a href="#">About</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 TrailRig LLC</span><span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Affiliates</a></span></div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.s-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.s-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active')}));
+</script>
+</body>
+</html>

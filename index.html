@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overlander Designs — Theme Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0f0e;
+      --surface:  #161a18;
+      --border:   #2a2f2c;
+      --accent:   #d97f2f;
+      --accent2:  #7abd5c;
+      --text:     #e8e4dc;
+      --muted:    #7a8078;
+      --radius:   10px;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    header p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin-inline: auto;
+    }
+
+    /* ── Grid ── */
+    main {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+
+    /* ── Card ── */
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+    }
+
+    .card-preview {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Individual theme colour palettes */
+    .preview-theme1  { background: #1a1a1a; color: #f5f0e8; border-bottom: 1px solid #2a2a2a; }
+    .preview-theme1::after  { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent, transparent 18px, rgba(255,255,255,.03) 18px, rgba(255,255,255,.03) 19px); }
+
+    .preview-theme2  { background: #f5f0e8; color: #1a1a1a; border-bottom: 1px solid #ddd; }
+    .preview-theme2 .tag { background: #c0392b; color: #fff; font-size: 0.55rem; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.12em; position: absolute; top: 14px; right: 14px; }
+
+    .preview-theme3  { background: #0f1a0f; color: #a8d08a; border-bottom: 1px solid #1e3a1e; }
+    .preview-theme3::after  { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(168,208,138,.08) 0%, transparent 70%); }
+
+    .preview-theme4  { background: #2b2217; color: #e8c87a; border-bottom: 1px solid #3d3020; }
+    .preview-theme4::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(232,200,122,.06) 0%, transparent 60%); }
+
+    .preview-military { background: #0a0d08; color: #c8d4b8; border-bottom: 1px solid #1e2a1a; }
+    .preview-military::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(200,212,184,.02) 10px, rgba(200,212,184,.02) 11px); }
+
+    .preview-desert  { background: #f0e8d4; color: #3d2f1a; border-bottom: 1px solid #d4c8b0; }
+
+    .preview-neon    { background: #07090a; color: #00e5ff; border-bottom: 1px solid #0d1a1f; text-shadow: 0 0 18px rgba(0,229,255,.6); }
+    .preview-neon::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 60%, rgba(0,229,255,.06) 0%, transparent 70%); }
+
+    .preview-minimal { background: #f9f7f4; color: #111; border-bottom: 1px solid #e8e4de; }
+
+    .card-body {
+      padding: 18px 20px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .tag.accent { background: rgba(217,127,47,.12); color: var(--accent); border-color: rgba(217,127,47,.3); }
+    .tag.green  { background: rgba(122,189,92,.12); color: var(--accent2); border-color: rgba(122,189,92,.3); }
+
+    .card-arrow {
+      margin-top: auto;
+      padding-top: 14px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">Design Showcase</p>
+    <h1>Overlander Designs</h1>
+    <p>A collection of off-road marketplace UI concepts. Click any theme to preview it.</p>
+  </header>
+
+  <main>
+
+    <!-- TrailBound Themes -->
+    <p class="section-label">TrailBound — Off-Road Classifieds &amp; Gear</p>
+    <div class="grid">
+
+      <a class="card" href="theme1.html">
+        <div class="card-preview preview-theme1">
+          <span>Theme 1</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 1</div>
+          <div class="card-desc">Dark, rugged layout with a neutral off-white palette and heavy Barlow typography.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Barlow</span>
+            <span class="tag accent">Variant A</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="theme2.html">
+        <div class="card-preview preview-theme2">
+          <span>Theme 2</span>
+          <span class="tag">LIGHT</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 2</div>
+          <div class="card-desc">Light, clean version with a warm parchment background and bold red accents.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Barlow</span>
+            <span class="tag accent">Variant B</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="theme3.html">
+        <div class="card-preview preview-theme3">
+          <span>Theme 3</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 3</div>
+          <div class="card-desc">Deep forest-green dark mode with subtle radial glows and earthy tones.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Green</span>
+            <span class="tag green">Variant C</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- TrailRig Themes -->
+    <p class="section-label">TrailRig — The Off-Road Marketplace</p>
+    <div class="grid">
+
+      <a class="card" href="theme4.html">
+        <div class="card-preview preview-theme4">
+          <span>Theme 4</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailRig — Theme 4</div>
+          <div class="card-desc">Warm amber-toned dark marketplace with condensed headline type and dusty accents.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Amber</span>
+            <span class="tag accent">TrailRig</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-a-dark-military.html">
+        <div class="card-preview preview-military">
+          <span>Military</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant A — Dark Military</div>
+          <div class="card-desc">Tactical monochrome palette with IBM Plex Sans, muted OD-green tones and sharp grid lines.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">IBM Plex</span>
+            <span class="tag green">Military</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-b-desert-light.html">
+        <div class="card-preview preview-desert">
+          <span>Desert</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant B — Desert Light</div>
+          <div class="card-desc">Warm cream and sand tones with Outfit font. Bright, airy, and sun-bleached.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Outfit</span>
+            <span class="tag accent">Desert</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-c-neon-mud.html">
+        <div class="card-preview preview-neon">
+          <span>Neon Mud</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant C — Neon Mud</div>
+          <div class="card-desc">High-contrast dark void with electric cyan highlights and DM Sans. Aggressive and electric.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">DM Sans</span>
+            <span class="tag green">Neon</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-modern-minimal.html">
+        <div class="card-preview preview-minimal">
+          <span style="color:#111; text-shadow:none;">Minimal</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Modern Minimal</div>
+          <div class="card-desc">Ultra-clean white canvas with Instrument Sans and Syne headlines. Refined and editorial.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Syne</span>
+            <span class="tag accent">Minimal</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Overlander Designs &mdash; Theme Showcase &mdash; 2026</p>
+  </footer>
+
+</body>
+</html>
