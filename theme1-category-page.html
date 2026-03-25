@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roof Tents — TrailBound Gear</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --pine-soft: #4A7D5E;
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --gold-border: rgba(184,150,12,0.2);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--pine); }
+.nav-links a.active-link { color: var(--pine); }
+.nav-cta {
+  background: var(--rust) !important; color: var(--white) !important;
+  padding: 10px 24px; border-radius: 4px;
+  font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+
+/* ── CATEGORY HERO ── */
+.cat-hero {
+  padding: 120px 48px 48px;
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.cat-hero::before {
+  content: '';
+  position: absolute; top: 0; right: -100px; bottom: 0;
+  width: 500px;
+  background: radial-gradient(ellipse at center, rgba(61,107,79,0.04), transparent 70%);
+}
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--lichen);
+  margin-bottom: 24px; position: relative; z-index: 2;
+}
+.breadcrumb a {
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb a:hover { color: var(--pine); }
+.breadcrumb .sep { opacity: 0.4; }
+.breadcrumb .current { color: var(--forest); font-weight: 600; }
+.cat-hero-content {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; gap: 40px; flex-wrap: wrap;
+  position: relative; z-index: 2;
+}
+.cat-hero-text { max-width: 600px; }
+.cat-hero-text h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 5vw, 64px);
+  letter-spacing: 2px; line-height: 1;
+  color: var(--forest); margin-bottom: 12px;
+}
+.cat-hero-text h1 span { color: var(--pine); }
+.cat-hero-text p {
+  font-size: 16px; line-height: 1.7;
+  color: var(--lichen); max-width: 480px;
+}
+.cat-stats {
+  display: flex; gap: 32px;
+}
+.cat-stat {
+  text-align: center;
+}
+.cat-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; color: var(--pine);
+  line-height: 1;
+}
+.cat-stat-label {
+  font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lichen);
+  margin-top: 4px;
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  padding: 20px 48px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  position: sticky; top: 72px; z-index: 90;
+}
+.filter-group {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600; font-size: 13px;
+  padding: 8px 16px; border-radius: 6px;
+  background: var(--mist);
+  border: 1px solid var(--border);
+  color: var(--forest); cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.filter-btn:hover {
+  border-color: var(--pine-border);
+  background: var(--pine-light);
+}
+.filter-btn.active {
+  background: var(--forest);
+  color: var(--mist);
+  border-color: var(--forest);
+}
+.filter-btn svg { width: 14px; height: 14px; }
+.sort-select {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600; font-size: 13px;
+  padding: 8px 32px 8px 14px;
+  border-radius: 6px; border: 1px solid var(--border);
+  background: var(--mist); color: var(--forest);
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7466' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.view-toggle {
+  display: flex; gap: 4px;
+  background: var(--mist); border-radius: 6px;
+  padding: 3px;
+}
+.view-btn {
+  width: 34px; height: 30px;
+  border: none; border-radius: 4px;
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; color: var(--lichen);
+}
+.view-btn.active { background: var(--white); color: var(--forest); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.result-count {
+  font-size: 13px; color: var(--lichen);
+}
+.result-count strong { color: var(--forest); }
+.compare-bar-float {
+  display: none; position: fixed;
+  bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--forest); color: var(--mist);
+  padding: 14px 28px; border-radius: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 15px;
+  letter-spacing: 1px; text-transform: uppercase;
+  box-shadow: 0 8px 32px rgba(28,43,31,0.25);
+  z-index: 200; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.3s;
+}
+.compare-bar-float:hover { background: var(--forest-soft); transform: translateX(-50%) translateY(-2px); }
+.compare-badge {
+  background: var(--rust); color: var(--white);
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+
+/* ── BRAND FILTER STRIP ── */
+.brand-strip {
+  padding: 16px 48px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  overflow-x: auto;
+}
+.brand-strip-label {
+  font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lichen);
+  white-space: nowrap; font-weight: 600;
+}
+.brand-chip {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 50px;
+  background: var(--mist);
+  border: 1px solid var(--border);
+  color: var(--stone); cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.brand-chip:hover { border-color: var(--pine-border); color: var(--pine); }
+.brand-chip.active {
+  background: var(--pine); color: var(--white);
+  border-color: var(--pine);
+}
+
+/* ── PRODUCT GRID ── */
+.products-section {
+  padding: 32px 48px 80px;
+  background: var(--white);
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+.product-card {
+  background: var(--white);
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--pine-border);
+  box-shadow: 0 16px 40px rgba(28,43,31,0.08);
+}
+.product-card.editors-pick {
+  border-color: var(--gold-border);
+}
+.product-card.editors-pick::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--gold);
+}
+
+.product-img {
+  height: 220px; position: relative;
+  overflow: hidden;
+}
+.product-img-bg {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 56px;
+}
+.tent-1 { background: linear-gradient(135deg, #c8d4c0, #aab8a4); }
+.tent-2 { background: linear-gradient(135deg, #b8c8a8, #98b088); }
+.tent-3 { background: linear-gradient(135deg, #d0c8b8, #b8b0a0); }
+.tent-4 { background: linear-gradient(135deg, #a8c0c8, #90a8b0); }
+.tent-5 { background: linear-gradient(135deg, #c0c8d0, #a8b0b8); }
+.tent-6 { background: linear-gradient(135deg, #c8c0b0, #b0a898); }
+.tent-7 { background: linear-gradient(135deg, #b0c8b8, #98b0a0); }
+.tent-8 { background: linear-gradient(135deg, #c8b8c0, #b0a0a8); }
+
+.product-badges {
+  position: absolute; top: 12px; left: 12px;
+  display: flex; gap: 6px;
+}
+.p-badge {
+  padding: 4px 10px; border-radius: 4px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.p-badge-pick { background: var(--gold); color: #412402; }
+.p-badge-new { background: var(--pine); color: var(--white); }
+.p-badge-popular { background: var(--forest); color: var(--mist); }
+.p-badge-sale { background: var(--rust); color: var(--white); }
+
+.compare-check {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px; border-radius: 6px;
+  background: rgba(255,255,255,0.9);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+.compare-check:hover { border-color: var(--pine); }
+.compare-check.checked {
+  background: var(--pine); border-color: var(--pine);
+}
+.compare-check svg { width: 16px; height: 16px; }
+
+.product-body { padding: 20px; }
+.product-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--pine); margin-bottom: 4px;
+}
+.product-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 22px;
+  color: var(--forest); margin-bottom: 4px;
+  line-height: 1.2;
+}
+.product-tagline {
+  font-size: 13px; color: var(--lichen);
+  margin-bottom: 14px; line-height: 1.4;
+}
+.product-rating {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+.stars {
+  display: flex; gap: 2px;
+}
+.star { color: var(--gold); font-size: 14px; }
+.star.empty { color: var(--fog); }
+.rating-num {
+  font-weight: 700; font-size: 14px; color: var(--forest);
+}
+.rating-count {
+  font-size: 12px; color: var(--lichen);
+}
+
+.product-specs {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 16px;
+  padding: 14px;
+  background: var(--mist);
+  border-radius: 8px;
+}
+.spec-item {
+  display: flex; flex-direction: column;
+}
+.spec-label {
+  font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--lichen);
+  font-weight: 600;
+}
+.spec-value {
+  font-size: 14px; font-weight: 600;
+  color: var(--forest); margin-top: 2px;
+}
+
+.product-footer {
+  display: flex; justify-content: space-between;
+  align-items: center; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.product-price {
+  display: flex; flex-direction: column;
+}
+.price-current {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px; color: var(--rust);
+  line-height: 1;
+}
+.price-original {
+  font-size: 13px; color: var(--lichen);
+  text-decoration: line-through;
+}
+.price-affiliate {
+  font-size: 11px; color: var(--lichen);
+  margin-top: 2px;
+}
+.shop-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 12px 24px; border-radius: 4px;
+  background: var(--forest); color: var(--mist);
+  border: none; cursor: pointer;
+  transition: all 0.25s;
+  display: flex; align-items: center; gap: 8px;
+}
+.shop-btn:hover {
+  background: var(--forest-soft);
+  transform: translateY(-1px);
+}
+.shop-btn svg { width: 14px; height: 14px; }
+
+/* ── AD INSERT ── */
+.ad-insert {
+  grid-column: 1 / -1;
+  padding: 24px; text-align: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: 10px;
+  background: var(--mist);
+}
+.ad-insert-label {
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--lichen);
+  margin-bottom: 6px;
+}
+.ad-insert-box {
+  color: var(--lichen); font-size: 14px;
+}
+
+/* ── COMPARISON TABLE SECTION ── */
+.compare-section {
+  padding: 80px 48px;
+  background: var(--mist);
+  border-top: 1px solid var(--border);
+}
+.compare-section .section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--pine); margin-bottom: 12px;
+}
+.compare-section .section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  letter-spacing: 1px; line-height: 1;
+  color: var(--forest); margin-bottom: 12px;
+}
+.compare-section .section-sub {
+  font-size: 16px; color: var(--lichen);
+  max-width: 560px; line-height: 1.7;
+  margin-bottom: 40px;
+}
+.compare-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.compare-table {
+  width: 100%; min-width: 800px;
+  border-collapse: collapse;
+}
+.compare-table thead th {
+  padding: 20px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--forest);
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  position: sticky; top: 0;
+}
+.compare-table thead th:first-child { width: 200px; }
+.compare-table tbody td {
+  padding: 14px 16px;
+  font-size: 14px; color: var(--forest);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover { background: rgba(61,107,79,0.02); }
+.compare-table .spec-header {
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--lichen);
+  background: var(--mist);
+}
+.compare-table .brand-cell {
+  display: flex; align-items: center; gap: 10px;
+}
+.brand-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.compare-table .val-best {
+  color: var(--pine); font-weight: 700;
+}
+.compare-table .price-cell {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; color: var(--rust);
+}
+.table-shop-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 8px 16px; border-radius: 4px;
+  background: var(--rust); color: var(--white);
+  border: none; cursor: pointer;
+  transition: all 0.2s;
+}
+.table-shop-btn:hover { background: var(--rust-hover); }
+
+/* ── BUYING GUIDE CTA ── */
+.buying-guide {
+  padding: 60px 48px;
+  background: var(--forest);
+  display: flex; align-items: center;
+  gap: 48px; flex-wrap: wrap;
+}
+.buying-guide-text { flex: 1; min-width: 300px; }
+.buying-guide-text .section-label { color: var(--pine-soft); }
+.buying-guide-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; color: var(--fog);
+  letter-spacing: 1px; margin-bottom: 12px;
+}
+.buying-guide-text p {
+  font-size: 15px; color: var(--lichen);
+  line-height: 1.7; margin-bottom: 24px;
+}
+.guide-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 15px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 32px; border-radius: 4px;
+  background: var(--rust); color: var(--white);
+  border: none; cursor: pointer;
+  transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.guide-btn:hover { background: var(--rust-hover); transform: translateY(-2px); }
+.buying-guide-topics {
+  flex: 1; min-width: 300px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.guide-topic {
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  font-size: 14px; color: var(--lichen);
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.2s;
+}
+.guide-topic:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.1);
+}
+.guide-topic-icon { font-size: 20px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--forest); padding: 48px 48px 28px;
+  color: var(--fog);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-bottom {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  font-size: 13px; color: var(--lichen);
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-bottom a {
+  color: var(--lichen); text-decoration: none;
+  margin-left: 24px; transition: color 0.2s;
+}
+.footer-bottom a:hover { color: var(--fog); }
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .cat-hero { padding: 100px 20px 36px; }
+  .cat-hero-content { flex-direction: column; align-items: flex-start; }
+  .toolbar { padding: 16px 20px; }
+  .brand-strip { padding: 12px 20px; }
+  .products-section { padding: 24px 20px 60px; }
+  .product-grid { grid-template-columns: 1fr; }
+  .compare-section { padding: 48px 20px; }
+  .buying-guide { padding: 48px 20px; flex-direction: column; }
+  footer { padding: 36px 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    TRAILBOUND
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#" class="active-link">Gear</a>
+    <a href="#">Compare</a>
+    <a href="#">Blog</a>
+    <a href="#">Partner With Us</a>
+    <a href="#" class="nav-cta">Post a Listing</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ CATEGORY HERO ═══════════════ -->
+<div class="cat-hero">
+  <div class="breadcrumb">
+    <a href="#">Home</a><span class="sep">›</span>
+    <a href="#">Gear</a><span class="sep">›</span>
+    <span class="current">Roof Tents</span>
+  </div>
+  <div class="cat-hero-content">
+    <div class="cat-hero-text">
+      <h1>ROOF <span>TENTS</span></h1>
+      <p>Compare rooftop tents from the top overland brands. See real specs, user ratings, and pricing side by side to find the right tent for your rig and your budget.</p>
+    </div>
+    <div class="cat-stats">
+      <div class="cat-stat">
+        <div class="cat-stat-num">47</div>
+        <div class="cat-stat-label">Products</div>
+      </div>
+      <div class="cat-stat">
+        <div class="cat-stat-num">12</div>
+        <div class="cat-stat-label">Brands</div>
+      </div>
+      <div class="cat-stat">
+        <div class="cat-stat-num">4.3</div>
+        <div class="cat-stat-label">Avg Rating</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOOLBAR ═══════════════ -->
+<div class="toolbar">
+  <div class="filter-group">
+    <button class="filter-btn" onclick="this.classList.toggle('active')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4"/></svg>
+      Type
+    </button>
+    <button class="filter-btn" onclick="this.classList.toggle('active')">Sleeps</button>
+    <button class="filter-btn" onclick="this.classList.toggle('active')">Price Range</button>
+    <button class="filter-btn" onclick="this.classList.toggle('active')">Weight</button>
+    <button class="filter-btn" onclick="this.classList.toggle('active')">Setup Time</button>
+  </div>
+  <div style="display: flex; align-items: center; gap: 16px;">
+    <span class="result-count">Showing <strong>47</strong> products</span>
+    <select class="sort-select">
+      <option>Sort: Top Rated</option>
+      <option>Price: Low to High</option>
+      <option>Price: High to Low</option>
+      <option>Weight: Lightest</option>
+      <option>Newest</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-btn active" title="Grid">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+      </button>
+      <button class="view-btn" title="List">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="3" rx="1"/><rect x="1" y="7" width="14" height="3" rx="1"/><rect x="1" y="12" width="14" height="3" rx="1"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BRAND STRIP ═══════════════ -->
+<div class="brand-strip">
+  <span class="brand-strip-label">Brands:</span>
+  <span class="brand-chip active">All</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">iKamper</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Roofnest</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Front Runner</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">23Zero</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Thule</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Alu-Cab</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">GoFSR</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Body Armor</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Smittybilt</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Tuff Stuff</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">Cascadia Vehicle Tents</span>
+  <span class="brand-chip" onclick="toggleBrand(this)">OVS</span>
+</div>
+
+<!-- ═══════════════ PRODUCT GRID ═══════════════ -->
+<div class="products-section">
+  <div class="product-grid">
+
+    <!-- Card 1 — Editor's Pick -->
+    <div class="product-card editors-pick fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-1">⛺</div>
+        <div class="product-badges">
+          <span class="p-badge p-badge-pick">Editor's Pick</span>
+        </div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">iKamper</div>
+        <div class="product-name">Skycamp 3.0</div>
+        <div class="product-tagline">Hard-shell, king-size mattress, sleeps 4. Sets up in 60 seconds flat.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <span class="rating-num">4.8</span>
+          <span class="rating-count">(1,247 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Hardshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">4 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">145 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~1 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$4,299</span>
+            <span class="price-affiliate">via iKamper.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-2">⛺</div>
+        <div class="product-badges">
+          <span class="p-badge p-badge-popular">Popular</span>
+        </div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">Roofnest</div>
+        <div class="product-name">Falcon Pro</div>
+        <div class="product-tagline">Premium hard-shell with panoramic windows and a built-in LED light strip.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <span class="rating-num">4.7</span>
+          <span class="rating-count">(832 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Hardshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">2–3 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">155 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~1 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$3,895</span>
+            <span class="price-affiliate">via Roofnest.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-3">⛺</div>
+        <div class="product-badges">
+          <span class="p-badge p-badge-new">New</span>
+        </div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">Front Runner</div>
+        <div class="product-name">Roof Top Tent</div>
+        <div class="product-tagline">Durable ripstop canvas, aluminum frame. Proven on expeditions across Africa.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span></div>
+          <span class="rating-num">4.4</span>
+          <span class="rating-count">(508 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Softshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">2 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">110 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~5 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$1,795</span>
+            <span class="price-affiliate">via FrontRunner.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sponsored Ad Insert -->
+    <div class="ad-insert">
+      <div class="ad-insert-label">Sponsored</div>
+      <div class="ad-insert-box">Ad Space — In-Grid Placement (Partner Brand Feature)</div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-4">⛺</div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">23Zero</div>
+        <div class="product-name">Breezeway 72</div>
+        <div class="product-tagline">270-degree wrap-around awning, dual-density mattress, and crossbar compatible.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <span class="rating-num">4.6</span>
+          <span class="rating-count">(419 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Softshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">2–3 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">130 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~3 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$2,199</span>
+            <span class="price-affiliate">via 23Zero.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-5">⛺</div>
+        <div class="product-badges">
+          <span class="p-badge p-badge-sale">Sale</span>
+        </div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">Thule</div>
+        <div class="product-name">Tepui Explorer Kukenam 3</div>
+        <div class="product-tagline">Industry-standard softshell. Easy to mount, easy to use, fits most roof racks.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span></div>
+          <span class="rating-num">4.3</span>
+          <span class="rating-count">(1,105 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Softshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">3 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">120 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~5 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$1,499</span>
+            <span class="price-original">$1,849</span>
+            <span class="price-affiliate">via Thule.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-6">⛺</div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">Alu-Cab</div>
+        <div class="product-name">Gen 3.1 Expedition</div>
+        <div class="product-tagline">South African-built aluminum hard shell. The gold standard for expedition use.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <span class="rating-num">4.9</span>
+          <span class="rating-count">(326 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Hardshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">2 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">165 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~30 sec</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$5,495</span>
+            <span class="price-affiliate">via Alu-Cab.com</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7 — Budget Pick -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-7">⛺</div>
+        <div class="product-badges">
+          <span class="p-badge p-badge-popular">Best Value</span>
+        </div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">Smittybilt</div>
+        <div class="product-name">Overlander XL</div>
+        <div class="product-tagline">Best-selling budget tent. Solid build, generous size, includes mattress and ladder.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span></div>
+          <span class="rating-num">4.1</span>
+          <span class="rating-count">(2,380 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Softshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">3–4 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">135 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~8 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$1,149</span>
+            <span class="price-affiliate">via Amazon</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="product-card fade-up">
+      <div class="product-img">
+        <div class="product-img-bg tent-8">⛺</div>
+        <div class="compare-check" onclick="toggleCompare(this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">OVS (Overland Vehicle Systems)</div>
+        <div class="product-name">Bushveld II</div>
+        <div class="product-tagline">Hard-shell clamshell design with integrated crossbars and memory foam mattress.</div>
+        <div class="product-rating">
+          <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span></div>
+          <span class="rating-num">4.2</span>
+          <span class="rating-count">(613 reviews)</span>
+        </div>
+        <div class="product-specs">
+          <div class="spec-item"><span class="spec-label">Type</span><span class="spec-value">Hardshell</span></div>
+          <div class="spec-item"><span class="spec-label">Sleeps</span><span class="spec-value">2 People</span></div>
+          <div class="spec-item"><span class="spec-label">Weight</span><span class="spec-value">140 lbs</span></div>
+          <div class="spec-item"><span class="spec-label">Setup</span><span class="spec-value">~1 min</span></div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$2,699</span>
+            <span class="price-affiliate">via OVS</span>
+          </div>
+          <button class="shop-btn">Shop <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12L12 4M12 4H6M12 4v6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ COMPARISON TABLE ═══════════════ -->
+<div class="compare-section">
+  <div class="section-label">Quick Compare</div>
+  <div class="section-title">TOP PICKS SIDE BY SIDE</div>
+  <div class="section-sub">The five highest-rated roof tents across all brands, compared on the specs that matter.</div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type</th>
+          <th>Sleeps</th>
+          <th>Weight</th>
+          <th>Setup Time</th>
+          <th>Rating</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="brand-cell"><span class="brand-dot" style="background: var(--pine);"></span><strong>Alu-Cab</strong> Gen 3.1</div></td>
+          <td>Hardshell</td>
+          <td>2</td>
+          <td>165 lbs</td>
+          <td class="val-best">~30 sec</td>
+          <td class="val-best">4.9 ★</td>
+          <td class="price-cell">$5,495</td>
+          <td><button class="table-shop-btn">Shop</button></td>
+        </tr>
+        <tr>
+          <td><div class="brand-cell"><span class="brand-dot" style="background: var(--rust);"></span><strong>iKamper</strong> Skycamp 3.0</div></td>
+          <td>Hardshell</td>
+          <td class="val-best">4</td>
+          <td>145 lbs</td>
+          <td>~1 min</td>
+          <td>4.8 ★</td>
+          <td class="price-cell">$4,299</td>
+          <td><button class="table-shop-btn">Shop</button></td>
+        </tr>
+        <tr>
+          <td><div class="brand-cell"><span class="brand-dot" style="background: var(--gold);"></span><strong>Roofnest</strong> Falcon Pro</div></td>
+          <td>Hardshell</td>
+          <td>2–3</td>
+          <td>155 lbs</td>
+          <td>~1 min</td>
+          <td>4.7 ★</td>
+          <td class="price-cell">$3,895</td>
+          <td><button class="table-shop-btn">Shop</button></td>
+        </tr>
+        <tr>
+          <td><div class="brand-cell"><span class="brand-dot" style="background: #6B8E7B;"></span><strong>23Zero</strong> Breezeway 72</div></td>
+          <td>Softshell</td>
+          <td>2–3</td>
+          <td>130 lbs</td>
+          <td>~3 min</td>
+          <td>4.6 ★</td>
+          <td class="price-cell">$2,199</td>
+          <td><button class="table-shop-btn">Shop</button></td>
+        </tr>
+        <tr>
+          <td><div class="brand-cell"><span class="brand-dot" style="background: var(--lichen);"></span><strong>Smittybilt</strong> Overlander XL</div></td>
+          <td>Softshell</td>
+          <td>3–4</td>
+          <td class="val-best">135 lbs</td>
+          <td>~8 min</td>
+          <td>4.1 ★</td>
+          <td class="price-cell val-best">$1,149</td>
+          <td><button class="table-shop-btn">Shop</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ BUYING GUIDE CTA ═══════════════ -->
+<div class="buying-guide">
+  <div class="buying-guide-text">
+    <div class="section-label">From the Blog</div>
+    <h2>ROOF TENT BUYING GUIDE</h2>
+    <p>Not sure which roof tent is right for your rig? Our in-depth guide covers everything from weight limits and compatibility to hardshell vs. softshell trade-offs.</p>
+    <button class="guide-btn">Read the Full Guide <span>→</span></button>
+  </div>
+  <div class="buying-guide-topics">
+    <div class="guide-topic"><span class="guide-topic-icon">⚖️</span> Hardshell vs. Softshell</div>
+    <div class="guide-topic"><span class="guide-topic-icon">📐</span> Weight & Roof Load Limits</div>
+    <div class="guide-topic"><span class="guide-topic-icon">🌧️</span> Weatherproofing Ratings</div>
+    <div class="guide-topic"><span class="guide-topic-icon">🔧</span> Mounting & Compatibility</div>
+    <div class="guide-topic"><span class="guide-topic-icon">👥</span> Sizing for Couples vs. Families</div>
+    <div class="guide-topic"><span class="guide-topic-icon">💰</span> Budget vs. Premium Breakdown</div>
+  </div>
+</div>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 TrailBound. All rights reserved.</span>
+    <div>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Sitemap</a>
+      <a href="#">Partner With Us</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ FLOATING COMPARE BAR ═══════════════ -->
+<div class="compare-bar-float" id="compareBar" style="display: none;">
+  Compare Selected <span class="compare-badge" id="compareCount">0</span>
+</div>
+
+<script>
+let compareItems = 0;
+
+function toggleCompare(el) {
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) {
+    el.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2.5"><path d="M3 8l4 4 6-7"/></svg>';
+    compareItems++;
+  } else {
+    el.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>';
+    compareItems--;
+  }
+  const bar = document.getElementById('compareBar');
+  const count = document.getElementById('compareCount');
+  count.textContent = compareItems;
+  bar.style.display = compareItems > 0 ? 'flex' : 'none';
+}
+
+function toggleBrand(el) {
+  const allChip = document.querySelector('.brand-chip.active');
+  if (el === allChip) return;
+  if (allChip && allChip.textContent === 'All') allChip.classList.remove('active');
+  el.classList.toggle('active');
+  const actives = document.querySelectorAll('.brand-chip.active');
+  if (actives.length === 0) {
+    document.querySelector('.brand-chip').classList.add('active');
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
