@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mojave Road Run · May 9–12 · OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --water: #366ba5;
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none; transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px; font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* HERO */
+.hero {
+  margin-top: 72px;
+  background: var(--forest);
+  color: var(--white);
+  padding: 56px 48px 280px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 80% 20%, rgba(196,91,40,0.18) 0%, transparent 55%),
+    radial-gradient(circle at 15% 80%, rgba(61,107,79,0.18) 0%, transparent 60%);
+}
+.hero-inner {
+  max-width: 1280px; margin: 0 auto;
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 32px; align-items: end;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 12px;
+}
+.hero-eyebrow .breadcrumb { color: rgba(255,255,255,0.45); }
+.hero-eyebrow .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+.hero-eyebrow .breadcrumb a:hover { color: var(--white); }
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 88px; letter-spacing: 3px; line-height: 0.92;
+  max-width: 800px;
+}
+.hero-meta-row {
+  display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap;
+}
+.hero-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-meta svg { width: 16px; height: 16px; }
+.hero-meta strong { color: var(--white); }
+
+.hero-rsvp {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  padding: 28px 32px;
+  border-radius: 6px;
+  width: 320px;
+}
+.rsvp-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); margin-bottom: 6px;
+}
+.rsvp-spots {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 1.5px; line-height: 1;
+}
+.rsvp-spots strong { color: var(--rust); }
+.rsvp-bar {
+  height: 4px; background: rgba(255,255,255,0.1);
+  border-radius: 2px; margin-top: 14px; overflow: hidden;
+}
+.rsvp-bar-fill {
+  height: 100%; width: 75%;
+  background: linear-gradient(90deg, var(--pine), var(--rust));
+}
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 26px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+  width: auto;
+  padding: 11px 20px;
+}
+.btn-secondary:hover { border-color: var(--forest); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(255,255,255,0.3);
+  width: auto;
+  padding: 11px 20px;
+}
+.btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.rsvp-actions {
+  display: flex; gap: 8px; margin-top: 16px;
+}
+.rsvp-share {
+  flex-shrink: 0; padding: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--white); border-radius: 4px;
+  cursor: pointer;
+}
+.rsvp-share svg { width: 16px; height: 16px; display: block; }
+
+/* HOSTED-BY */
+.hosted-by {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 18px; padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.host-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #C45B28, #8a3a1a);
+  color: var(--white); font-weight: 700; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.host-name { color: var(--white); font-weight: 700; }
+
+/* MAP CARD floats over hero/content */
+.map-card {
+  max-width: 1280px;
+  margin: -220px auto 0;
+  padding: 0 48px;
+  position: relative;
+  z-index: 5;
+}
+.map-card-inner {
+  background: var(--white);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(28,43,31,0.18);
+  height: 380px;
+  position: relative;
+}
+.map-svg {
+  width: 100%; height: 100%; display: block;
+  background: linear-gradient(180deg, #d8dbcf 0%, #c2c8b5 60%, #a8b09a 100%);
+}
+.map-overlay {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 600;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.map-leg-row { display: flex; align-items: center; gap: 8px; color: var(--stone); }
+.map-leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+.map-leg-line { width: 16px; height: 2px; }
+.map-stats-bar {
+  position: absolute; bottom: 16px; left: 16px; right: 16px;
+  background: rgba(28,43,31,0.95);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 14px 22px;
+  display: grid; grid-template-columns: repeat(4, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+.ms-stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.15); }
+.ms-stat:last-of-type { border-right: none; }
+.ms-stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 1px; line-height: 1;
+}
+.ms-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  opacity: 0.65; margin-top: 4px;
+}
+.ms-cta {
+  background: var(--rust); color: var(--white);
+  padding: 10px 18px; border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* CONTENT GRID */
+.page {
+  max-width: 1280px;
+  margin: 56px auto 0;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+}
+@media (max-width: 980px) { .page { grid-template-columns: 1fr; } }
+
+.section {
+  margin-bottom: 56px;
+}
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: 2px;
+  color: var(--forest); line-height: 1; margin-top: 4px;
+}
+.section-action {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--pine); font-weight: 600;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.25s;
+}
+.section-action:hover { gap: 10px; color: var(--forest); }
+
+/* ABOUT */
+.about-body {
+  font-size: 16px; line-height: 1.7; color: var(--forest);
+}
+.about-body p + p { margin-top: 14px; }
+
+/* ITINERARY */
+.itinerary-list { display: flex; flex-direction: column; }
+.day {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+.day:first-child { padding-top: 0; }
+.day:last-child { border-bottom: none; }
+.day-marker {
+  border-right: 2px solid var(--rust);
+  padding-right: 24px;
+  text-align: right;
+}
+.day-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1;
+}
+.day-date {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 6px;
+}
+.day-content { padding-bottom: 4px; }
+.day-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.day-summary {
+  font-size: 14px; color: var(--stone);
+  margin-top: 6px; line-height: 1.5;
+}
+.day-segments { margin-top: 14px; }
+.segment {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.segment:last-child { border-bottom: none; }
+.seg-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  width: 64px; flex-shrink: 0; padding-top: 2px;
+}
+.seg-icon {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--mist);
+  color: var(--forest);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.seg-icon.camp { background: var(--gold-light); color: var(--gold); }
+.seg-icon.water { background: rgba(54,107,165,0.1); color: var(--water); }
+.seg-icon.gas { background: var(--pine-light); color: var(--pine); }
+.seg-icon.warning { background: var(--rust-light); color: var(--rust); }
+.seg-icon svg { width: 12px; height: 12px; }
+.seg-body { flex: 1; }
+.seg-title { font-weight: 600; font-size: 14px; color: var(--forest); }
+.seg-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.seg-tag {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.seg-tag.diff-easy { background: var(--pine-light); color: var(--pine); }
+.seg-tag.diff-mod { background: var(--gold-light); color: var(--gold); }
+.seg-tag.diff-hard { background: var(--rust-light); color: var(--rust); }
+
+/* REQUIREMENTS */
+.req-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (max-width: 700px) { .req-grid { grid-template-columns: 1fr; } }
+.req-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pine);
+  padding: 16px 20px;
+  border-radius: 4px;
+  display: flex; align-items: center; gap: 14px;
+}
+.req-item.warn { border-left-color: var(--rust); }
+.req-item.gold { border-left-color: var(--gold); }
+.req-icon {
+  width: 36px; height: 36px;
+  background: var(--mist);
+  color: var(--forest);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.req-icon svg { width: 16px; height: 16px; }
+.req-body { flex: 1; }
+.req-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.req-value {
+  font-weight: 600; font-size: 15px; color: var(--forest);
+  margin-top: 2px;
+}
+
+/* SAFETY ACK CALLOUT */
+.safety-callout {
+  background: linear-gradient(135deg, var(--forest) 0%, #233529 100%);
+  color: var(--white);
+  border-radius: 6px;
+  padding: 32px 36px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.safety-callout::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 90% 50%, rgba(196,91,40,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.safety-icon {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: rgba(196,91,40,0.18);
+  color: var(--rust);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.safety-icon svg { width: 28px; height: 28px; }
+.safety-text { position: relative; z-index: 1; }
+.safety-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1.5px; line-height: 1.1;
+}
+.safety-sub {
+  font-size: 14px; color: rgba(255,255,255,0.7);
+  margin-top: 4px; max-width: 480px;
+}
+.safety-cta { position: relative; z-index: 1; flex-shrink: 0; }
+
+/* ROSTER (right rail) */
+.aside { display: flex; flex-direction: column; gap: 28px; }
+.aside-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.aside-head {
+  background: var(--forest); color: var(--white);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 2px;
+}
+.aside-head-count {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; opacity: 0.7;
+}
+
+.attendees-list { padding: 4px 0; max-height: 480px; overflow-y: auto; }
+.attendee {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.attendee:last-child { border-bottom: none; }
+.att-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  color: var(--white); font-weight: 700; font-size: 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.att-avatar.rust { background: linear-gradient(135deg, #C45B28, #8a3a1a); }
+.att-avatar.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.att-avatar.gold { background: linear-gradient(135deg, #B8960C, #7a6308); }
+.att-info { flex: 1; min-width: 0; }
+.att-name {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+  display: flex; align-items: center; gap: 6px;
+}
+.role-chip {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 6px; border-radius: 2px;
+  background: var(--rust-light); color: var(--rust);
+}
+.role-chip.lead { background: var(--gold-light); color: var(--gold); }
+.role-chip.medic { background: rgba(54,107,165,0.1); color: var(--water); }
+.att-rig {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.att-status {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--pine);
+  flex-shrink: 0;
+}
+.att-status.warn { background: var(--gold); }
+.att-status.fail { background: var(--rust); }
+
+/* COMMS */
+.comms-list { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.comms-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.comms-row:last-child { border-bottom: none; }
+.comms-icon {
+  width: 28px; height: 28px;
+  background: var(--mist);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--forest);
+  flex-shrink: 0;
+}
+.comms-icon svg { width: 14px; height: 14px; }
+.comms-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+}
+.comms-value {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+  margin-top: 2px;
+}
+
+/* SPONSOR */
+.sponsor-card {
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+}
+.sponsor-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 12px;
+}
+.sponsor-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px; color: var(--forest); line-height: 1.1;
+}
+.sponsor-body { font-size: 13px; color: var(--stone); margin-top: 10px; line-height: 1.5; }
+.sponsor-cta {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700; text-decoration: none;
+}
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="breadcrumb"><a href="#">Trips</a> · <a href="#">Mojave Desert Overlanders</a> ·</span> Group Run
+      </div>
+      <h1 class="hero-title">MOJAVE ROAD<br>RUN</h1>
+      <div class="hero-meta-row">
+        <span class="hero-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <strong>May 9–12, 2026</strong> · 4 days
+        </span>
+        <span class="hero-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <strong>Mojave Desert</strong> · CA
+        </span>
+        <span class="hero-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18l5-9 4 6 3-3 6 6"/></svg>
+          <strong>Moderate</strong>
+        </span>
+        <span class="hero-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>
+          <strong>128.4 mi</strong>
+        </span>
+      </div>
+    </div>
+
+    <aside class="hero-rsvp">
+      <div class="rsvp-label">Spots Remaining</div>
+      <div class="rsvp-spots"><strong>3</strong> / 12</div>
+      <div class="rsvp-bar"><div class="rsvp-bar-fill"></div></div>
+      <div class="rsvp-actions">
+        <button class="btn btn-primary">RSVP Now</button>
+        <button class="rsvp-share" title="Share">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        </button>
+      </div>
+      <div class="hosted-by">
+        <div class="host-avatar">DR</div>
+        <div>
+          <div>Hosted By</div>
+          <div class="host-name">@desert_runner_4x4</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- MAP CARD -->
+<div class="map-card">
+  <div class="map-card-inner">
+    <svg class="map-svg" viewBox="0 0 1280 380" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="g" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(28,43,31,0.06)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="1280" height="380" fill="url(#g)"/>
+      <!-- terrain shading -->
+      <path d="M0 140 Q300 90 600 130 T1280 110 L1280 200 Q900 240 600 200 T0 220 Z" fill="rgba(138,145,129,0.4)"/>
+      <path d="M120 280 Q400 240 700 270 T1280 290 L1280 360 L0 360 L0 320 Z" fill="rgba(196,168,125,0.3)"/>
+      <!-- mountains -->
+      <g opacity="0.4" stroke="#1c2b1f" stroke-width="1.2" fill="none">
+        <path d="M180 160 L210 130 L240 160 Z"/>
+        <path d="M380 180 L420 140 L460 180 Z"/>
+        <path d="M820 150 L860 110 L900 150 Z"/>
+        <path d="M1040 175 L1080 135 L1120 175 Z"/>
+      </g>
+      <!-- existing trails faint -->
+      <g opacity="0.3" stroke="#3D6B4F" stroke-width="1.5" stroke-dasharray="4 4" fill="none">
+        <path d="M50 80 Q300 200 600 180 T1240 280"/>
+        <path d="M120 320 Q400 260 700 280 T1240 240"/>
+      </g>
+      <!-- ROUTE -->
+      <path d="M180 240 Q320 220 440 210 Q560 200 700 220 Q840 240 960 230 Q1060 220 1140 250"
+            fill="none" stroke="rgba(196,91,40,0.25)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M180 240 Q320 220 440 210 Q560 200 700 220 Q840 240 960 230 Q1060 220 1140 250"
+            fill="none" stroke="#C45B28" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- waypoints -->
+      <g transform="translate(180, 240)">
+        <circle r="14" fill="#3D6B4F" stroke="#fff" stroke-width="3"/>
+        <text y="5" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="13" fill="#fff">A</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#1c2b1f" letter-spacing="1">AVI CASINO</text>
+      </g>
+      <g transform="translate(440, 210)">
+        <circle r="13" fill="#fff" stroke="#1c2b1f" stroke-width="2.5"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#1c2b1f">B</text>
+        <text y="-20" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">FORT PIUTE</text>
+      </g>
+      <g transform="translate(700, 220)">
+        <circle r="14" fill="#fff" stroke="#B8960C" stroke-width="3"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#B8960C">C</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">MARL · NIGHT 1</text>
+      </g>
+      <g transform="translate(960, 230)">
+        <circle r="14" fill="#fff" stroke="#B8960C" stroke-width="3"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#B8960C">D</text>
+        <text y="32" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">SODA LAKE · NIGHT 2</text>
+      </g>
+      <g transform="translate(1140, 250)">
+        <circle r="14" fill="#C45B28" stroke="#fff" stroke-width="3"/>
+        <text y="5" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="13" fill="#fff">E</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#1c2b1f" letter-spacing="1">AFTON CANYON</text>
+      </g>
+    </svg>
+
+    <div class="map-overlay">
+      <div class="map-leg-row"><span class="map-leg-line" style="background: #C45B28"></span>This Run's Route</div>
+      <div class="map-leg-row"><span class="map-leg-dot" style="background: #B8960C"></span>Camp Site</div>
+      <div class="map-leg-row"><span class="map-leg-dot" style="background: #3D6B4F"></span>Start / Trailhead</div>
+    </div>
+
+    <div class="map-stats-bar">
+      <div class="ms-stat">
+        <div class="ms-stat-val">128.4</div>
+        <div class="ms-stat-label">Miles</div>
+      </div>
+      <div class="ms-stat">
+        <div class="ms-stat-val">5</div>
+        <div class="ms-stat-label">Waypoints</div>
+      </div>
+      <div class="ms-stat">
+        <div class="ms-stat-val">2</div>
+        <div class="ms-stat-label">Nights</div>
+      </div>
+      <div class="ms-stat">
+        <div class="ms-stat-val">8h 30m</div>
+        <div class="ms-stat-label">Drive Time</div>
+      </div>
+      <a href="#" class="ms-cta">
+        Open Full Map
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<section class="page">
+
+  <!-- LEFT -->
+  <main>
+
+    <!-- ABOUT -->
+    <div class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">About This Run</div>
+          <h2 class="section-title">THE TRIP</h2>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>Four days across the historic Mojave Road, the same wagon route used to cross the desert in the 1860s. We'll start at Avi Casino on the Colorado, cross the Piute Range, camp two nights at classic dispersed sites, and finish at Afton Canyon. This is a moderate run — sand, washboard, some rocky sections, but nothing technical. Stock 4WD with all-terrains and a recovery kit can handle it; built rigs will have an easier time.</p>
+        <p>We move as a group, lead and sweep stay on the radio, and we're never separated by more than the next ridge. Bring four days of water minimum (1.5 gal/person/day), full fuel out of Avi, and your sense of humor — there will be sand stuck in places you don't expect for the rest of the year.</p>
+      </div>
+    </div>
+
+    <!-- ITINERARY -->
+    <div class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">Day By Day</div>
+          <h2 class="section-title">ITINERARY</h2>
+        </div>
+        <a href="#" class="section-action">Download as PDF →</a>
+      </div>
+
+      <div class="itinerary-list">
+
+        <div class="day">
+          <div class="day-marker">
+            <div class="day-num">D1</div>
+            <div class="day-date">SAT · MAY 9</div>
+          </div>
+          <div class="day-content">
+            <h3 class="day-title">AVI CASINO → MARL SPRINGS</h3>
+            <div class="day-summary">Group convenes 7am at Avi. Driver briefing, radio check, airdown. Cross the Piute Range, lunch at Fort Piute, camp at Marl Springs.</div>
+            <div class="day-segments">
+              <div class="segment">
+                <div class="seg-time">7:00 AM</div>
+                <div class="seg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Group Meet · Driver Briefing</div>
+                  <div class="seg-meta">Avi Casino, Laughlin · top off fuel, airdown to 22 PSI</div>
+                </div>
+              </div>
+              <div class="segment">
+                <div class="seg-time">12:30 PM</div>
+                <div class="seg-icon water"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Fort Piute Spring · Lunch</div>
+                  <div class="seg-meta">Reliable spring, filter required <span class="seg-tag diff-easy">EASY</span></div>
+                </div>
+              </div>
+              <div class="segment">
+                <div class="seg-time">5:00 PM</div>
+                <div class="seg-icon camp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Marl Springs Camp · Night 1</div>
+                  <div class="seg-meta">Dispersed BLM · 200ft from spring · campfire OK <span class="seg-tag diff-mod">MODERATE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-marker">
+            <div class="day-num">D2</div>
+            <div class="day-date">SUN · MAY 10</div>
+          </div>
+          <div class="day-content">
+            <h3 class="day-title">MARL SPRINGS → SODA LAKE</h3>
+            <div class="day-summary">Long driving day across the Cinder Cones lava flow and Kelso Dunes. Soft sand sections — keep momentum and hold formation. Camp on the dry lakebed.</div>
+            <div class="day-segments">
+              <div class="segment">
+                <div class="seg-time">9:00 AM</div>
+                <div class="seg-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Cinder Cones Lava Field</div>
+                  <div class="seg-meta">Sharp rock — eyes on tire pressure <span class="seg-tag diff-mod">MODERATE</span></div>
+                </div>
+              </div>
+              <div class="segment">
+                <div class="seg-time">2:00 PM</div>
+                <div class="seg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Kelso Dunes Crossing</div>
+                  <div class="seg-meta">Soft sand · airdown to 18 PSI · momentum is your friend <span class="seg-tag diff-hard">HARD</span></div>
+                </div>
+              </div>
+              <div class="segment">
+                <div class="seg-time">5:30 PM</div>
+                <div class="seg-icon camp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg></div>
+                <div class="seg-body">
+                  <div class="seg-title">Soda Lake Crossing · Night 2</div>
+                  <div class="seg-meta">Dry lakebed dispersed · open star camping</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-marker">
+            <div class="day-num">D3</div>
+            <div class="day-date">MON · MAY 11</div>
+          </div>
+          <div class="day-content">
+            <h3 class="day-title">SODA LAKE LAYOVER</h3>
+            <div class="day-summary">Optional half-day side run to the Cima Dome, then layover at camp for repairs, swims, and hammock time.</div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-marker">
+            <div class="day-num">D4</div>
+            <div class="day-date">TUE · MAY 12</div>
+          </div>
+          <div class="day-content">
+            <h3 class="day-title">SODA LAKE → AFTON CANYON</h3>
+            <div class="day-summary">Final push to Afton Canyon, fuel and food at Baker, group photo at the canyon overlook, then we disperse.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REQUIREMENTS -->
+    <div class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">What You Need</div>
+          <h2 class="section-title">REQUIREMENTS</h2>
+        </div>
+        <a href="#" class="section-action">My Rig vs This Trip →</a>
+      </div>
+
+      <div class="req-grid">
+        <div class="req-item">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2a15 15 0 010 20"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Drivetrain</div>
+            <div class="req-value">4WD · Low Range Required</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Tires</div>
+            <div class="req-value">All-Terrain · 31"+</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18l9-15 9 15"/><path d="M3 18h18"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Ground Clearance</div>
+            <div class="req-value">9" Minimum</div>
+          </div>
+        </div>
+        <div class="req-item gold">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Recovery Kit</div>
+            <div class="req-value">Recovery Boards · Strap · Soft Shackles</div>
+          </div>
+        </div>
+        <div class="req-item gold">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Water</div>
+            <div class="req-value">6 Gal Minimum / Vehicle</div>
+          </div>
+        </div>
+        <div class="req-item warn">
+          <div class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/></svg></div>
+          <div class="req-body">
+            <div class="req-label">Comms</div>
+            <div class="req-value">GMRS or HAM Radio Required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAFETY -->
+    <div class="section">
+      <div class="safety-callout">
+        <div class="safety-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.5 10.5 8 12 4.5-1.5 8-6.5 8-12V6l-8-4z"/></svg>
+        </div>
+        <div class="safety-text">
+          <div class="safety-title">SAFETY BRIEFING REQUIRED</div>
+          <div class="safety-sub">Read the trip rules, communications protocol, and emergency procedures. You'll need to acknowledge before your RSVP is confirmed.</div>
+        </div>
+        <div class="safety-cta">
+          <a href="#" class="btn btn-primary" style="width: auto; padding: 12px 22px;">Read & Acknowledge</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ASIDE -->
+  <aside class="aside">
+
+    <div class="aside-card">
+      <div class="aside-head">
+        ATTENDEES
+        <span class="aside-head-count">9 GOING · 3 SPOTS LEFT</span>
+      </div>
+      <div class="attendees-list">
+
+        <div class="attendee">
+          <div class="att-avatar rust">DR</div>
+          <div class="att-info">
+            <div class="att-name">Marcus Reyes <span class="role-chip lead">Trail Lead</span></div>
+            <div class="att-rig">'18 Tacoma TRD · Built</div>
+          </div>
+          <span class="att-status" title="Eligible"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar tan">JM</div>
+          <div class="att-info">
+            <div class="att-name">Jay Mendez <span class="role-chip">Sweep</span></div>
+            <div class="att-rig">'21 4Runner Pro · Built</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar gold">SL</div>
+          <div class="att-info">
+            <div class="att-name">Sarah Liu <span class="role-chip medic">Medical Officer</span></div>
+            <div class="att-rig">'19 Wrangler Rubicon</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar">PW</div>
+          <div class="att-info">
+            <div class="att-name">Pat Weber</div>
+            <div class="att-rig">'92 FZJ80 Land Cruiser</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar rust">EN</div>
+          <div class="att-info">
+            <div class="att-name">Elena Navarro</div>
+            <div class="att-rig">'22 Bronco Sasquatch</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar tan">KZ</div>
+          <div class="att-info">
+            <div class="att-name">Kaz Bekov</div>
+            <div class="att-rig">'05 LX470 · Built</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar gold">SC</div>
+          <div class="att-info">
+            <div class="att-name">Steve Choi</div>
+            <div class="att-rig">'17 4Runner TRD</div>
+          </div>
+          <span class="att-status warn" title="Eligibility check pending"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar">RM</div>
+          <div class="att-info">
+            <div class="att-name">Riley Marsh</div>
+            <div class="att-rig">'20 Gladiator Mojave</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+        <div class="attendee">
+          <div class="att-avatar rust">TK</div>
+          <div class="att-info">
+            <div class="att-name">Tom Karras</div>
+            <div class="att-rig">'08 Tacoma TRD Off Road</div>
+          </div>
+          <span class="att-status"></span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="aside-card">
+      <div class="aside-head">COMMS & LOGISTICS</div>
+      <div class="comms-list">
+        <div class="comms-row">
+          <div class="comms-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/></svg>
+          </div>
+          <div>
+            <div class="comms-label">Primary Radio</div>
+            <div class="comms-value">GMRS · CH 16 · Tone 141.3</div>
+          </div>
+        </div>
+        <div class="comms-row">
+          <div class="comms-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div>
+            <div class="comms-label">Check-In Schedule</div>
+            <div class="comms-value">8 AM · 1 PM · 6 PM Daily</div>
+          </div>
+        </div>
+        <div class="comms-row">
+          <div class="comms-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <div class="comms-label">Nearest Hospital</div>
+            <div class="comms-value">Barstow Community · 48 mi</div>
+          </div>
+        </div>
+        <div class="comms-row">
+          <div class="comms-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+          </div>
+          <div>
+            <div class="comms-label">Emergency Contact</div>
+            <div class="comms-value">Trip Lead · GMRS or InReach</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sponsor-card">
+      <div class="sponsor-tag">SPONSORED · MIDLAND RADIO</div>
+      <div class="sponsor-title">GMRS RADIOS · 15% OFF</div>
+      <p class="sponsor-body">Don't show up without comms. Midland MXT575 GMRS, club discount with code <strong>MOJAVE15</strong>.</p>
+      <a href="#" class="sponsor-cta">Shop Midland →</a>
+    </div>
+
+  </aside>
+
+</section>
+
+<footer>
+  © 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-bg: rgba(196,91,40,0.12);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-bg: rgba(61,107,79,0.12);
+  --pine-border: rgba(61,107,79,0.2);
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --gold-bg: rgba(184,150,12,0.14);
+  --gold-border: rgba(184,150,12,0.25);
+  --water: #366ba5;
+  --water-bg: rgba(54,107,165,0.12);
+  --water-border: rgba(54,107,165,0.22);
+  --danger: #B53D1C;
+  --danger-bg: rgba(181,61,28,0.12);
+  --danger-border: rgba(181,61,28,0.22);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white); color: var(--forest);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+}
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ── PAGE HEADER ── */
+.page-head {
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 48px;
+}
+.page-head-inner {
+  max-width: 1480px; margin: 0 auto;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.ph-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700; margin-bottom: 4px;
+}
+.ph-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px; letter-spacing: 2px; line-height: 1; color: var(--forest);
+}
+.ph-sub {
+  font-size: 15px; color: var(--stone); margin-top: 10px; max-width: 520px;
+  line-height: 1.5;
+}
+.ph-actions { display: flex; gap: 10px; align-items: center; }
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 11px 20px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover { border-color: var(--forest); }
+.btn svg { width: 14px; height: 14px; }
+
+/* ── CONTROL STRIP ── */
+.controls {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 48px;
+  position: sticky; top: 72px; z-index: 50;
+}
+.controls-inner {
+  max-width: 1480px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.month-nav { display: flex; align-items: center; gap: 14px; }
+.nav-arrow {
+  width: 36px; height: 36px;
+  background: var(--white);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--forest); cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-arrow:hover { border-color: var(--forest); background: var(--mist); }
+.nav-arrow svg { width: 14px; height: 14px; }
+.month-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 2px; color: var(--forest);
+  line-height: 1; min-width: 220px;
+}
+.month-label .year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px; color: var(--stone); margin-left: 8px;
+  font-weight: 500; letter-spacing: 0;
+}
+.btn-today {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 8px 14px;
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px; cursor: pointer;
+}
+.btn-today:hover { border-color: var(--forest); }
+
+.view-toggle {
+  display: inline-flex;
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.vt-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent; color: var(--stone);
+  border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.vt-btn.active {
+  background: var(--white); color: var(--forest);
+  box-shadow: inset 0 -2px 0 var(--rust);
+}
+.vt-btn svg { width: 12px; height: 12px; }
+
+/* ── LAYOUT ── */
+.page {
+  max-width: 1480px; margin: 0 auto;
+  padding: 32px 48px 64px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 1024px) { .page { grid-template-columns: 1fr; } }
+
+/* ── FILTER RAIL ── */
+.filters {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  position: sticky; top: 156px;
+}
+.filter-block {
+  padding: 18px 18px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.filter-block:last-child { border-bottom: none; }
+.filter-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.filter-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 2px; color: var(--forest);
+}
+.filter-clear {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  background: none; border: none; cursor: pointer;
+}
+.filter-clear:hover { color: var(--rust); }
+.filter-block.head {
+  background: var(--forest); color: var(--white);
+  padding: 14px 18px;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.filter-block.head .filter-title { color: var(--white); font-size: 16px; }
+.filter-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: rgba(255,255,255,0.65);
+  background: rgba(255,255,255,0.1);
+  padding: 3px 8px; border-radius: 2px;
+  font-weight: 600;
+}
+
+.checkbox-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.checkbox.checked {
+  background: var(--rust); border-color: var(--rust); color: var(--white);
+}
+.checkbox.checked svg { display: block; width: 10px; height: 10px; }
+.checkbox svg { display: none; }
+.cb-label {
+  font-size: 13px; color: var(--forest); flex: 1;
+  display: flex; align-items: center; gap: 6px;
+}
+.cb-color {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.cb-color.easy { background: var(--pine); }
+.cb-color.moderate { background: var(--gold); }
+.cb-color.hard { background: var(--rust); }
+.cb-color.expert { background: var(--danger); }
+.cb-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--stone); font-weight: 500;
+}
+
+.field-input, .field-select {
+  width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--white); color: var(--forest);
+  outline: none;
+}
+.field-input:focus, .field-select:focus { border-color: var(--pine); }
+.search-input {
+  position: relative;
+}
+.search-input svg {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; color: var(--stone);
+  pointer-events: none;
+}
+.search-input input { padding-left: 34px; }
+
+/* ── CALENDAR ── */
+.cal {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.cal-dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--mist);
+  border-bottom: 1px solid var(--border-strong);
+}
+.cal-dow-cell {
+  padding: 10px 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.cal-dow-cell:last-child { border-right: none; }
+.cal-dow-cell.weekend { color: var(--rust); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(120px, 1fr);
+}
+.cal-cell {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 6px 8px;
+  position: relative;
+  display: flex; flex-direction: column;
+  gap: 3px;
+  min-height: 120px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cal-cell:hover { background: var(--mist); }
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell.other-month {
+  background: var(--mist);
+  color: var(--lichen);
+}
+.cal-cell.other-month:hover { background: var(--fog); }
+
+.cal-day {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 2px;
+  padding: 0 4px;
+}
+.day-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 700; color: var(--forest);
+  line-height: 1;
+}
+.cal-cell.other-month .day-num { color: var(--lichen); font-weight: 500; }
+.day-num.today {
+  background: var(--rust); color: var(--white);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.day-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--stone); font-weight: 500;
+}
+
+/* event chip on day */
+.chip {
+  display: block;
+  padding: 4px 7px;
+  border-radius: 3px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  border-left: 3px solid;
+  transition: all 0.15s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.chip:hover { transform: translateX(1px); }
+.chip-name { display: block; font-weight: 700; color: var(--forest); }
+.chip-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+  display: block; margin-top: 1px;
+}
+.chip.easy { background: var(--pine-bg); border-color: var(--pine); }
+.chip.moderate { background: var(--gold-bg); border-color: var(--gold); }
+.chip.hard { background: var(--rust-bg); border-color: var(--rust); }
+.chip.expert { background: var(--danger-bg); border-color: var(--danger); }
+.chip.meet { background: var(--water-bg); border-color: var(--water); }
+
+/* multi-day continuation */
+.chip.span-start { border-radius: 3px 0 0 3px; }
+.chip.span-mid { border-radius: 0; border-left: none; padding-left: 7px; }
+.chip.span-end { border-radius: 0 3px 3px 0; border-left: none; padding-left: 7px; }
+
+.more-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  text-decoration: none;
+  padding: 2px 7px;
+  margin-top: 2px;
+}
+.more-link:hover { color: var(--forest); }
+
+/* ── UPCOMING / FEATURED LIST ── */
+.upcoming {
+  margin-top: 32px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.upcoming-head {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.upcoming-head .panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px; color: var(--forest);
+}
+.upcoming-head .panel-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--stone); font-weight: 500;
+}
+.upcoming-list { display: flex; flex-direction: column; }
+.up-row {
+  display: grid;
+  grid-template-columns: 70px 1fr auto auto;
+  gap: 18px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  text-decoration: none; color: inherit;
+  transition: background 0.15s;
+}
+.up-row:last-child { border-bottom: none; }
+.up-row:hover { background: var(--mist); }
+.up-date {
+  text-align: center;
+  border-right: 2px solid var(--border-strong);
+  padding-right: 18px;
+}
+.up-date-month {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+}
+.up-date-day {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 1px; color: var(--forest); line-height: 1;
+}
+.up-date-dow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px; font-weight: 600;
+}
+.up-info { min-width: 0; }
+.up-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.up-name .diff-pill {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 2px;
+}
+.up-name .diff-pill.easy { background: var(--pine-bg); color: var(--pine); }
+.up-name .diff-pill.moderate { background: var(--gold-bg); color: var(--gold); }
+.up-name .diff-pill.hard { background: var(--rust-bg); color: var(--rust); }
+.up-name .diff-pill.expert { background: var(--danger-bg); color: var(--danger); }
+.up-name .diff-pill.meet { background: var(--water-bg); color: var(--water); }
+.up-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px; font-weight: 600;
+}
+.up-meta strong { color: var(--forest); }
+.up-meta .sep { margin: 0 8px; opacity: 0.4; }
+.up-spots {
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.up-spots-bar {
+  width: 80px; height: 4px;
+  background: var(--mist);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 6px auto 0;
+}
+.up-spots-fill { height: 100%; background: var(--rust); }
+.up-spots-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 600; color: var(--forest);
+}
+.up-spots-label {
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+  margin-top: 2px;
+}
+.up-rsvp {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--rust);
+  background: var(--white); color: var(--rust);
+  border-radius: 3px; cursor: pointer;
+}
+.up-rsvp:hover { background: var(--rust); color: var(--white); }
+.up-rsvp.full {
+  border-color: var(--border-strong);
+  color: var(--stone); cursor: not-allowed;
+}
+.up-rsvp.going {
+  background: var(--pine-bg); border-color: var(--pine); color: var(--pine);
+}
+
+/* legend at bottom */
+.cal-legend {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  padding: 14px 22px;
+  background: var(--mist);
+  border-top: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-swatch {
+  width: 14px; height: 10px; border-radius: 2px;
+  border-left: 3px solid;
+}
+.legend-swatch.easy { background: var(--pine-bg); border-color: var(--pine); }
+.legend-swatch.moderate { background: var(--gold-bg); border-color: var(--gold); }
+.legend-swatch.hard { background: var(--rust-bg); border-color: var(--rust); }
+.legend-swatch.expert { background: var(--danger-bg); border-color: var(--danger); }
+.legend-swatch.meet { background: var(--water-bg); border-color: var(--water); }
+
+footer {
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+
+@media (max-width: 768px) {
+  .ph-title { font-size: 38px; }
+  .cal-cell { min-height: 90px; }
+  .chip-meta { display: none; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .filters { position: relative; top: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="page-head-inner">
+    <div>
+      <div class="ph-eyebrow">Trips & Events</div>
+      <h1 class="ph-title">CALENDAR</h1>
+      <p class="ph-sub">Trail rides, group runs, and meetups across the country. Filter by region, club, difficulty, or vehicle requirement to find your next trip.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export ICS
+      </button>
+      <button class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Host an Event
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROL STRIP -->
+<div class="controls">
+  <div class="controls-inner">
+    <div class="month-nav">
+      <button class="nav-arrow" title="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="month-label">MAY <span class="year">2026</span></div>
+      <button class="nav-arrow" title="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <button class="btn-today">Today</button>
+    </div>
+
+    <div class="view-toggle">
+      <button class="vt-btn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M16 2v4M8 2v4"/></svg>
+        Month
+      </button>
+      <button class="vt-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/></svg>
+        Week
+      </button>
+      <button class="vt-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        List
+      </button>
+      <button class="vt-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Map
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<section class="page">
+
+  <!-- FILTERS -->
+  <aside class="filters">
+    <div class="filter-block head">
+      <div class="filter-title">FILTERS</div>
+      <span class="filter-count">3 active</span>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">SEARCH</div>
+      </div>
+      <div class="search-input">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="field-input" placeholder="Trail, location, club..." />
+      </div>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">DIFFICULTY</div>
+        <button class="filter-clear">Reset</button>
+      </div>
+      <label class="checkbox-row">
+        <span class="checkbox checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span class="cb-label"><span class="cb-color easy"></span> Easy</span>
+        <span class="cb-count">14</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span class="cb-label"><span class="cb-color moderate"></span> Moderate</span>
+        <span class="cb-count">22</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span class="cb-label"><span class="cb-color hard"></span> Hard</span>
+        <span class="cb-count">9</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label"><span class="cb-color expert"></span> Expert</span>
+        <span class="cb-count">3</span>
+      </label>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">REGION</div>
+      </div>
+      <select class="field-select">
+        <option>All Regions</option>
+        <option>Southwest (AZ, NM, NV, UT)</option>
+        <option>Pacific Northwest (WA, OR, ID)</option>
+        <option>Rockies (CO, MT, WY)</option>
+        <option>California</option>
+        <option>Great Plains</option>
+        <option>Southeast</option>
+        <option>Northeast</option>
+      </select>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">CLUB</div>
+      </div>
+      <select class="field-select">
+        <option>All Clubs</option>
+        <option>Sonoran Overlanders</option>
+        <option>Pacific Crest 4x4</option>
+        <option>Rocky Mtn Trail Co.</option>
+        <option>Mojave Off-Road</option>
+        <option>Cascade Overlanders</option>
+        <option>+ Browse all clubs</option>
+      </select>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">DURATION</div>
+      </div>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Day Trip</span>
+        <span class="cb-count">12</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span class="cb-label">Weekend (2–3 days)</span>
+        <span class="cb-count">19</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Multi-Day (4+ days)</span>
+        <span class="cb-count">9</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Single Evening / Meetup</span>
+        <span class="cb-count">8</span>
+      </label>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-head">
+        <div class="filter-title">RIG REQUIREMENT</div>
+      </div>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Stock-Friendly</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">High-Clearance 4WD</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Locker Required</span>
+      </label>
+      <label class="checkbox-row">
+        <span class="checkbox"></span>
+        <span class="cb-label">Match My Rig (Tacoma)</span>
+      </label>
+    </div>
+
+  </aside>
+
+  <!-- CALENDAR -->
+  <div>
+    <div class="cal">
+
+      <div class="cal-dow">
+        <div class="cal-dow-cell weekend">SUN</div>
+        <div class="cal-dow-cell">MON</div>
+        <div class="cal-dow-cell">TUE</div>
+        <div class="cal-dow-cell">WED</div>
+        <div class="cal-dow-cell">THU</div>
+        <div class="cal-dow-cell">FRI</div>
+        <div class="cal-dow-cell weekend">SAT</div>
+      </div>
+
+      <div class="cal-grid">
+
+        <!-- Week 1: Apr 26 → May 2 -->
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">26</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">27</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num today">28</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Phoenix Tech Night</span>
+            <span class="chip-meta">7 PM · 32 going</span>
+          </a>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">29</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">30</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">1</span><span class="day-meta">Fri</span></div>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Jawbone Sunset Run</span>
+            <span class="chip-meta">Mojave 4x4 · 8/12</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">2</span><span class="day-meta">Sat</span></div>
+          <a href="#" class="chip moderate">
+            <span class="chip-name">Bradshaw Loop</span>
+            <span class="chip-meta">Sonoran · 11/14</span>
+          </a>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Cave Creek Day</span>
+            <span class="chip-meta">7/10</span>
+          </a>
+        </div>
+
+        <!-- Week 2: May 3-9 -->
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">3</span><span class="day-meta">Sun</span></div>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Rampart Range</span>
+            <span class="chip-meta">Rocky Mtn · 9/15</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">4</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">5</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Denver Meetup</span>
+            <span class="chip-meta">6 PM · 24 going</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">6</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">7</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">8</span><span class="day-meta">Fri</span></div>
+        </div>
+        <div class="cal-cell" style="background: rgba(196,91,40,0.04);">
+          <div class="cal-day"><span class="day-num">9</span><span class="day-meta">Sat</span></div>
+          <a href="#" class="chip moderate span-start">
+            <span class="chip-name">Mojave Road Run</span>
+            <span class="chip-meta">Sonoran · 8/12 · YOU'RE GOING</span>
+          </a>
+          <a href="#" class="chip hard">
+            <span class="chip-name">Imogene Pass</span>
+            <span class="chip-meta">Telluride · 6/8</span>
+          </a>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Forest 525</span>
+            <span class="chip-meta">12/12 · Full</span>
+          </a>
+        </div>
+
+        <!-- Week 3: May 10-16 -->
+        <div class="cal-cell" style="background: rgba(196,91,40,0.04);">
+          <div class="cal-day"><span class="day-num">10</span><span class="day-meta">Sun</span></div>
+          <a href="#" class="chip moderate span-mid">
+            <span class="chip-name">Mojave Road Run · Day 2</span>
+          </a>
+        </div>
+        <div class="cal-cell" style="background: rgba(196,91,40,0.04);">
+          <div class="cal-day"><span class="day-num">11</span></div>
+          <a href="#" class="chip moderate span-mid">
+            <span class="chip-name">Mojave Road Run · Day 3</span>
+          </a>
+        </div>
+        <div class="cal-cell" style="background: rgba(196,91,40,0.04);">
+          <div class="cal-day"><span class="day-num">12</span></div>
+          <a href="#" class="chip moderate span-end">
+            <span class="chip-name">Mojave · Day 4 (End)</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">13</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">14</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Tacomas of AZ Mtg</span>
+            <span class="chip-meta">7 PM · 18 going</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">15</span><span class="day-meta">Fri</span></div>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Apache Trail</span>
+            <span class="chip-meta">Sonoran · 10/12</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">16</span><span class="day-meta">Sat</span></div>
+          <a href="#" class="chip hard">
+            <span class="chip-name">Holy Cross</span>
+            <span class="chip-meta">Rocky Mtn · 4/6</span>
+          </a>
+          <a href="#" class="chip moderate">
+            <span class="chip-name">Tillamook Run</span>
+            <span class="chip-meta">PNW · 8/10</span>
+          </a>
+          <a href="#" class="more-link">+2 more</a>
+        </div>
+
+        <!-- Week 4: May 17-23 -->
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">17</span><span class="day-meta">Sun</span></div>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Family Day · Sand Wash</span>
+            <span class="chip-meta">22/30</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">18</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">19</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Bay Area Coffee</span>
+            <span class="chip-meta">7 AM · 14 going</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">20</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">21</span><span class="day-meta">Thu</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">22</span><span class="day-meta">Fri</span></div>
+          <a href="#" class="chip moderate span-start">
+            <span class="chip-name">Cascade Lakes 4-Day</span>
+            <span class="chip-meta">PNW · 12/14</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">23</span><span class="day-meta">Sat</span></div>
+          <a href="#" class="chip moderate span-mid">
+            <span class="chip-name">Cascade Lakes · Day 2</span>
+          </a>
+          <a href="#" class="chip expert">
+            <span class="chip-name">Black Bear Pass</span>
+            <span class="chip-meta">Rocky Mtn · 4/4 · Full</span>
+          </a>
+        </div>
+
+        <!-- Week 5: May 24-30 -->
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">24</span><span class="day-meta">Sun</span></div>
+          <a href="#" class="chip moderate span-mid">
+            <span class="chip-name">Cascade Lakes · Day 3</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">25</span></div>
+          <a href="#" class="chip moderate span-end">
+            <span class="chip-name">Cascade Lakes · Day 4</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">26</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">27</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">28</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Tucson Wrench Night</span>
+            <span class="chip-meta">6 PM · 22 going</span>
+          </a>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">29</span><span class="day-meta">Fri</span></div>
+        </div>
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">30</span><span class="day-meta">Sat</span></div>
+          <a href="#" class="chip easy">
+            <span class="chip-name">Black Canyon</span>
+            <span class="chip-meta">Sonoran · 9/14</span>
+          </a>
+          <a href="#" class="chip hard">
+            <span class="chip-name">Pritchett Canyon</span>
+            <span class="chip-meta">Moab · 5/6</span>
+          </a>
+        </div>
+
+        <!-- Week 6: May 31 -> Jun 6 -->
+        <div class="cal-cell">
+          <div class="cal-day"><span class="day-num">31</span><span class="day-meta">Sun</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">1</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">2</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">3</span></div>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">4</span></div>
+          <a href="#" class="chip meet">
+            <span class="chip-name">Overland Expo Prep</span>
+            <span class="chip-meta">7 PM</span>
+          </a>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">5</span></div>
+          <a href="#" class="chip easy span-start">
+            <span class="chip-name">Overland Expo West</span>
+            <span class="chip-meta">Flagstaff · Day 1</span>
+          </a>
+        </div>
+        <div class="cal-cell other-month">
+          <div class="cal-day"><span class="day-num">6</span></div>
+          <a href="#" class="chip easy span-mid">
+            <span class="chip-name">Overland Expo · Day 2</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="cal-legend">
+        <div class="legend-item"><span class="legend-swatch easy"></span> Easy</div>
+        <div class="legend-item"><span class="legend-swatch moderate"></span> Moderate</div>
+        <div class="legend-item"><span class="legend-swatch hard"></span> Hard</div>
+        <div class="legend-item"><span class="legend-swatch expert"></span> Expert</div>
+        <div class="legend-item"><span class="legend-swatch meet"></span> Meet-up</div>
+      </div>
+    </div>
+
+    <!-- UPCOMING -->
+    <div class="upcoming">
+      <div class="upcoming-head">
+        <div class="panel-title">UPCOMING · YOUR RSVPS</div>
+        <span class="panel-sub">// 3 events on your calendar</span>
+      </div>
+      <div class="upcoming-list">
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">MAY</div>
+            <div class="up-date-day">9</div>
+            <div class="up-date-dow">SAT · 4 days</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              MOJAVE ROAD RUN
+              <span class="diff-pill moderate">Moderate</span>
+            </div>
+            <div class="up-meta">
+              <strong>Sonoran Overlanders</strong>
+              <span class="sep">/</span>
+              4 days · 138 mi
+              <span class="sep">/</span>
+              Avi Casino → Afton Canyon
+              <span class="sep">/</span>
+              You're <strong>#3 in line</strong>
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">8/12</div>
+            <div class="up-spots-bar"><div class="up-spots-fill" style="width: 67%"></div></div>
+            <div class="up-spots-label">Filled</div>
+          </div>
+          <button class="up-rsvp going">✓ Going</button>
+        </a>
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">MAY</div>
+            <div class="up-date-day">14</div>
+            <div class="up-date-dow">THU · 7 PM</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              TACOMAS OF AZ · MONTHLY MEET
+              <span class="diff-pill meet">Meet-up</span>
+            </div>
+            <div class="up-meta">
+              <strong>Sonoran Overlanders</strong>
+              <span class="sep">/</span>
+              The Yard · Phoenix
+              <span class="sep">/</span>
+              Bring a build update
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">18</div>
+            <div class="up-spots-label">Going</div>
+          </div>
+          <button class="up-rsvp going">✓ Going</button>
+        </a>
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">JUN</div>
+            <div class="up-date-day">14</div>
+            <div class="up-date-dow">SUN · 47 days</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              COYOTE BUTTES LOOP
+              <span class="diff-pill hard">Hard</span>
+            </div>
+            <div class="up-meta">
+              <strong>Sonoran Overlanders</strong>
+              <span class="sep">/</span>
+              3 days · 92 mi
+              <span class="sep">/</span>
+              Permit required
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">5/8</div>
+            <div class="up-spots-bar"><div class="up-spots-fill" style="width: 63%"></div></div>
+            <div class="up-spots-label">Filled</div>
+          </div>
+          <button class="up-rsvp going">✓ Going</button>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- DISCOVERY: nearby + matched -->
+    <div class="upcoming">
+      <div class="upcoming-head">
+        <div class="panel-title">SUGGESTED FOR YOU</div>
+        <span class="panel-sub">// based on your rig & past trips</span>
+      </div>
+      <div class="upcoming-list">
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">MAY</div>
+            <div class="up-date-day">15</div>
+            <div class="up-date-dow">FRI · 8 days</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              APACHE TRAIL
+              <span class="diff-pill easy">Easy</span>
+            </div>
+            <div class="up-meta">
+              <strong>Sonoran Overlanders</strong>
+              <span class="sep">/</span>
+              Day trip · 42 mi
+              <span class="sep">/</span>
+              <strong>2 hrs from you</strong>
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">10/12</div>
+            <div class="up-spots-bar"><div class="up-spots-fill" style="width: 83%"></div></div>
+            <div class="up-spots-label">Filled</div>
+          </div>
+          <button class="up-rsvp">RSVP</button>
+        </a>
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">MAY</div>
+            <div class="up-date-day">16</div>
+            <div class="up-date-dow">SAT · 9 days</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              HOLY CROSS
+              <span class="diff-pill hard">Hard</span>
+            </div>
+            <div class="up-meta">
+              <strong>Rocky Mtn Trail Co.</strong>
+              <span class="sep">/</span>
+              Day trip · 14 mi
+              <span class="sep">/</span>
+              Locker recommended
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">4/6</div>
+            <div class="up-spots-bar"><div class="up-spots-fill" style="width: 67%"></div></div>
+            <div class="up-spots-label">Filled</div>
+          </div>
+          <button class="up-rsvp">RSVP</button>
+        </a>
+
+        <a href="#" class="up-row">
+          <div class="up-date">
+            <div class="up-date-month">MAY</div>
+            <div class="up-date-day">22</div>
+            <div class="up-date-dow">FRI · 15 days</div>
+          </div>
+          <div class="up-info">
+            <div class="up-name">
+              CASCADE LAKES 4-DAY
+              <span class="diff-pill moderate">Moderate</span>
+            </div>
+            <div class="up-meta">
+              <strong>Cascade Overlanders</strong>
+              <span class="sep">/</span>
+              4 days · 186 mi
+              <span class="sep">/</span>
+              <strong>Match: your rig fits</strong>
+            </div>
+          </div>
+          <div class="up-spots">
+            <div class="up-spots-num">12/14</div>
+            <div class="up-spots-bar"><div class="up-spots-fill" style="width: 86%"></div></div>
+            <div class="up-spots-label">Filled</div>
+          </div>
+          <button class="up-rsvp">RSVP</button>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>© 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED</footer>
+
+</body>
+</html>

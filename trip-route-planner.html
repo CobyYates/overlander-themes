@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route Planner — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --pine-soft: #4A7D5E;
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --water: #366ba5;
+  --water-light: rgba(54,107,165,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  padding: 24px 48px;
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.page-header-inner {
+  max-width: 1600px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 32px; flex-wrap: wrap;
+}
+.ph-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 4px;
+}
+.ph-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 2px; line-height: 1; color: var(--forest);
+}
+.ph-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 11px 20px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover { border-color: var(--forest); }
+.btn svg { width: 14px; height: 14px; }
+
+/* ── PLANNER LAYOUT ── */
+.planner {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  min-height: 0; /* lets the children scroll properly */
+}
+@media (max-width: 980px) {
+  .planner { grid-template-columns: 1fr; }
+  .planner-sidebar { max-height: 60vh; }
+  #map { height: 60vh; }
+}
+
+/* ── SIDEBAR ── */
+.planner-sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sb-section {
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-section.scroll-area {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 0;
+}
+
+.field-block { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field-block:last-child { margin-bottom: 0; }
+.field-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.field-input, .field-select, .field-textarea {
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--white);
+  color: var(--forest);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.field-input:focus, .field-select:focus, .field-textarea:focus { border-color: var(--pine); }
+.field-textarea { resize: vertical; min-height: 60px; font-family: inherit; }
+.trip-name-input {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1.5px;
+  color: var(--forest);
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 0 0 8px 0;
+  border-bottom: 2px solid var(--border);
+  outline: none;
+  margin-bottom: 16px;
+}
+.trip-name-input:focus { border-bottom-color: var(--rust); }
+
+.field-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+
+/* WAYPOINT LIST HEAD */
+.wp-head {
+  padding: 18px 24px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+  position: sticky; top: 0; z-index: 5;
+}
+.wp-head-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 2px; color: var(--forest);
+}
+.wp-head-count {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; color: var(--stone); font-weight: 600;
+  margin-left: 8px;
+}
+.btn-add {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 7px 12px;
+  border: 1px solid var(--rust);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--rust);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: all 0.2s;
+}
+.btn-add:hover { background: var(--rust); color: var(--white); }
+.btn-add.active { background: var(--rust); color: var(--white); }
+.btn-add svg { width: 11px; height: 11px; }
+
+/* WAYPOINT EMPTY */
+.wp-empty {
+  padding: 40px 28px;
+  text-align: center;
+}
+.wp-empty-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--mist);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--stone);
+}
+.wp-empty-icon svg { width: 26px; height: 26px; }
+.wp-empty-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1.5px; color: var(--forest);
+  margin-bottom: 6px;
+}
+.wp-empty-body {
+  font-size: 13px; color: var(--stone); line-height: 1.5;
+  max-width: 240px; margin: 0 auto;
+}
+
+/* WAYPOINT ROWS */
+.wp-list { padding: 8px 0; }
+.wp-row {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+.wp-row:hover { background: var(--mist); }
+.wp-row.active {
+  background: var(--rust-light);
+  border-left: 3px solid var(--rust);
+  padding-left: 21px;
+}
+.wp-row-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.wp-letter {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  background: var(--white);
+  border: 2px solid var(--forest);
+  color: var(--forest);
+  flex-shrink: 0;
+}
+.wp-letter.start { background: var(--pine); border-color: var(--pine); color: var(--white); }
+.wp-letter.end { background: var(--rust); border-color: var(--rust); color: var(--white); }
+.wp-letter.camp { background: var(--white); border-color: var(--gold); color: var(--gold); }
+.wp-letter.gas { background: var(--white); border-color: var(--pine); color: var(--pine); }
+.wp-letter.water { background: var(--white); border-color: var(--water); color: var(--water); }
+.wp-letter.hazard { background: var(--white); border-color: var(--rust); color: var(--rust); }
+.wp-name {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.wp-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.wp-icon-btn {
+  width: 24px; height: 24px;
+  border: none; background: transparent;
+  color: var(--stone);
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.wp-icon-btn:hover { background: var(--white); color: var(--forest); }
+.wp-icon-btn.delete:hover { color: var(--rust); }
+.wp-icon-btn svg { width: 13px; height: 13px; }
+
+.wp-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); padding-left: 34px;
+}
+.wp-meta strong { color: var(--forest); font-weight: 700; }
+
+.wp-detail {
+  padding: 12px 24px 14px 58px;
+  background: var(--mist);
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.wp-row.active + .wp-detail { display: block; }
+.wp-detail .field-block { margin-bottom: 10px; }
+.wp-detail .field-label { font-size: 10px; }
+.wp-detail .field-input,
+.wp-detail .field-select,
+.wp-detail .field-textarea {
+  font-size: 13px; padding: 8px 10px;
+}
+
+/* ── MAP ── */
+.map-wrap {
+  position: relative;
+  background: var(--mist);
+}
+#map {
+  width: 100%; height: 100%;
+  background: #d8dbcf;
+}
+
+/* layer switcher */
+.layer-switch {
+  position: absolute;
+  top: 16px; right: 16px;
+  z-index: 500;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column;
+}
+.layer-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 10px 14px;
+  background: var(--white);
+  color: var(--stone);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  min-width: 110px;
+  display: flex; align-items: center; gap: 8px;
+}
+.layer-btn:last-child { border-bottom: none; }
+.layer-btn:hover { background: var(--mist); color: var(--forest); }
+.layer-btn.active { background: var(--forest); color: var(--white); }
+.layer-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* add-mode banner */
+.add-banner {
+  position: absolute;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  background: var(--rust);
+  color: var(--white);
+  padding: 10px 18px;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(196,91,40,0.3);
+  display: none;
+  align-items: center; gap: 8px;
+  cursor: pointer;
+}
+.add-banner.visible { display: inline-flex; }
+.add-banner svg { width: 14px; height: 14px; }
+
+/* stats bar */
+.map-stats {
+  position: absolute;
+  bottom: 16px; left: 16px; right: 16px;
+  z-index: 500;
+  background: rgba(28,43,31,0.95);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 12px 22px;
+  display: flex; gap: 24px;
+  align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  pointer-events: none;
+}
+.map-stat {
+  display: flex; flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  padding-right: 24px;
+}
+.map-stat:last-child { border-right: none; padding-right: 0; }
+.map-stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1px; line-height: 1;
+}
+.map-stat-label {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  opacity: 0.65; margin-top: 4px;
+}
+.map-stats .spacer { flex: 1; }
+.map-stats .stat-note {
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  opacity: 0.55; max-width: 220px; line-height: 1.3;
+}
+
+/* mode hint when add-mode is on — change cursor on map */
+.map-wrap.adding #map { cursor: crosshair; }
+
+/* leaflet marker custom */
+.wp-marker-html {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--forest);
+  color: var(--forest);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: transform 0.15s;
+}
+.wp-marker-html.start { background: var(--pine); border-color: var(--pine); color: var(--white); }
+.wp-marker-html.end { background: var(--rust); border-color: var(--rust); color: var(--white); }
+.wp-marker-html.camp { border-color: var(--gold); color: var(--gold); }
+.wp-marker-html.gas { border-color: var(--pine); color: var(--pine); }
+.wp-marker-html.water { border-color: var(--water); color: var(--water); }
+.wp-marker-html.hazard { border-color: var(--rust); color: var(--rust); }
+.wp-marker-html.viewpoint { border-color: var(--lichen); color: var(--lichen); }
+.wp-marker-html.is-active { transform: scale(1.25); z-index: 1000; }
+
+/* leaflet popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  color: var(--forest);
+  min-width: 180px;
+}
+.leaflet-popup-content strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 1px;
+  display: block; margin-bottom: 4px;
+}
+.popup-coords {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--stone);
+  margin-top: 6px;
+}
+
+/* small-screen tweaks */
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .page-header { padding: 16px 20px; }
+  .ph-title { font-size: 28px; }
+  .map-stats { gap: 14px; padding: 10px 14px; }
+  .map-stat { padding-right: 14px; }
+  .map-stats .stat-note { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="ph-eyebrow">Trip Planner</div>
+      <h1 class="ph-title">PLOT YOUR ROUTE</h1>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-secondary" id="btn-clear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        Clear
+      </button>
+      <button class="btn btn-secondary" id="btn-fit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V3h4M21 7V3h-4M3 17v4h4M21 17v4h-4"/></svg>
+        Fit Route
+      </button>
+      <button class="btn btn-secondary" id="btn-export">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export GPX
+      </button>
+      <button class="btn btn-primary" id="btn-save">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        Save Trip
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PLANNER -->
+<section class="planner">
+
+  <!-- SIDEBAR -->
+  <aside class="planner-sidebar">
+
+    <!-- TRIP META -->
+    <div class="sb-section">
+      <input type="text" class="trip-name-input" id="trip-name" value="UNTITLED TRIP" />
+      <div class="field-row">
+        <div class="field-block">
+          <label class="field-label">Start Date</label>
+          <input type="date" class="field-input" id="trip-start" />
+        </div>
+        <div class="field-block">
+          <label class="field-label">End Date</label>
+          <input type="date" class="field-input" id="trip-end" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-block">
+          <label class="field-label">Difficulty</label>
+          <select class="field-select" id="trip-difficulty">
+            <option value="easy">Easy</option>
+            <option value="moderate" selected>Moderate</option>
+            <option value="hard">Hard</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+        <div class="field-block">
+          <label class="field-label">Visibility</label>
+          <select class="field-select" id="trip-visibility">
+            <option value="private" selected>Private</option>
+            <option value="friends">Friends Only</option>
+            <option value="public">Public</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- WAYPOINT HEAD -->
+    <div class="wp-head">
+      <div>
+        <span class="wp-head-title">WAYPOINTS</span>
+        <span class="wp-head-count" id="wp-count">0</span>
+      </div>
+      <button class="btn-add" id="btn-add-mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+        Add
+      </button>
+    </div>
+
+    <!-- WAYPOINT LIST -->
+    <div class="sb-section scroll-area">
+      <div id="wp-list">
+        <div class="wp-empty">
+          <div class="wp-empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="wp-empty-title">START PLOTTING</div>
+          <div class="wp-empty-body">Tap <strong>+ Add</strong> above, then click anywhere on the map to drop your first waypoint.</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAP -->
+  <div class="map-wrap" id="map-wrap">
+    <div id="map"></div>
+
+    <!-- Layer Switcher -->
+    <div class="layer-switch">
+      <button class="layer-btn active" data-layer="osm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+        Street
+      </button>
+      <button class="layer-btn" data-layer="topo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18l5-9 4 6 3-3 6 6"/><circle cx="12" cy="6" r="2"/></svg>
+        Topo
+      </button>
+      <button class="layer-btn" data-layer="sat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12c4-3 14-3 18 0M3 12c4 3 14 3 18 0M12 3c-3 4-3 14 0 18M12 3c3 4 3 14 0 18"/></svg>
+        Satellite
+      </button>
+    </div>
+
+    <!-- Add Mode Banner -->
+    <div class="add-banner" id="add-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Click the map to drop a waypoint · Tap to cancel
+    </div>
+
+    <!-- Stats Overlay -->
+    <div class="map-stats">
+      <div class="map-stat">
+        <div class="map-stat-value" id="stat-distance">0.0</div>
+        <div class="map-stat-label">Miles · Planned</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-value" id="stat-points">0</div>
+        <div class="map-stat-label">Waypoints</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-value" id="stat-camps">0</div>
+        <div class="map-stat-label">Camp Sites</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="stat-note">Straight-line distance between waypoints. Actual trail mileage will vary.</div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── STATE ─────────────────────────────────────────────────────
+const state = {
+  waypoints: [],     // { id, lat, lng, name, type, notes }
+  activeId: null,
+  addMode: false,
+};
+
+const TYPES = {
+  generic:   { label: 'Generic',   color: 'var(--forest)' },
+  camp:      { label: 'Camp',      color: 'var(--gold)' },
+  gas:       { label: 'Gas / Fuel',color: 'var(--pine)' },
+  water:     { label: 'Water',     color: 'var(--water)' },
+  viewpoint: { label: 'Viewpoint', color: 'var(--lichen)' },
+  hazard:    { label: 'Hazard',    color: 'var(--rust)' },
+};
+
+// ─── MAP INIT ──────────────────────────────────────────────────
+const map = L.map('map', {
+  zoomControl: true,
+  attributionControl: true,
+}).setView([35.05, -115.7], 9);
+
+// Move zoom control to bottom-right so layer switcher has top-right
+map.zoomControl.setPosition('bottomright');
+
+// Tile layers
+const layers = {
+  osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }),
+  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: 'Map data: © <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors, SRTM | Style: © <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
+  }),
+  sat: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Tiles © <a href="https://www.esri.com">Esri</a> — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+  })
+};
+
+let currentLayer = layers.osm;
+currentLayer.addTo(map);
+
+// Layer switch
+document.querySelectorAll('.layer-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.layer;
+    if (!layers[key] || currentLayer === layers[key]) return;
+    map.removeLayer(currentLayer);
+    currentLayer = layers[key];
+    currentLayer.addTo(map);
+    document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Layer groups for dynamic content
+const markersLayer = L.layerGroup().addTo(map);
+let routeLine = null;
+let markerById = {};
+
+// ─── WAYPOINT FUNCTIONS ────────────────────────────────────────
+function letterFor(i) {
+  // A, B, C ... Z, AA, AB ...
+  if (i < 26) return String.fromCharCode(65 + i);
+  return String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26));
+}
+
+function classFor(i, total, type) {
+  if (i === 0) return 'start';
+  if (i === total - 1 && total > 1) return 'end';
+  return type || 'generic';
+}
+
+function addWaypoint(latlng) {
+  const wp = {
+    id: 'wp_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+    lat: +latlng.lat.toFixed(6),
+    lng: +latlng.lng.toFixed(6),
+    name: 'Waypoint ' + (state.waypoints.length + 1),
+    type: 'generic',
+    notes: ''
+  };
+  state.waypoints.push(wp);
+  state.activeId = wp.id;
+  render();
+}
+
+function updateWaypoint(id, patch) {
+  const wp = state.waypoints.find(w => w.id === id);
+  if (!wp) return;
+  Object.assign(wp, patch);
+  render();
+}
+
+function deleteWaypoint(id) {
+  state.waypoints = state.waypoints.filter(w => w.id !== id);
+  if (state.activeId === id) state.activeId = null;
+  render();
+}
+
+function moveWaypoint(id, dir) {
+  const idx = state.waypoints.findIndex(w => w.id === id);
+  if (idx === -1) return;
+  const target = idx + dir;
+  if (target < 0 || target >= state.waypoints.length) return;
+  const [wp] = state.waypoints.splice(idx, 1);
+  state.waypoints.splice(target, 0, wp);
+  render();
+}
+
+function selectWaypoint(id) {
+  state.activeId = state.activeId === id ? null : id;
+  render();
+  if (state.activeId) {
+    const wp = state.waypoints.find(w => w.id === id);
+    if (wp) map.panTo([wp.lat, wp.lng]);
+    // scroll sidebar row into view
+    const row = document.querySelector(`.wp-row[data-id="${id}"]`);
+    if (row) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
+// ─── DISTANCE ──────────────────────────────────────────────────
+function totalDistanceMeters() {
+  let total = 0;
+  for (let i = 1; i < state.waypoints.length; i++) {
+    const a = state.waypoints[i - 1];
+    const b = state.waypoints[i];
+    total += L.latLng(a.lat, a.lng).distanceTo([b.lat, b.lng]);
+  }
+  return total;
+}
+
+// ─── RENDER ────────────────────────────────────────────────────
+function render() {
+  renderMap();
+  renderSidebar();
+  renderStats();
+}
+
+function renderMap() {
+  markersLayer.clearLayers();
+  markerById = {};
+
+  state.waypoints.forEach((wp, i) => {
+    const cls = classFor(i, state.waypoints.length, wp.type);
+    const isActive = wp.id === state.activeId;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="wp-marker-html ${cls} ${isActive ? 'is-active' : ''}">${letterFor(i)}</div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    const m = L.marker([wp.lat, wp.lng], { icon, draggable: true });
+    m.bindPopup(`<strong>${escapeHTML(wp.name)}</strong>${wp.notes ? '<div>' + escapeHTML(wp.notes).replace(/\n/g, '<br>') + '</div>' : ''}<div class="popup-coords">${wp.lat.toFixed(5)}, ${wp.lng.toFixed(5)}</div>`);
+    m.on('click', () => selectWaypoint(wp.id));
+    m.on('dragend', e => {
+      const ll = e.target.getLatLng();
+      updateWaypoint(wp.id, { lat: +ll.lat.toFixed(6), lng: +ll.lng.toFixed(6) });
+    });
+    m.addTo(markersLayer);
+    markerById[wp.id] = m;
+  });
+
+  // route line
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+  if (state.waypoints.length >= 2) {
+    const latlngs = state.waypoints.map(w => [w.lat, w.lng]);
+    // shadow
+    const shadow = L.polyline(latlngs, {
+      color: '#C45B28',
+      weight: 10,
+      opacity: 0.18,
+      lineCap: 'round',
+      lineJoin: 'round'
+    });
+    const main = L.polyline(latlngs, {
+      color: '#C45B28',
+      weight: 4,
+      opacity: 0.95,
+      lineCap: 'round',
+      lineJoin: 'round'
+    });
+    routeLine = L.layerGroup([shadow, main]).addTo(map);
+  }
+}
+
+function renderSidebar() {
+  const list = document.getElementById('wp-list');
+  document.getElementById('wp-count').textContent = `· ${state.waypoints.length}`;
+
+  if (state.waypoints.length === 0) {
+    list.innerHTML = `
+      <div class="wp-empty">
+        <div class="wp-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="wp-empty-title">START PLOTTING</div>
+        <div class="wp-empty-body">Tap <strong>+ Add</strong> above, then click anywhere on the map to drop your first waypoint.</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = state.waypoints.map((wp, i) => {
+    const cls = classFor(i, state.waypoints.length, wp.type);
+    const isActive = wp.id === state.activeId;
+    return `
+      <div class="wp-row ${isActive ? 'active' : ''}" data-id="${wp.id}">
+        <div class="wp-row-head">
+          <div class="wp-letter ${cls}">${letterFor(i)}</div>
+          <div class="wp-name">${escapeHTML(wp.name)}</div>
+          <div class="wp-actions">
+            <button class="wp-icon-btn" data-action="up" data-id="${wp.id}" title="Move up" ${i === 0 ? 'disabled style="opacity:.3"' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+            </button>
+            <button class="wp-icon-btn" data-action="down" data-id="${wp.id}" title="Move down" ${i === state.waypoints.length - 1 ? 'disabled style="opacity:.3"' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <button class="wp-icon-btn delete" data-action="delete" data-id="${wp.id}" title="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="wp-meta">
+          <strong>${TYPES[wp.type]?.label || 'Generic'}</strong> · ${wp.lat.toFixed(4)}, ${wp.lng.toFixed(4)}
+        </div>
+      </div>
+      ${isActive ? `
+        <div class="wp-detail">
+          <div class="field-block">
+            <label class="field-label">Name</label>
+            <input class="field-input" data-edit="name" data-id="${wp.id}" value="${escapeAttr(wp.name)}" />
+          </div>
+          <div class="field-block">
+            <label class="field-label">Type</label>
+            <select class="field-select" data-edit="type" data-id="${wp.id}">
+              ${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${wp.type === k ? 'selected' : ''}>${v.label}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field-block">
+            <label class="field-label">Notes</label>
+            <textarea class="field-textarea" data-edit="notes" data-id="${wp.id}" placeholder="Trail conditions, water access, hazards, anything worth remembering...">${escapeHTML(wp.notes)}</textarea>
+          </div>
+        </div>
+      ` : ''}
+    `;
+  }).join('');
+}
+
+function renderStats() {
+  const meters = totalDistanceMeters();
+  const miles = meters / 1609.344;
+  document.getElementById('stat-distance').textContent = miles.toFixed(1);
+  document.getElementById('stat-points').textContent = state.waypoints.length;
+  document.getElementById('stat-camps').textContent = state.waypoints.filter(w => w.type === 'camp').length;
+}
+
+// ─── EVENT WIRING ──────────────────────────────────────────────
+const mapWrap = document.getElementById('map-wrap');
+const addBtn = document.getElementById('btn-add-mode');
+const addBanner = document.getElementById('add-banner');
+
+function setAddMode(on) {
+  state.addMode = on;
+  mapWrap.classList.toggle('adding', on);
+  addBtn.classList.toggle('active', on);
+  addBanner.classList.toggle('visible', on);
+}
+
+addBtn.addEventListener('click', () => setAddMode(!state.addMode));
+addBanner.addEventListener('click', () => setAddMode(false));
+
+map.on('click', e => {
+  if (!state.addMode) return;
+  addWaypoint(e.latlng);
+  // stay in add mode for sequential placement; toggle off if you'd rather single-add
+});
+
+// Sidebar interactions (delegated)
+document.getElementById('wp-list').addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]');
+  if (btn) {
+    e.stopPropagation();
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'delete') deleteWaypoint(id);
+    else if (btn.dataset.action === 'up') moveWaypoint(id, -1);
+    else if (btn.dataset.action === 'down') moveWaypoint(id, 1);
+    return;
+  }
+  const row = e.target.closest('.wp-row');
+  if (row) selectWaypoint(row.dataset.id);
+});
+
+document.getElementById('wp-list').addEventListener('input', e => {
+  const el = e.target.closest('[data-edit]');
+  if (!el) return;
+  const id = el.dataset.id;
+  const field = el.dataset.edit;
+  const wp = state.waypoints.find(w => w.id === id);
+  if (!wp) return;
+  wp[field] = el.value;
+  // Targeted re-render: only redo map + stats; don't re-render sidebar (it'd lose focus)
+  renderMap();
+  renderStats();
+  // also update name visible above the detail panel
+  const nameDisplay = document.querySelector(`.wp-row[data-id="${id}"] .wp-name`);
+  if (nameDisplay && field === 'name') nameDisplay.textContent = wp.name;
+});
+
+// Toolbar actions
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (state.waypoints.length === 0) return;
+  if (!confirm('Clear all waypoints? This cannot be undone.')) return;
+  state.waypoints = [];
+  state.activeId = null;
+  render();
+});
+
+document.getElementById('btn-fit').addEventListener('click', () => {
+  if (state.waypoints.length === 0) return;
+  const bounds = L.latLngBounds(state.waypoints.map(w => [w.lat, w.lng]));
+  map.fitBounds(bounds, { padding: [60, 60], maxZoom: 14 });
+});
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  if (state.waypoints.length === 0) {
+    alert('Add at least one waypoint before exporting.');
+    return;
+  }
+  const tripName = (document.getElementById('trip-name').value || 'Untitled Trip').trim();
+  exportGPX(tripName);
+});
+
+document.getElementById('btn-save').addEventListener('click', () => {
+  // Hook this up to your backend / Storyblok / etc.
+  const payload = {
+    name: document.getElementById('trip-name').value,
+    startDate: document.getElementById('trip-start').value,
+    endDate: document.getElementById('trip-end').value,
+    difficulty: document.getElementById('trip-difficulty').value,
+    visibility: document.getElementById('trip-visibility').value,
+    waypoints: state.waypoints,
+    distanceMeters: totalDistanceMeters(),
+  };
+  console.log('TRIP SAVE PAYLOAD →', payload);
+  alert('Trip saved (check console for the payload — wire this up to your CMS).');
+});
+
+// ─── GPX EXPORT ────────────────────────────────────────────────
+function exportGPX(tripName) {
+  const safeName = tripName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'trip';
+  const wptXml = state.waypoints.map(w => `
+  <wpt lat="${w.lat}" lon="${w.lng}">
+    <name>${escapeXML(w.name)}</name>
+    <type>${escapeXML(w.type)}</type>
+    ${w.notes ? `<desc>${escapeXML(w.notes)}</desc>` : ''}
+  </wpt>`).join('');
+
+  const trkpts = state.waypoints.map(w => `      <trkpt lat="${w.lat}" lon="${w.lng}"><name>${escapeXML(w.name)}</name></trkpt>`).join('\n');
+  const gpx = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="OverlandHub Trip Planner" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>${escapeXML(tripName)}</name>
+    <time>${new Date().toISOString()}</time>
+  </metadata>${wptXml}
+  <trk>
+    <name>${escapeXML(tripName)}</name>
+    <trkseg>
+${trkpts}
+    </trkseg>
+  </trk>
+</gpx>`;
+
+  const blob = new Blob([gpx], { type: 'application/gpx+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${safeName}.gpx`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ─── HELPERS ───────────────────────────────────────────────────
+function escapeHTML(s) {
+  return String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+function escapeAttr(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function escapeXML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
+}
+
+// ─── DEMO STARTER ──────────────────────────────────────────────
+// Drop a couple of example waypoints so the page is interesting on first load.
+// Comment these out for a true blank slate.
+[
+  { lat: 35.135, lng: -114.97, name: 'Avi Casino Trailhead', type: 'gas', notes: 'Last reliable fuel before the desert. Top off here.' },
+  { lat: 35.14, lng: -115.31, name: 'Fort Piute Spring', type: 'water', notes: 'Reliable spring most years. Filter before drinking.' },
+  { lat: 35.12, lng: -115.62, name: 'Marl Springs Camp', type: 'camp', notes: 'Dispersed camping on BLM land. Stay 200ft from the spring.' },
+].forEach(w => {
+  state.waypoints.push({
+    id: 'wp_' + Math.random().toString(36).slice(2),
+    ...w
+  });
+});
+render();
+
+</script>
+</body>
+</html>

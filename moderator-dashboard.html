@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moderator Dashboard · Mojave Road Run · OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --water: #366ba5;
+  --water-light: rgba(54,107,165,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--mist);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+}
+.nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px; font-size: 13px !important;
+}
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* DASHBOARD HEADER */
+.dash-head {
+  background: var(--forest);
+  color: var(--white);
+  padding: 32px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.dash-head::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 90% 0%, rgba(196,91,40,0.18) 0%, transparent 60%);
+}
+.dash-head-inner {
+  max-width: 1440px; margin: 0 auto;
+  position: relative;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 24px; flex-wrap: wrap;
+}
+.dash-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.mod-badge {
+  background: var(--rust);
+  color: var(--white);
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+.dash-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px; letter-spacing: 2px; line-height: 1;
+}
+.dash-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.65); margin-top: 8px;
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.dash-meta strong { color: var(--white); }
+.dash-actions { display: flex; gap: 10px; }
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 11px 20px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.05); border-color: var(--white); }
+.btn svg { width: 14px; height: 14px; }
+
+/* TAB BAR */
+.tab-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+}
+.tab-bar-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; gap: 0; align-items: stretch;
+  overflow-x: auto;
+}
+.tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 18px 22px;
+  background: transparent;
+  border: none;
+  color: var(--stone);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+.tab.active { color: var(--forest); }
+.tab.active::after {
+  content: ''; position: absolute;
+  left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--rust);
+}
+.tab-count {
+  display: inline-block;
+  background: var(--mist);
+  color: var(--stone);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  margin-left: 6px;
+  letter-spacing: 0.5px;
+}
+.tab-count.warn { background: var(--rust-light); color: var(--rust); }
+.tab-count.gold { background: var(--gold-light); color: var(--gold); }
+
+/* PAGE */
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 48px 80px;
+}
+
+/* OVERVIEW STRIP */
+.overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 900px) { .overview { grid-template-columns: repeat(2, 1fr); } }
+
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card.alert {
+  border-left: 3px solid var(--rust);
+}
+.kpi-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.kpi-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1;
+  margin-top: 8px;
+}
+.kpi-sub {
+  font-size: 13px; color: var(--stone);
+  margin-top: 6px;
+}
+.kpi-sub strong { color: var(--pine); font-weight: 700; }
+.kpi-sub.warn strong { color: var(--rust); }
+.kpi-progress {
+  height: 4px; background: var(--mist);
+  border-radius: 2px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.kpi-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--pine), var(--rust));
+}
+
+/* SKILL GAP ALERT */
+.alert-strip {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: 6px;
+  padding: 20px 28px;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.alert-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.alert-icon svg { width: 22px; height: 22px; }
+.alert-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest);
+}
+.alert-body {
+  font-size: 14px; color: var(--stone); margin-top: 4px;
+}
+.alert-body strong { color: var(--forest); }
+
+/* DASH GRID — main + side */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+@media (max-width: 1100px) { .dash-grid { grid-template-columns: 1fr; } }
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.card-head {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.card-title-block { display: flex; align-items: center; gap: 12px; }
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1;
+}
+.card-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.card-actions { display: flex; gap: 8px; }
+.btn-sm {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 7px 12px;
+  background: transparent;
+  color: var(--forest);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-sm:hover { border-color: var(--forest); }
+.btn-sm.primary { background: var(--rust); color: var(--white); border-color: var(--rust); }
+.btn-sm.primary:hover { background: var(--rust-hover); }
+.btn-sm svg { width: 11px; height: 11px; }
+
+/* ROSTER TABLE */
+.roster-table { width: 100%; border-collapse: collapse; }
+.roster-table th {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+}
+.roster-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: middle;
+}
+.roster-table tr:last-child td { border-bottom: none; }
+.roster-table tr:hover { background: var(--mist); }
+
+.roster-name {
+  display: flex; align-items: center; gap: 10px;
+}
+.r-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  color: var(--white); font-weight: 700; font-size: 11px;
+  font-family: 'Barlow Condensed', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.r-avatar.rust { background: linear-gradient(135deg, #C45B28, #8a3a1a); }
+.r-avatar.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.r-avatar.gold { background: linear-gradient(135deg, #B8960C, #7a6308); }
+.r-name-block { display: flex; flex-direction: column; min-width: 0; }
+.r-name { font-weight: 600; color: var(--forest); }
+.r-handle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; color: var(--stone);
+}
+
+.r-rig { font-size: 13px; color: var(--forest); }
+.r-rig-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+
+.skill-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.skill-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 2px;
+  background: var(--pine-light);
+  color: var(--pine);
+}
+.skill-pill.gold { background: var(--gold-light); color: var(--gold); }
+.skill-pill.water { background: var(--water-light); color: var(--water); }
+
+/* eligibility */
+.elig {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+.elig.pass { background: var(--pine-light); color: var(--pine); }
+.elig.warn { background: var(--gold-light); color: var(--gold); }
+.elig.fail { background: var(--rust-light); color: var(--rust); }
+.elig svg { width: 11px; height: 11px; }
+
+/* role select */
+.role-select {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 5px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--forest);
+  outline: none;
+  cursor: pointer;
+}
+.role-select.lead { background: var(--gold-light); color: var(--gold); border-color: var(--gold); }
+.role-select.medic { background: var(--water-light); color: var(--water); border-color: var(--water); }
+.role-select.recovery { background: var(--rust-light); color: var(--rust); border-color: var(--rust); }
+
+.r-actions { display: flex; gap: 4px; }
+.icon-btn {
+  width: 28px; height: 28px;
+  background: transparent; border: none;
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--stone); cursor: pointer;
+}
+.icon-btn:hover { background: var(--mist); color: var(--forest); }
+.icon-btn svg { width: 14px; height: 14px; }
+
+/* SKILL COVERAGE */
+.coverage-list {
+  padding: 16px 24px 22px;
+}
+.coverage-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.coverage-row:last-child { border-bottom: none; }
+.cov-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cov-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 600; color: var(--forest);
+}
+.cov-status {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+}
+.cov-status.ok { color: var(--pine); }
+.cov-status.warn { color: var(--gold); }
+.cov-status.fail { color: var(--rust); }
+.cov-bar {
+  height: 6px; background: var(--mist);
+  border-radius: 3px; overflow: hidden;
+}
+.cov-bar-fill {
+  height: 100%;
+  background: var(--pine);
+  border-radius: 3px;
+}
+.cov-bar-fill.warn { background: var(--gold); }
+.cov-bar-fill.fail { background: var(--rust); }
+
+/* SAFETY ACK */
+.safety-list { padding: 4px 0; }
+.safety-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.safety-row:last-child { border-bottom: none; }
+.safety-name { flex: 1; font-size: 14px; color: var(--forest); }
+.safety-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; color: var(--stone);
+}
+.safety-icon {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.safety-icon.ok { background: var(--pine-light); color: var(--pine); }
+.safety-icon.pending { background: var(--mist); color: var(--stone); }
+.safety-icon svg { width: 13px; height: 13px; }
+
+/* COMMS */
+.comms-grid {
+  padding: 18px 24px 22px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.comms-block {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 14px;
+  background: var(--mist);
+  border-radius: 4px;
+}
+.comms-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.comms-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1px;
+  color: var(--forest);
+}
+
+/* ACTIVITY */
+.activity-list { padding: 4px 0; }
+.activity-item {
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.activity-item:last-child { border-bottom: none; }
+.act-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--pine-light); color: var(--pine);
+  flex-shrink: 0;
+}
+.act-icon.rust { background: var(--rust-light); color: var(--rust); }
+.act-icon.gold { background: var(--gold-light); color: var(--gold); }
+.act-icon svg { width: 12px; height: 12px; }
+.act-text { flex: 1; font-size: 13px; color: var(--forest); line-height: 1.4; }
+.act-text strong { font-weight: 700; }
+.act-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+
+footer {
+  margin-top: 60px;
+  padding: 24px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">DR</div>
+  </div>
+</nav>
+
+<!-- DASH HEADER -->
+<header class="dash-head">
+  <div class="dash-head-inner">
+    <div>
+      <div class="dash-eyebrow">
+        <span class="mod-badge">MODERATOR</span>
+        Trip Dashboard · Mojave Desert Overlanders
+      </div>
+      <h1 class="dash-title">MOJAVE ROAD RUN</h1>
+      <div class="dash-meta">
+        <span><strong>May 9–12, 2026</strong></span>
+        <span><strong>9</strong> RSVP'd · <strong>3</strong> spots open</span>
+        <span>Published <strong>14 days ago</strong></span>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <a href="#" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Event
+      </a>
+      <a href="#" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Message Group
+      </a>
+      <a href="#" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5v14"/></svg>
+        Add Attendee
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab active">Overview</button>
+    <button class="tab">Roster <span class="tab-count">9</span></button>
+    <button class="tab">Itinerary</button>
+    <button class="tab">Safety <span class="tab-count warn">2 pending</span></button>
+    <button class="tab">Comms</button>
+    <button class="tab">Files</button>
+    <button class="tab">Settings</button>
+  </div>
+</div>
+
+<!-- PAGE -->
+<section class="page">
+
+  <!-- OVERVIEW KPIs -->
+  <div class="overview">
+    <div class="kpi-card">
+      <div class="kpi-label">RSVPs</div>
+      <div class="kpi-value">9 / 12</div>
+      <div class="kpi-sub"><strong>3 spots</strong> remaining</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill" style="width: 75%;"></div></div>
+    </div>
+    <div class="kpi-card alert">
+      <div class="kpi-label">Eligibility Flags</div>
+      <div class="kpi-value">1</div>
+      <div class="kpi-sub warn"><strong>1 attendee</strong> below requirements</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Safety Briefing</div>
+      <div class="kpi-value">7 / 9</div>
+      <div class="kpi-sub"><strong>2 pending</strong> acknowledgment</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill" style="width: 78%;"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Roles Assigned</div>
+      <div class="kpi-value">3 / 5</div>
+      <div class="kpi-sub"><strong>Recovery Lead, Camp Coordinator</strong> open</div>
+    </div>
+  </div>
+
+  <!-- ALERT -->
+  <div class="alert-strip">
+    <div class="alert-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
+    </div>
+    <div>
+      <div class="alert-title">SKILL GAP DETECTED</div>
+      <div class="alert-body">No <strong>Recovery Specialist</strong> on this trip yet, and your <strong>Camp Coordinator</strong> role is still open. Marcus Reyes and Pat Weber both have recovery vouches — consider asking one of them.</div>
+    </div>
+    <div>
+      <a href="#" class="btn btn-primary">Assign Roles</a>
+    </div>
+  </div>
+
+  <!-- DASH GRID -->
+  <div class="dash-grid">
+
+    <!-- LEFT: ROSTER -->
+    <div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-block">
+            <h2 class="card-title">RSVP ROSTER</h2>
+            <span class="card-sub">9 confirmed</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Export CSV
+            </button>
+            <button class="btn-sm primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5v14"/></svg>
+              Add
+            </button>
+          </div>
+        </div>
+
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th>Member · Rig</th>
+              <th>Skills</th>
+              <th>Eligibility</th>
+              <th>Role</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar rust">DR</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Marcus Reyes</span>
+                    <span class="r-handle">@desert_runner_4x4</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'18 Tacoma TRD <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Built · 35s · Lockers</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Recovery</span>
+                  <span class="skill-pill water">First Aid</span>
+                  <span class="skill-pill gold">Trail Lead</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select lead"><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option><option>—</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn" title="Message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar tan">JM</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Jay Mendez</span>
+                    <span class="r-handle">@jaymachine</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'21 4Runner Pro <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Built · 33s · Rear Locker</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Recovery</span>
+                  <span class="skill-pill">Comms</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>Sweep</option><option>Trail Lead</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option><option>—</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar gold">SL</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Sarah Liu</span>
+                    <span class="r-handle">@sarahmd</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'19 Wrangler Rubicon <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Stock · 33s</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill water">Wilderness EMT</span>
+                  <span class="skill-pill">Comms</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select medic"><option>Medical</option><option>Trail Lead</option><option>Sweep</option><option>Recovery</option><option>Camp Coord</option><option>—</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar">PW</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Pat Weber</span>
+                    <span class="r-handle">@pinewest</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'92 FZJ80 Land Cruiser <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Built · Lockers F/R · 33s</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Recovery</span>
+                  <span class="skill-pill">Mech</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar rust">EN</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Elena Navarro</span>
+                    <span class="r-handle">@elnav</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'22 Bronco Sasquatch <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Stock · 35s · Locker R</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill water">First Aid</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar tan">KZ</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Kaz Bekov</span>
+                    <span class="r-handle">@kazimir</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'05 LX470 <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Built · 33s · Sliders</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Recovery</span>
+                  <span class="skill-pill">Comms</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar gold">SC</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Steve Choi</span>
+                    <span class="r-handle">@silvercurve</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'17 4Runner TRD <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Stock · 30" tires</span></div>
+              </td>
+              <td><div class="skill-pills"><span class="skill-pill">New</span></div></td>
+              <td><span class="elig warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>Tire Size Below 31"</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar">RM</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Riley Marsh</span>
+                    <span class="r-handle">@rilesm</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'20 Gladiator Mojave <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Mild · 33s</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Comms</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="roster-name">
+                  <div class="r-avatar rust">TK</div>
+                  <div class="r-name-block">
+                    <span class="r-name">Tom Karras</span>
+                    <span class="r-handle">@tomk</span>
+                  </div>
+                </div>
+                <div class="r-rig" style="margin-top: 6px;">'08 Tacoma TRD Off Road <span class="r-rig-sub" style="display: inline; margin-left: 4px;">· Mild · 32s</span></div>
+              </td>
+              <td>
+                <div class="skill-pills">
+                  <span class="skill-pill">Mech</span>
+                </div>
+              </td>
+              <td><span class="elig pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pass</span></td>
+              <td><select class="role-select"><option>—</option><option>Trail Lead</option><option>Sweep</option><option>Medical</option><option>Recovery</option><option>Camp Coord</option></select></td>
+              <td><div class="r-actions">
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+                <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SAFETY ACK -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-block">
+            <h2 class="card-title">SAFETY BRIEFING</h2>
+            <span class="card-sub">7 acknowledged · 2 pending</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn-sm primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Remind Pending
+            </button>
+          </div>
+        </div>
+        <div class="safety-list">
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Marcus Reyes</div>
+            <div class="safety-time">Apr 15 · 9:42 AM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Jay Mendez</div>
+            <div class="safety-time">Apr 16 · 11:08 AM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Sarah Liu</div>
+            <div class="safety-time">Apr 17 · 6:14 PM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Pat Weber</div>
+            <div class="safety-time">Apr 18 · 8:22 AM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Elena Navarro</div>
+            <div class="safety-time">Apr 19 · 2:55 PM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Kaz Bekov</div>
+            <div class="safety-time">Apr 22 · 10:30 AM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="safety-name">Tom Karras</div>
+            <div class="safety-time">Apr 24 · 7:50 AM</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="safety-name">Steve Choi <span style="color: var(--gold); font-family: 'Barlow Condensed'; font-size: 11px; letter-spacing: 1.5px; margin-left: 6px;">PENDING · 4 DAYS</span></div>
+            <div class="safety-time">Reminded Apr 24</div>
+          </div>
+          <div class="safety-row">
+            <div class="safety-icon pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="safety-name">Riley Marsh <span style="color: var(--gold); font-family: 'Barlow Condensed'; font-size: 11px; letter-spacing: 1.5px; margin-left: 6px;">PENDING · 2 DAYS</span></div>
+            <div class="safety-time">Not yet reminded</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SIDEBAR -->
+    <div>
+
+      <!-- COVERAGE -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-block">
+            <h2 class="card-title">SKILL COVERAGE</h2>
+          </div>
+        </div>
+        <div class="coverage-list">
+          <div class="coverage-row">
+            <div class="cov-head">
+              <span class="cov-name">Recovery Specialist</span>
+              <span class="cov-status ok">3 / 1</span>
+            </div>
+            <div class="cov-bar"><div class="cov-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="coverage-row">
+            <div class="cov-head">
+              <span class="cov-name">Medical (First Aid+)</span>
+              <span class="cov-status ok">3 / 1</span>
+            </div>
+            <div class="cov-bar"><div class="cov-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="coverage-row">
+            <div class="cov-head">
+              <span class="cov-name">Communications</span>
+              <span class="cov-status ok">4 / 2</span>
+            </div>
+            <div class="cov-bar"><div class="cov-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="coverage-row">
+            <div class="cov-head">
+              <span class="cov-name">Mechanic / Wrench</span>
+              <span class="cov-status warn">2 / 2</span>
+            </div>
+            <div class="cov-bar"><div class="cov-bar-fill warn" style="width: 100%;"></div></div>
+          </div>
+          <div class="coverage-row">
+            <div class="cov-head">
+              <span class="cov-name">Wilderness Navigation</span>
+              <span class="cov-status fail">0 / 1</span>
+            </div>
+            <div class="cov-bar"><div class="cov-bar-fill fail" style="width: 0%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMS -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-block">
+            <h2 class="card-title">COMMS PLAN</h2>
+          </div>
+          <div class="card-actions">
+            <button class="btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+          </div>
+        </div>
+        <div class="comms-grid">
+          <div class="comms-block">
+            <span class="comms-label">Primary</span>
+            <span class="comms-val">GMRS · CH 16</span>
+          </div>
+          <div class="comms-block">
+            <span class="comms-label">Tone</span>
+            <span class="comms-val">141.3 Hz</span>
+          </div>
+          <div class="comms-block">
+            <span class="comms-label">Backup</span>
+            <span class="comms-val">HAM · 146.52</span>
+          </div>
+          <div class="comms-block">
+            <span class="comms-label">Check-In</span>
+            <span class="comms-val">8 / 13 / 18</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-block">
+            <h2 class="card-title">ACTIVITY</h2>
+          </div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5v14"/></svg></div>
+            <div class="act-text">
+              <strong>Tom Karras</strong> RSVP'd
+              <div class="act-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+            <div class="act-text">
+              <strong>Eligibility flag</strong> raised on Steve Choi (tire size)
+              <div class="act-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="act-text">
+              <strong>Tom Karras</strong> acknowledged safety briefing
+              <div class="act-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon rust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <div class="act-text">
+              You sent a reminder to <strong>Steve Choi</strong>
+              <div class="act-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5v14"/></svg></div>
+            <div class="act-text">
+              <strong>Riley Marsh</strong> RSVP'd
+              <div class="act-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  © 2026 OVERLANDHUB · MODERATOR TOOLS · BETA
+</footer>
+
+</body>
+</html>

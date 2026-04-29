@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2018 Tacoma TRD · Marcus Reyes · OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-bg: rgba(196,91,40,0.12);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-bg: rgba(61,107,79,0.12);
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --water: #366ba5;
+  --water-light: rgba(54,107,165,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white); color: var(--forest);
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+}
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  padding: 14px 48px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.breadcrumb-inner { max-width: 1480px; margin: 0 auto; }
+.breadcrumb a { color: var(--stone); text-decoration: none; }
+.breadcrumb a:hover { color: var(--forest); }
+.breadcrumb .sep { margin: 0 10px; opacity: 0.4; }
+.breadcrumb .current { color: var(--forest); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  background: var(--forest);
+  color: var(--white);
+  padding: 72px 48px 40px;
+  overflow: hidden;
+  min-height: 560px;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 75% 30%, rgba(196,91,40,0.18) 0%, transparent 50%),
+    radial-gradient(circle at 15% 85%, rgba(61,107,79,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 1480px; width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 980px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero { padding: 48px 24px 32px; min-height: auto; }
+}
+
+.hero-text { display: flex; flex-direction: column; gap: 20px; }
+.hero-status-row {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.pill {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 3px;
+}
+.pill.daily {
+  background: var(--pine); color: var(--white);
+}
+.pill.tier {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+}
+.pill.featured {
+  background: var(--gold); color: var(--forest);
+}
+.year-make {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; letter-spacing: 4px;
+  color: rgba(255,255,255,0.6); font-weight: 500;
+}
+.rig-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 96px; line-height: 0.92; letter-spacing: 2px;
+  color: var(--white);
+}
+@media (max-width: 980px) { .rig-name { font-size: 64px; } }
+.rig-tagline {
+  font-size: 17px; color: rgba(255,255,255,0.75);
+  line-height: 1.6; max-width: 480px;
+  font-style: italic;
+  border-left: 2px solid var(--rust);
+  padding-left: 16px;
+}
+.owner-row {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 8px;
+}
+.owner-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #C45B28, #8a3a1a);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.owner-info {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); font-weight: 600;
+}
+.owner-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--white); margin-top: 2px; line-height: 1;
+}
+
+/* RIG IMAGE */
+.rig-portrait {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.rig-portrait::before {
+  content: '';
+  position: absolute;
+  bottom: -20px; left: 10%; right: 10%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%);
+  filter: blur(4px);
+}
+.rig-portrait svg {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+}
+
+/* photo strip below the portrait */
+.photo-strip {
+  position: relative; z-index: 2;
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  max-width: 1480px;
+  margin-left: auto; margin-right: auto;
+}
+@media (max-width: 760px) { .photo-strip { grid-template-columns: repeat(3, 1fr); } }
+.thumb {
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: linear-gradient(135deg, #4d6b52, #2a4a3a);
+}
+.thumb.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.thumb.dust { background: linear-gradient(135deg, #c47e5b, #7a3f25); }
+.thumb.dark { background: linear-gradient(135deg, #2a3b2e, #0a0a0a); }
+.thumb.sky { background: linear-gradient(180deg, #6b8a9c, #3a4f5c); }
+.thumb svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.thumb-count {
+  position: absolute;
+  inset: 0;
+  background: rgba(28,43,31,0.85);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1px;
+  backdrop-filter: blur(2px);
+}
+.thumb-count small {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 600; opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* ── KPI BAND ── */
+.kpi-band {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+.kpi-band-inner {
+  max-width: 1480px; margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 760px) { .kpi-band-inner { grid-template-columns: repeat(2, 1fr); } }
+.kpi-cell {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+}
+.kpi-cell:last-child { border-right: none; }
+.kpi-cell-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+}
+.kpi-cell-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: 1px; color: var(--forest);
+  line-height: 1; margin-top: 4px;
+}
+.kpi-cell-value .unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; color: var(--stone); margin-left: 4px; font-weight: 500;
+}
+.kpi-cell-trend {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px; font-weight: 600;
+}
+
+/* ── SECTION TABS ── */
+.section-tabs {
+  background: var(--white);
+  border-bottom: 1px solid var(--border-strong);
+  position: sticky; top: 72px; z-index: 50;
+}
+.section-tabs-inner {
+  max-width: 1480px; margin: 0 auto;
+  padding: 0 48px;
+  display: flex; gap: 0;
+  overflow-x: auto;
+}
+.stab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 18px 22px;
+  background: transparent;
+  color: var(--stone);
+  border: none; cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.stab:hover { color: var(--forest); }
+.stab.active { color: var(--forest); border-bottom-color: var(--rust); }
+.stab .count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  background: var(--mist); color: var(--stone);
+  padding: 2px 6px; border-radius: 2px;
+}
+.stab.active .count { background: var(--rust-light); color: var(--rust); }
+
+/* ── PAGE GRID ── */
+.page {
+  max-width: 1480px; margin: 0 auto;
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 1100px) { .page { grid-template-columns: 1fr; padding: 32px 24px; } }
+
+.section { margin-bottom: 56px; scroll-margin-top: 130px; }
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding-bottom: 14px; margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.s-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700; margin-bottom: 4px;
+}
+.s-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: 2px; line-height: 1;
+  color: var(--forest);
+}
+.s-action {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 700; color: var(--pine); text-decoration: none;
+}
+
+/* ── BUILD SHEET ── */
+.build-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 760px) { .build-grid { grid-template-columns: 1fr; } }
+
+.build-cat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.build-cat-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+}
+.build-cat-icon {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--forest);
+}
+.build-cat-icon svg { width: 16px; height: 16px; }
+.build-cat-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1.5px; color: var(--forest);
+  flex: 1;
+}
+.build-cat-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--stone); font-weight: 600;
+}
+.build-cat-body { padding: 6px 0; }
+.mod-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 9px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: baseline;
+}
+.mod-line:last-child { border-bottom: none; }
+.mod-name {
+  color: var(--forest); font-weight: 500;
+}
+.mod-name strong {
+  font-weight: 700;
+}
+.mod-detail {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+  white-space: nowrap;
+}
+.mod-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  text-decoration: none; margin-left: 6px;
+}
+
+/* ── SPEC SHEET ── */
+.spec-table {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.spec-group {
+  border-bottom: 1px solid var(--border);
+}
+.spec-group:last-child { border-bottom: none; }
+.spec-group-head {
+  background: var(--forest); color: var(--white);
+  padding: 10px 18px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 2px;
+}
+.spec-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  gap: 16px;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+}
+.spec-val {
+  color: var(--forest); font-weight: 600;
+}
+.spec-val .qual {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; color: var(--stone);
+  font-weight: 500; margin-left: 6px;
+  letter-spacing: 1px;
+}
+
+/* ── MAINTENANCE LOG ── */
+.log {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.log-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 90px;
+  gap: 18px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.log-row:last-child { border-bottom: none; }
+.log-row:hover { background: var(--mist); }
+.log-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--stone); font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.log-date strong {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1px; color: var(--forest);
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+  font-weight: normal;
+}
+.log-info { min-width: 0; }
+.log-event {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+.log-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 6px; border-radius: 2px;
+}
+.log-tag.svc { background: var(--pine-bg); color: var(--pine); }
+.log-tag.repair { background: var(--rust-bg); color: var(--rust); }
+.log-tag.mod { background: var(--gold-light); color: var(--gold); }
+.log-tag.recall { background: var(--mist); color: var(--stone); }
+.log-detail {
+  font-size: 13px; color: var(--stone); margin-top: 4px; line-height: 1.5;
+}
+.log-shop {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+  font-weight: 600;
+}
+.log-mileage {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+.log-mileage strong {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px; color: var(--forest);
+  letter-spacing: 0.5px;
+}
+.log-mileage span {
+  display: block;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px; font-weight: 600;
+}
+
+/* ── TRIP HISTORY ── */
+.trip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 760px) { .trip-grid { grid-template-columns: 1fr; } }
+.trip-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none; color: inherit;
+}
+.trip-card:hover {
+  border-color: var(--pine);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(28,43,31,0.06);
+}
+.trip-img {
+  height: 140px;
+  background: linear-gradient(135deg, #4d6b52, #2a4a3a);
+  position: relative;
+  overflow: hidden;
+}
+.trip-img.tan { background: linear-gradient(135deg, #c2a77d, #8a6f4a); }
+.trip-img.dust { background: linear-gradient(135deg, #c47e5b, #8a4f3a); }
+.trip-img.dark { background: linear-gradient(135deg, #1a2530, #0a1015); }
+.trip-img svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.6;
+}
+.trip-img-tag {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(28,43,31,0.85);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 2px;
+  backdrop-filter: blur(4px);
+  font-weight: 700;
+}
+.trip-body { padding: 14px 18px 16px; }
+.trip-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 1.2px; color: var(--forest); line-height: 1.1;
+}
+.trip-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 6px; font-weight: 600;
+}
+.trip-meta strong { color: var(--forest); }
+
+/* trail experience map */
+.heatmap {
+  margin-top: 20px;
+  background: linear-gradient(180deg, #d8dbcf, #c2c8b5);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.heatmap svg { width: 100%; height: 100%; display: block; }
+.heatmap-overlay {
+  position: absolute;
+  bottom: 14px; left: 14px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.heatmap-overlay strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; color: var(--forest);
+  display: block; line-height: 1; margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+
+/* ── RIGHT RAIL ── */
+.rail { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 130px; align-self: start; }
+@media (max-width: 1100px) { .rail { position: relative; top: 0; } }
+
+/* notify card — the soft waitlist conversion */
+.notify-card {
+  background: var(--white);
+  border: 2px solid var(--rust);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.notify-head {
+  background: var(--rust); color: var(--white);
+  padding: 14px 22px;
+}
+.notify-head-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 700; opacity: 0.75; margin-bottom: 3px;
+}
+.notify-head-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px; line-height: 1;
+}
+.notify-body { padding: 22px; }
+.notify-status {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.notify-status .dot {
+  width: 8px; height: 8px;
+  background: var(--pine); border-radius: 50%;
+}
+.notify-pitch {
+  font-size: 14px; color: var(--forest); line-height: 1.55;
+  margin-bottom: 16px;
+}
+.notify-pitch em { color: var(--stone); font-style: italic; }
+.notify-form {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.notify-input {
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 11px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  outline: none;
+}
+.notify-input:focus { border-color: var(--rust); }
+.btn-notify {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 13px 18px;
+  background: var(--rust); color: var(--white);
+  border: none; border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.2s;
+}
+.btn-notify:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-notify svg { width: 14px; height: 14px; }
+.notify-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.notify-foot strong { color: var(--forest); }
+
+/* owner card */
+.owner-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+}
+.owner-card-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600; margin-bottom: 12px;
+}
+.oc-row { display: flex; align-items: center; gap: 14px; }
+.oc-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #C45B28, #8a3a1a);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 18px;
+}
+.oc-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px; color: var(--forest);
+  line-height: 1;
+}
+.oc-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--stone);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.oc-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+  border-top: 1px solid var(--border); padding-top: 12px;
+}
+.oc-stat { text-align: center; border-right: 1px solid var(--border); }
+.oc-stat:last-child { border-right: none; }
+.oc-stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 0.5px; color: var(--forest);
+}
+.oc-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px; font-weight: 600;
+}
+.oc-actions {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 16px;
+}
+.btn-sm {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--white); color: var(--forest);
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+.btn-sm:hover { border-color: var(--forest); }
+
+/* similar rigs */
+.similar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.similar-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+}
+.similar-head-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 1.5px;
+  color: var(--forest);
+}
+.similar-head-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.sim-list { display: flex; flex-direction: column; }
+.sim-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+  transition: background 0.15s;
+}
+.sim-row:last-child { border-bottom: none; }
+.sim-row:hover { background: var(--mist); }
+.sim-thumb {
+  width: 64px; height: 48px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #4d6b52, #2a4a3a);
+  position: relative;
+  overflow: hidden;
+}
+.sim-thumb.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.sim-thumb.dust { background: linear-gradient(135deg, #c47e5b, #7a3f25); }
+.sim-thumb.gray { background: linear-gradient(135deg, #6c727a, #3d4248); }
+.sim-thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sim-info { min-width: 0; }
+.sim-name {
+  font-weight: 600; font-size: 13px; color: var(--forest);
+  line-height: 1.2;
+}
+.sim-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px; font-weight: 600;
+}
+.sim-meta strong { color: var(--rust); }
+.sim-status {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--pine); font-weight: 700; margin-top: 3px;
+}
+.sim-status.listed { color: var(--rust); }
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#" class="active">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="#">Garage</a><span class="sep">/</span>
+    <a href="#">Marcus Reyes</a><span class="sep">/</span>
+    <span class="current">2018 Tacoma TRD</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-status-row">
+        <span class="pill daily">● PRIMARY · DAILY DRIVER</span>
+        <span class="pill tier">FEATURE-LEVEL BUILD</span>
+        <span class="pill featured">★ Featured Garage</span>
+      </div>
+      <div class="year-make">2018 · TOYOTA · TACOMA TRD OFF-ROAD · DOUBLE CAB</div>
+      <h1 class="rig-name">DESERT<br>STORM</h1>
+      <p class="rig-tagline">
+        Four years of building. Twelve thousand miles of dirt. Every mod earned its place
+        the hard way — on a real trip, not a parking lot.
+      </p>
+
+      <div class="owner-row">
+        <div class="owner-avatar">MR</div>
+        <div>
+          <div class="owner-info">Built & Driven By</div>
+          <div class="owner-name">MARCUS REYES</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rig-portrait">
+      <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="body-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a4a3f"/>
+            <stop offset="50%" stop-color="#1c2b1f"/>
+            <stop offset="100%" stop-color="#0a1410"/>
+          </linearGradient>
+          <linearGradient id="window-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a5a5f" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#1a2025" stop-opacity="0.9"/>
+          </linearGradient>
+          <linearGradient id="rtt-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8a6f4a"/>
+            <stop offset="100%" stop-color="#5c4a30"/>
+          </linearGradient>
+        </defs>
+
+        <!-- light glow under truck -->
+        <ellipse cx="300" cy="245" rx="220" ry="14" fill="rgba(196,91,40,0.15)"/>
+
+        <!-- RTT (roof tent) -->
+        <rect x="180" y="58" width="220" height="36" rx="4" fill="url(#rtt-grad)" stroke="#3a2818" stroke-width="1.5"/>
+        <rect x="180" y="58" width="220" height="6" fill="#5c4a30"/>
+        <line x1="200" y1="64" x2="200" y2="94" stroke="#3a2818" stroke-width="1" opacity="0.5"/>
+        <line x1="290" y1="64" x2="290" y2="94" stroke="#3a2818" stroke-width="1" opacity="0.5"/>
+        <line x1="380" y1="64" x2="380" y2="94" stroke="#3a2818" stroke-width="1" opacity="0.5"/>
+
+        <!-- roof rack rails -->
+        <rect x="170" y="92" width="240" height="4" fill="#1a1a1a" rx="1"/>
+
+        <!-- light bar -->
+        <rect x="200" y="86" width="180" height="6" fill="#0a0a0a" stroke="#444" stroke-width="0.5"/>
+        <rect x="206" y="88" width="168" height="2" fill="#fff5d8" opacity="0.7"/>
+
+        <!-- cab + bed body -->
+        <path d="M50 200 L80 195 L120 145 L260 130 L300 145 L300 200 Z" fill="url(#body-grad)" stroke="#0a1410" stroke-width="2"/>
+        <path d="M300 200 L300 145 L520 145 L555 175 L555 200 Z" fill="url(#body-grad)" stroke="#0a1410" stroke-width="2"/>
+
+        <!-- bed line -->
+        <line x1="300" y1="145" x2="300" y2="200" stroke="#0a1410" stroke-width="2"/>
+
+        <!-- windows -->
+        <path d="M132 152 L146 132 L188 132 L188 152 Z" fill="url(#window-grad)" stroke="#0a1410" stroke-width="1"/>
+        <path d="M196 152 L196 132 L260 132 L295 152 Z" fill="url(#window-grad)" stroke="#0a1410" stroke-width="1"/>
+
+        <!-- bed cage / bed accessories silhouette -->
+        <line x1="320" y1="145" x2="320" y2="160" stroke="#1c2b1f" stroke-width="1.5"/>
+        <line x1="450" y1="145" x2="450" y2="160" stroke="#1c2b1f" stroke-width="1.5"/>
+
+        <!-- jerry can on bed side -->
+        <rect x="475" y="155" width="22" height="32" rx="2" fill="#3a4a3f" stroke="#0a1410" stroke-width="1"/>
+        <rect x="478" y="158" width="16" height="4" fill="#0a0a0a"/>
+
+        <!-- door lines -->
+        <line x1="200" y1="155" x2="200" y2="200" stroke="#0a1410" stroke-width="1.5" opacity="0.6"/>
+        <line x1="265" y1="155" x2="265" y2="200" stroke="#0a1410" stroke-width="1.5" opacity="0.6"/>
+
+        <!-- side mirror -->
+        <rect x="118" y="148" width="14" height="12" rx="2" fill="#1c2b1f" stroke="#0a1410" stroke-width="1"/>
+
+        <!-- front bumper -->
+        <path d="M50 200 L50 190 L40 190 L40 215 L50 215 Z" fill="#1a1a1a" stroke="#000" stroke-width="1"/>
+        <!-- light pods on bumper -->
+        <circle cx="46" cy="195" r="3" fill="#fff5d8" opacity="0.85"/>
+        <circle cx="46" cy="208" r="3" fill="#fff5d8" opacity="0.85"/>
+
+        <!-- skid plate -->
+        <path d="M85 220 L100 230 L240 230 L260 222 L260 218 L100 218 Z" fill="#2a2a2a" stroke="#0a0a0a" stroke-width="1.2"/>
+
+        <!-- sliders -->
+        <rect x="180" y="210" width="170" height="6" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+
+        <!-- rear bumper -->
+        <path d="M555 200 L565 200 L565 215 L545 215 L545 205 Z" fill="#1a1a1a" stroke="#000" stroke-width="1"/>
+
+        <!-- wheels — large 35s -->
+        <g transform="translate(115, 220)">
+          <circle r="32" fill="#0a0a0a" stroke="#1a1a1a" stroke-width="2"/>
+          <circle r="22" fill="#2a2a2a"/>
+          <circle r="14" fill="#1a1a1a"/>
+          <circle r="6" fill="#3a3a3a"/>
+          <!-- spokes -->
+          <line x1="-14" y1="0" x2="14" y2="0" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="0" y1="-14" x2="0" y2="14" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-10" y1="-10" x2="10" y2="10" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-10" y1="10" x2="10" y2="-10" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- tire tread suggestion -->
+          <circle r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 3"/>
+        </g>
+        <g transform="translate(485, 220)">
+          <circle r="32" fill="#0a0a0a" stroke="#1a1a1a" stroke-width="2"/>
+          <circle r="22" fill="#2a2a2a"/>
+          <circle r="14" fill="#1a1a1a"/>
+          <circle r="6" fill="#3a3a3a"/>
+          <line x1="-14" y1="0" x2="14" y2="0" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="0" y1="-14" x2="0" y2="14" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-10" y1="-10" x2="10" y2="10" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-10" y1="10" x2="10" y2="-10" stroke="#0a0a0a" stroke-width="2"/>
+          <circle r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 3"/>
+        </g>
+
+        <!-- TRD badge -->
+        <rect x="160" y="172" width="34" height="10" rx="1" fill="#C45B28" opacity="0.85"/>
+        <text x="177" y="180" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="8" fill="#fff" letter-spacing="1">TRD</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PHOTO STRIP UNDER -->
+  <div class="photo-strip">
+    <div class="thumb">
+      <svg viewBox="0 0 100 75" preserveAspectRatio="none">
+        <path d="M0 60 Q25 45 50 55 T100 50 L100 75 L0 75 Z" fill="rgba(0,0,0,0.4)"/>
+      </svg>
+    </div>
+    <div class="thumb tan">
+      <svg viewBox="0 0 100 75" preserveAspectRatio="none">
+        <path d="M0 65 Q30 50 55 60 T100 55 L100 75 L0 75 Z" fill="rgba(0,0,0,0.35)"/>
+      </svg>
+    </div>
+    <div class="thumb dust">
+      <svg viewBox="0 0 100 75" preserveAspectRatio="none">
+        <path d="M0 55 Q25 40 50 50 T100 45 L100 75 L0 75 Z" fill="rgba(0,0,0,0.45)"/>
+      </svg>
+    </div>
+    <div class="thumb dark">
+      <svg viewBox="0 0 100 75" preserveAspectRatio="none">
+        <circle cx="80" cy="20" r="4" fill="rgba(255,235,150,0.9)"/>
+        <path d="M0 60 L100 60 L100 75 L0 75 Z" fill="rgba(0,0,0,0.5)"/>
+      </svg>
+    </div>
+    <div class="thumb sky">
+      <svg viewBox="0 0 100 75" preserveAspectRatio="none">
+        <path d="M0 50 L100 50 L100 75 L0 75 Z" fill="rgba(0,0,0,0.4)"/>
+      </svg>
+    </div>
+    <div class="thumb">
+      <div class="thumb-count">+47<small>Photos</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI BAND -->
+<div class="kpi-band">
+  <div class="kpi-band-inner">
+    <div class="kpi-cell">
+      <div class="kpi-cell-label">Built Since</div>
+      <div class="kpi-cell-value">2021</div>
+      <div class="kpi-cell-trend">~4 years on the platform</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-cell-label">Mods Logged</div>
+      <div class="kpi-cell-value">42</div>
+      <div class="kpi-cell-trend">Across 9 categories</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-cell-label">Trips Logged</div>
+      <div class="kpi-cell-value">28</div>
+      <div class="kpi-cell-trend">9 multi-day, 19 day trips</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-cell-label">Trail Miles</div>
+      <div class="kpi-cell-value">11,840<span class="unit">mi</span></div>
+      <div class="kpi-cell-trend">Off-pavement only</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-cell-label">Maint. Records</div>
+      <div class="kpi-cell-value">86</div>
+      <div class="kpi-cell-trend">Last entry: 12 days ago</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION TABS -->
+<div class="section-tabs">
+  <div class="section-tabs-inner">
+    <a href="#build" class="stab active">Build Sheet <span class="count">42</span></a>
+    <a href="#specs" class="stab">Specs</a>
+    <a href="#log" class="stab">Maintenance Log <span class="count">86</span></a>
+    <a href="#trips" class="stab">Trip History <span class="count">28</span></a>
+    <a href="#story" class="stab">Owner's Story</a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<section class="page">
+
+  <main>
+
+    <!-- BUILD SHEET -->
+    <div class="section" id="build">
+      <div class="section-head">
+        <div>
+          <div class="s-eyebrow">Every Mod, Documented</div>
+          <h2 class="s-title">BUILD SHEET</h2>
+        </div>
+        <a href="#" class="s-action">Print Build Sheet →</a>
+      </div>
+
+      <div class="build-grid">
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></span>
+            <span class="build-cat-title">SUSPENSION & LIFT</span>
+            <span class="build-cat-count">5 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Old Man Emu</strong> BP-51 Front Coilovers</div>
+              <div class="mod-detail">3" Lift</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Old Man Emu</strong> BP-51 Rear Shocks</div>
+              <div class="mod-detail">Adjustable</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Deaver</strong> U402 Rear Leaf Pack</div>
+              <div class="mod-detail">+2.5" Lift</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Total Chaos</strong> Upper Control Arms</div>
+              <div class="mod-detail">Uniball</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Wheelers</strong> Sway Bar Disconnect</div>
+              <div class="mod-detail">Front</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></span>
+            <span class="build-cat-title">WHEELS & TIRES</span>
+            <span class="build-cat-count">3 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>BFGoodrich</strong> KO2 All-Terrain</div>
+              <div class="mod-detail">285/75 R17 (35")</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Method Race</strong> 305 NV Bronze</div>
+              <div class="mod-detail">17×8.5 · -12 offset</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Bora</strong> Wheel Spacers</div>
+              <div class="mod-detail">1.25" / Hub-Centric</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></span>
+            <span class="build-cat-title">BUMPERS & ARMOR</span>
+            <span class="build-cat-count">5 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>CBI Off-Road</strong> Covert Front Bumper</div>
+              <div class="mod-detail">Steel · Hoop</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>CBI Off-Road</strong> Classic Rear Bumper</div>
+              <div class="mod-detail">Tire Carrier</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>RCI</strong> Aluminum Skid Set</div>
+              <div class="mod-detail">Engine, Trans, Fuel</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Cali Raised</strong> Rock Sliders</div>
+              <div class="mod-detail">Bolt-On / Kickout</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>BAMF</strong> Diff Skid</div>
+              <div class="mod-detail">3/16" Plate</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M9 13l2 2 4-4"/></svg></span>
+            <span class="build-cat-title">RECOVERY</span>
+            <span class="build-cat-count">5 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Warn</strong> VR EVO 10-S Winch</div>
+              <div class="mod-detail">10K lb · Synthetic</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Maxtrax</strong> MKII Recovery Boards</div>
+              <div class="mod-detail">Pair / Bed Mount</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>ARB</strong> Tire Deflator</div>
+              <div class="mod-detail">E-Z Deflator</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>ARB</strong> CKMA12 On-Board Air</div>
+              <div class="mod-detail">12V Compressor</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Factor 55</strong> ProLink XTV</div>
+              <div class="mod-detail">Soft Shackle</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+            <span class="build-cat-title">LIGHTING</span>
+            <span class="build-cat-count">4 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Baja Designs</strong> S8 30" Light Bar</div>
+              <div class="mod-detail">Roof / Combo</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Baja Designs</strong> Squadron Sport</div>
+              <div class="mod-detail">A-Pillar Pair</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>KC Hilites</strong> Ditch Light Set</div>
+              <div class="mod-detail">Cyclone V2</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Diode Dynamics</strong> SS3 Fog Pods</div>
+              <div class="mod-detail">SAE Fog</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/></svg></span>
+            <span class="build-cat-title">COMMUNICATIONS</span>
+            <span class="build-cat-count">3 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Midland</strong> MXT500 GMRS Radio</div>
+              <div class="mod-detail">50 W / Mobile</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Garmin</strong> inReach Mini 2</div>
+              <div class="mod-detail">Sat SOS / Tracking</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Yaesu</strong> FT-2980R 2m HAM</div>
+              <div class="mod-detail">80W · KK7XYZ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="build-cat-title">CAMP & LIVING</span>
+            <span class="build-cat-count">6 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Roofnest</strong> Falcon Pro RTT</div>
+              <div class="mod-detail">Hardshell · 2-Person</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Alu-Cab</strong> Shadow Awning</div>
+              <div class="mod-detail">270° / Driver Side</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Front Runner</strong> Slimline II Rack</div>
+              <div class="mod-detail">Bed Rack / 1/2 Length</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Dometic</strong> CFX3 45 Fridge</div>
+              <div class="mod-detail">Bed Mount / 47L</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Snow Peak</strong> Pack & Carry Kitchen</div>
+              <div class="mod-detail">2-Burner</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Helinox</strong> Camp Chair One</div>
+              <div class="mod-detail">×2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="6" x2="12" y2="20"/></svg></span>
+            <span class="build-cat-title">STORAGE & DRAWERS</span>
+            <span class="build-cat-count">4 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Goose Gear</strong> Storage Drawers</div>
+              <div class="mod-detail">2-Drawer Module</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Decked</strong> Drawer Topper</div>
+              <div class="mod-detail">Bedslide</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Front Runner</strong> Wolf Pack Pro</div>
+              <div class="mod-detail">×4 Cases</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Rotopax</strong> Fuel & Water Pack</div>
+              <div class="mod-detail">2 gal Water · 4 gal Fuel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-cat">
+          <div class="build-cat-head">
+            <span class="build-cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v18M5 12h13l-3-3M18 12l-3 3"/></svg></span>
+            <span class="build-cat-title">ELECTRICAL & POWER</span>
+            <span class="build-cat-count">7 mods</span>
+          </div>
+          <div class="build-cat-body">
+            <div class="mod-line">
+              <div class="mod-name"><strong>Goal Zero</strong> Yeti 1500X</div>
+              <div class="mod-detail">Portable / 1516Wh</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Goal Zero</strong> Boulder 100 Solar</div>
+              <div class="mod-detail">Briefcase / 100W</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>National Luna</strong> Dual Battery Kit</div>
+              <div class="mod-detail">Intelligent Solenoid</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Optima</strong> YellowTop D34/78</div>
+              <div class="mod-detail">Aux Battery</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>sPOD</strong> SourceLT Module</div>
+              <div class="mod-detail">8-Switch / BlueSea</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Anderson</strong> SB50 Plug Pair</div>
+              <div class="mod-detail">Bed / Engine Bay</div>
+            </div>
+            <div class="mod-line">
+              <div class="mod-name"><strong>Blue Sea</strong> Fuse Block 5025</div>
+              <div class="mod-detail">12-Circuit</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SPEC SHEET -->
+    <div class="section" id="specs">
+      <div class="section-head">
+        <div>
+          <div class="s-eyebrow">Factory Numbers</div>
+          <h2 class="s-title">SPEC SHEET</h2>
+        </div>
+      </div>
+
+      <div class="spec-table">
+
+        <div class="spec-group">
+          <div class="spec-group-head">ENGINE & DRIVETRAIN</div>
+          <div class="spec-row"><div class="spec-key">Engine</div><div class="spec-val">2GR-FKS V6 <span class="qual">3.5L · DOHC · Direct Injection</span></div></div>
+          <div class="spec-row"><div class="spec-key">Power</div><div class="spec-val">278 HP <span class="qual">@ 6,000 RPM</span></div></div>
+          <div class="spec-row"><div class="spec-key">Torque</div><div class="spec-val">265 LB-FT <span class="qual">@ 4,600 RPM</span></div></div>
+          <div class="spec-row"><div class="spec-key">Transmission</div><div class="spec-val">6-Speed Automatic <span class="qual">A750F · Sequential</span></div></div>
+          <div class="spec-row"><div class="spec-key">Drivetrain</div><div class="spec-val">Part-Time 4WD <span class="qual">2H / 4H / 4Lo</span></div></div>
+          <div class="spec-row"><div class="spec-key">Transfer Case</div><div class="spec-val">VF4B Electronic <span class="qual">2.566:1 Low Range</span></div></div>
+        </div>
+
+        <div class="spec-group">
+          <div class="spec-group-head">AXLES & DIFFERENTIALS</div>
+          <div class="spec-row"><div class="spec-key">Front Axle</div><div class="spec-val">IFS · Open Diff</div></div>
+          <div class="spec-row"><div class="spec-key">Rear Axle</div><div class="spec-val">Solid · 8.75"</div></div>
+          <div class="spec-row"><div class="spec-key">Rear Locker</div><div class="spec-val">Factory Electric Locker <span class="qual">TRD Off-Road Standard</span></div></div>
+          <div class="spec-row"><div class="spec-key">Gear Ratio</div><div class="spec-val">4.30 <span class="qual">Re-geared from 3.91 for 35s</span></div></div>
+          <div class="spec-row"><div class="spec-key">A-TRAC</div><div class="spec-val">Active Traction Control <span class="qual">Selectable in 4Lo</span></div></div>
+        </div>
+
+        <div class="spec-group">
+          <div class="spec-group-head">DIMENSIONS · OFF-ROAD</div>
+          <div class="spec-row"><div class="spec-key">Ground Clearance</div><div class="spec-val">11.5" <span class="qual">w/ 35s + 3" lift (factory: 9.4")</span></div></div>
+          <div class="spec-row"><div class="spec-key">Approach Angle</div><div class="spec-val">38° <span class="qual">w/ stubby front bumper</span></div></div>
+          <div class="spec-row"><div class="spec-key">Departure Angle</div><div class="spec-val">29° <span class="qual">w/ rear bumper</span></div></div>
+          <div class="spec-row"><div class="spec-key">Breakover Angle</div><div class="spec-val">23°</div></div>
+          <div class="spec-row"><div class="spec-key">Wheelbase</div><div class="spec-val">127.4"</div></div>
+          <div class="spec-row"><div class="spec-key">GVWR</div><div class="spec-val">5,600 LB <span class="qual">Curb weight estimated 5,200 w/ build</span></div></div>
+        </div>
+
+        <div class="spec-group">
+          <div class="spec-group-head">FUEL & RANGE</div>
+          <div class="spec-row"><div class="spec-key">Tank Capacity</div><div class="spec-val">21.1 GAL</div></div>
+          <div class="spec-row"><div class="spec-key">Aux Fuel</div><div class="spec-val">8 GAL <span class="qual">2× Rotopax bed-mounted</span></div></div>
+          <div class="spec-row"><div class="spec-key">Real-World MPG</div><div class="spec-val">14.5 MPG <span class="qual">Highway · w/ 35s + RTT</span></div></div>
+          <div class="spec-row"><div class="spec-key">Trail MPG</div><div class="spec-val">9–11 MPG <span class="qual">Logged across 28 trips</span></div></div>
+          <div class="spec-row"><div class="spec-key">Effective Range</div><div class="spec-val">~420 MI <span class="qual">Including aux tanks</span></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MAINTENANCE LOG -->
+    <div class="section" id="log">
+      <div class="section-head">
+        <div>
+          <div class="s-eyebrow">Verified Service History</div>
+          <h2 class="s-title">MAINTENANCE LOG</h2>
+        </div>
+        <a href="#" class="s-action">View All 86 →</a>
+      </div>
+
+      <div class="log">
+
+        <div class="log-row">
+          <div class="log-date">APR 16<strong>2026</strong></div>
+          <div class="log-info">
+            <div class="log-event">Differential Service · Front & Rear <span class="log-tag svc">Routine</span></div>
+            <div class="log-detail">Drained, inspected, refilled with Mobil 1 75W-90. No metal in either drain. Rear locker actuator tested OK.</div>
+            <div class="log-shop">Self-performed · 0.6 hrs</div>
+          </div>
+          <div class="log-mileage"><strong>86,420 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">MAR 04<strong>2026</strong></div>
+          <div class="log-info">
+            <div class="log-event">Re-Gear · 4.30 Ratio <span class="log-tag mod">Modification</span></div>
+            <div class="log-detail">Re-geared front and rear from 3.91 to 4.30 to compensate for 35" tires. Nitro Gear & Axle ring & pinion. New crush sleeves, bearings, seals. Performed at Tier 1 Land Cruiser, Phoenix.</div>
+            <div class="log-shop">Tier 1 Land Cruiser · $2,840</div>
+          </div>
+          <div class="log-mileage"><strong>84,180 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">FEB 12<strong>2026</strong></div>
+          <div class="log-info">
+            <div class="log-event">Brake Pads & Rotors · Front <span class="log-tag svc">Routine</span></div>
+            <div class="log-detail">PowerStop Z36 Truck/Tow pads, drilled & slotted rotors. Original pads at 4mm, replaced as preventative for 35s.</div>
+            <div class="log-shop">Self-performed · 2.0 hrs</div>
+          </div>
+          <div class="log-mileage"><strong>82,940 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">JAN 24<strong>2026</strong></div>
+          <div class="log-info">
+            <div class="log-event">Engine Oil & Filter · Mobil 1 0W-20 <span class="log-tag svc">Routine</span></div>
+            <div class="log-detail">5,000-mile interval. Replaced cabin air filter at same time.</div>
+            <div class="log-shop">Self-performed · 0.5 hrs</div>
+          </div>
+          <div class="log-mileage"><strong>81,870 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">DEC 10<strong>2025</strong></div>
+          <div class="log-info">
+            <div class="log-event">Wheel Bearing · Front Right <span class="log-tag repair">Repair</span></div>
+            <div class="log-detail">Slight grind audible on left turns at 60+ mph. Replaced both front bearings as preventative. OEM Toyota part.</div>
+            <div class="log-shop">Toyota of Tempe · $680</div>
+          </div>
+          <div class="log-mileage"><strong>78,210 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">NOV 02<strong>2025</strong></div>
+          <div class="log-info">
+            <div class="log-event">CBI Front Bumper Install <span class="log-tag mod">Modification</span></div>
+            <div class="log-detail">CBI Covert front bumper installed, Warn winch transferred from old bumper. Required relocation of fog light wiring.</div>
+            <div class="log-shop">Self-performed · 6.5 hrs</div>
+          </div>
+          <div class="log-mileage"><strong>76,540 mi</strong><span>Odometer</span></div>
+        </div>
+
+        <div class="log-row">
+          <div class="log-date">SEP 18<strong>2025</strong></div>
+          <div class="log-info">
+            <div class="log-event">Frame Recall · Cap Repair Verified <span class="log-tag recall">Recall</span></div>
+            <div class="log-detail">Toyota frame inspection per recall 22TC02. Frame passed inspection, no rust intrusion. Recall sticker affixed.</div>
+            <div class="log-shop">Larry H. Miller Toyota · No charge</div>
+          </div>
+          <div class="log-mileage"><strong>74,100 mi</strong><span>Odometer</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TRIP HISTORY -->
+    <div class="section" id="trips">
+      <div class="section-head">
+        <div>
+          <div class="s-eyebrow">Where This Rig Has Been</div>
+          <h2 class="s-title">TRIP HISTORY</h2>
+        </div>
+        <a href="#" class="s-action">All 28 Trips →</a>
+      </div>
+
+      <div class="heatmap">
+        <svg viewBox="0 0 900 220" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="grid-rd" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(28,43,31,0.07)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="900" height="220" fill="url(#grid-rd)"/>
+          <!-- terrain -->
+          <path d="M0 100 Q200 70 380 90 T720 80 L900 100 L900 160 Q700 190 500 170 T200 180 L0 170 Z" fill="rgba(138,145,129,0.35)"/>
+          <path d="M100 180 Q300 150 500 180 T900 190 L900 220 L0 220 Z" fill="rgba(196,168,125,0.3)"/>
+
+          <!-- mountain marks -->
+          <g opacity="0.4" stroke="#1c2b1f" stroke-width="1.2" fill="none">
+            <path d="M150 110 L170 85 L190 110 Z"/>
+            <path d="M310 95 L335 65 L360 95 Z"/>
+            <path d="M610 90 L635 60 L660 90 Z"/>
+            <path d="M740 110 L770 75 L795 110 Z"/>
+          </g>
+
+          <!-- trip clusters -->
+          <g>
+            <circle cx="180" cy="155" r="34" fill="rgba(196,91,40,0.18)"/>
+            <circle cx="180" cy="155" r="20" fill="rgba(196,91,40,0.32)"/>
+            <circle cx="180" cy="155" r="8" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="280" cy="140" r="26" fill="rgba(196,91,40,0.14)"/>
+            <circle cx="280" cy="140" r="14" fill="rgba(196,91,40,0.28)"/>
+            <circle cx="280" cy="140" r="6" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="360" cy="125" r="20" fill="rgba(196,91,40,0.12)"/>
+            <circle cx="360" cy="125" r="10" fill="rgba(196,91,40,0.24)"/>
+            <circle cx="360" cy="125" r="5" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="440" cy="115" r="40" fill="rgba(196,91,40,0.18)"/>
+            <circle cx="440" cy="115" r="22" fill="rgba(196,91,40,0.32)"/>
+            <circle cx="440" cy="115" r="9" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="540" cy="135" r="22" fill="rgba(196,91,40,0.13)"/>
+            <circle cx="540" cy="135" r="11" fill="rgba(196,91,40,0.26)"/>
+            <circle cx="540" cy="135" r="5" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="640" cy="120" r="16" fill="rgba(196,91,40,0.1)"/>
+            <circle cx="640" cy="120" r="8" fill="rgba(196,91,40,0.22)"/>
+            <circle cx="640" cy="120" r="4" fill="#C45B28"/>
+          </g>
+          <g>
+            <circle cx="720" cy="165" r="18" fill="rgba(196,91,40,0.12)"/>
+            <circle cx="720" cy="165" r="9" fill="rgba(196,91,40,0.24)"/>
+            <circle cx="720" cy="165" r="5" fill="#C45B28"/>
+          </g>
+
+          <!-- compass -->
+          <g transform="translate(840, 30)" opacity="0.55">
+            <circle r="18" fill="rgba(255,255,255,0.85)" stroke="#1c2b1f" stroke-width="1"/>
+            <path d="M0 -12 L3 0 L0 3 L-3 0 Z" fill="#C45B28"/>
+            <path d="M0 12 L-3 0 L0 -3 L3 0 Z" fill="#1c2b1f"/>
+            <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f">N</text>
+          </g>
+        </svg>
+        <div class="heatmap-overlay">
+          <strong>Trail Experience</strong>
+          7 regions · 12 distinct trail systems · Heaviest in SW US
+        </div>
+      </div>
+
+      <div class="trip-grid" style="margin-top: 24px;">
+
+        <a href="#" class="trip-card">
+          <div class="trip-img dust">
+            <svg viewBox="0 0 200 140" preserveAspectRatio="none">
+              <path d="M0 100 Q50 75 100 90 T200 80 L200 140 L0 140 Z" fill="rgba(0,0,0,0.4)"/>
+            </svg>
+            <span class="trip-img-tag">PUBLIC</span>
+          </div>
+          <div class="trip-body">
+            <div class="trip-name">WHITE RIM TRAIL</div>
+            <div class="trip-meta"><strong>Apr 4–7, 2026</strong> · 102 mi · 4 days · Solo</div>
+          </div>
+        </a>
+
+        <a href="#" class="trip-card">
+          <div class="trip-img tan">
+            <svg viewBox="0 0 200 140" preserveAspectRatio="none">
+              <path d="M0 90 Q60 60 120 80 T200 70 L200 140 L0 140 Z" fill="rgba(0,0,0,0.35)"/>
+            </svg>
+            <span class="trip-img-tag">PUBLIC</span>
+          </div>
+          <div class="trip-body">
+            <div class="trip-name">DIAMOND BAR LOOP</div>
+            <div class="trip-meta"><strong>Mar 14–16, 2026</strong> · 78 mi · 3 days · Group of 4</div>
+          </div>
+        </a>
+
+        <a href="#" class="trip-card">
+          <div class="trip-img">
+            <svg viewBox="0 0 200 140" preserveAspectRatio="none">
+              <path d="M0 95 Q50 65 100 85 T200 75 L200 140 L0 140 Z" fill="rgba(0,0,0,0.4)"/>
+            </svg>
+            <span class="trip-img-tag">FRIENDS ONLY</span>
+          </div>
+          <div class="trip-body">
+            <div class="trip-name">FOUR PEAKS WILDERNESS</div>
+            <div class="trip-meta"><strong>Feb 22, 2026</strong> · 34 mi · Day trip · Pair</div>
+          </div>
+        </a>
+
+        <a href="#" class="trip-card">
+          <div class="trip-img dark">
+            <svg viewBox="0 0 200 140" preserveAspectRatio="none">
+              <circle cx="160" cy="40" r="6" fill="rgba(255,235,150,0.85)"/>
+              <path d="M0 110 L200 110 L200 140 L0 140 Z" fill="rgba(0,0,0,0.5)"/>
+            </svg>
+            <span class="trip-img-tag">PUBLIC</span>
+          </div>
+          <div class="trip-body">
+            <div class="trip-name">ANZA-BORREGO NIGHTS</div>
+            <div class="trip-meta"><strong>Jan 9–11, 2026</strong> · 56 mi · 3 days · Solo</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- OWNER STORY -->
+    <div class="section" id="story">
+      <div class="section-head">
+        <div>
+          <div class="s-eyebrow">Why This Rig</div>
+          <h2 class="s-title">FROM THE OWNER</h2>
+        </div>
+      </div>
+
+      <div style="font-size: 16px; line-height: 1.7; color: var(--forest); max-width: 720px;">
+        <p style="margin-bottom: 16px;">
+          I bought this Tacoma stock from a dealer in 2021. The plan was simple: build something
+          I could actually use, document every mod honestly, and never touch a part I couldn't
+          repair on the side of a trail. Four years later that's still the plan.
+        </p>
+        <p style="margin-bottom: 16px;">
+          The build is intentionally modular. Suspension came first because everything else
+          rides on it. Recovery and comms came before lights and storage because none of the
+          fun stuff matters if you can't get out or call for help. The RTT was the last addition
+          and I'd argue the most life-changing.
+        </p>
+        <p style="font-style: italic; color: var(--stone); border-left: 3px solid var(--rust); padding-left: 16px;">
+          "Every part on this rig has dirt on it. Nothing was bought to look good in a
+          driveway." — Marcus
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT RAIL -->
+  <aside class="rail">
+
+    <!-- NOTIFY ME — the soft waitlist -->
+    <div class="notify-card">
+      <div class="notify-head">
+        <div class="notify-head-eyebrow">Not Currently for Sale</div>
+        <div class="notify-head-title">GET FIRST DIBS</div>
+      </div>
+      <div class="notify-body">
+        <div class="notify-status">
+          <span class="dot"></span> Owner is actively building · Status: Daily Driver
+        </div>
+        <p class="notify-pitch">
+          Marcus isn't selling today, but builds like this don't stay built forever.
+          Get notified the minute it lists — before it hits public classifieds.
+          <em>No spam, just a single notification.</em>
+        </p>
+        <div class="notify-form">
+          <input type="email" class="notify-input" placeholder="your@email.com" />
+          <button class="btn-notify">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            Notify Me If Listed
+          </button>
+        </div>
+        <div class="notify-foot">
+          <span><strong>14</strong> watching</span>
+          <span>Avg. response time: <strong>2 days</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OWNER -->
+    <div class="owner-card">
+      <div class="owner-card-eyebrow">Built & Driven By</div>
+      <div class="oc-row">
+        <div class="oc-avatar">MR</div>
+        <div>
+          <div class="oc-name">MARCUS REYES</div>
+          <div class="oc-handle">@desert_runner_4x4</div>
+        </div>
+      </div>
+      <div class="oc-stats">
+        <div class="oc-stat">
+          <div class="oc-stat-val">3</div>
+          <div class="oc-stat-label">Rigs</div>
+        </div>
+        <div class="oc-stat">
+          <div class="oc-stat-val">47</div>
+          <div class="oc-stat-label">Trips</div>
+        </div>
+        <div class="oc-stat">
+          <div class="oc-stat-val">1.2K</div>
+          <div class="oc-stat-label">Followers</div>
+        </div>
+      </div>
+      <div class="oc-actions">
+        <a href="#" class="btn-sm">View Profile</a>
+        <a href="#" class="btn-sm">Message</a>
+      </div>
+    </div>
+
+    <!-- SIMILAR RIGS -->
+    <div class="similar">
+      <div class="similar-head">
+        <div class="similar-head-title">SIMILAR BUILDS</div>
+        <div class="similar-head-sub">3RD-GEN TACOMAS · 35S · OVERLAND</div>
+      </div>
+      <div class="sim-list">
+
+        <a href="#" class="sim-row">
+          <div class="sim-thumb">
+            <svg viewBox="0 0 64 48" preserveAspectRatio="none">
+              <path d="M0 35 L8 30 L16 24 L48 24 L56 35 L56 40 L0 40 Z" fill="#1c2b1f"/>
+              <circle cx="14" cy="40" r="5" fill="#0a0a0a"/>
+              <circle cx="50" cy="40" r="5" fill="#0a0a0a"/>
+            </svg>
+          </div>
+          <div class="sim-info">
+            <div class="sim-name">2020 Tacoma TRD Pro · "Cinder"</div>
+            <div class="sim-meta">@trail_dust · 38 mods · 92K mi</div>
+            <div class="sim-status listed">● LISTED · $52,400</div>
+          </div>
+        </a>
+
+        <a href="#" class="sim-row">
+          <div class="sim-thumb tan">
+            <svg viewBox="0 0 64 48" preserveAspectRatio="none">
+              <path d="M0 35 L8 28 L16 24 L48 24 L56 35 L56 40 L0 40 Z" fill="#5c4a30"/>
+              <circle cx="14" cy="40" r="5" fill="#0a0a0a"/>
+              <circle cx="50" cy="40" r="5" fill="#0a0a0a"/>
+            </svg>
+          </div>
+          <div class="sim-info">
+            <div class="sim-name">2019 Tacoma SR5 · "Coyote"</div>
+            <div class="sim-meta">@coyotegone · 31 mods · 68K mi</div>
+            <div class="sim-status">DAILY DRIVER</div>
+          </div>
+        </a>
+
+        <a href="#" class="sim-row">
+          <div class="sim-thumb gray">
+            <svg viewBox="0 0 64 48" preserveAspectRatio="none">
+              <path d="M0 35 L8 28 L16 24 L48 24 L56 35 L56 40 L0 40 Z" fill="#3d4248"/>
+              <circle cx="14" cy="40" r="5" fill="#0a0a0a"/>
+              <circle cx="50" cy="40" r="5" fill="#0a0a0a"/>
+            </svg>
+          </div>
+          <div class="sim-info">
+            <div class="sim-name">2017 Tacoma TRD Off-Road</div>
+            <div class="sim-meta">@silvercurve · 26 mods · 110K mi</div>
+            <div class="sim-status">PROJECT BUILD</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- SPONSOR -->
+    <div style="background: var(--mist); border: 1px solid var(--border); border-radius: 6px; padding: 20px;">
+      <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--stone); margin-bottom: 8px;">SPONSORED · CBI OFFROAD</div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--forest); line-height: 1.1;">SHOP MARCUS' BUMPERS</div>
+      <p style="font-size: 13px; color: var(--stone); margin-top: 8px; line-height: 1.5;">CBI Covert series — same bumper Marcus runs. Code <strong>OVERLAND15</strong> for 15% off.</p>
+      <a href="#" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--rust); font-weight: 700; text-decoration: none;">Shop CBI →</a>
+    </div>
+
+  </aside>
+
+</section>
+
+<footer>© 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED</footer>
+
+</body>
+</html>

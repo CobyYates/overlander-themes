@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Rim Trail · Trip Journal · OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --water: #366ba5;
+  --water-light: rgba(54,107,165,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+}
+.nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px; font-size: 13px !important;
+}
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* HERO IMAGE */
+.hero {
+  margin-top: 72px;
+  height: 540px;
+  position: relative;
+  background:
+    linear-gradient(180deg, transparent 30%, rgba(28,43,31,0.85) 100%),
+    radial-gradient(circle at 50% 30%, #c47e5b 0%, transparent 60%),
+    linear-gradient(140deg, #8a4f3a 0%, #5c3424 60%, #2a1810 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse at 70% 50%, rgba(196,91,40,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.4) 0%, transparent 50%);
+}
+.hero svg.layers {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  width: 100%; height: 70%;
+}
+.hero-content {
+  position: absolute;
+  bottom: 48px; left: 0; right: 0;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 48px;
+  color: var(--white);
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 16px;
+}
+.hero-eyebrow .breadcrumb { color: rgba(255,255,255,0.5); }
+.hero-eyebrow .breadcrumb a { color: rgba(255,255,255,0.75); text-decoration: none; }
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 88px; letter-spacing: 3px; line-height: 0.92;
+}
+.hero-byline {
+  display: flex; align-items: center; gap: 24px;
+  margin-top: 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  flex-wrap: wrap;
+}
+.hero-byline strong { color: var(--white); }
+.byline-author {
+  display: flex; align-items: center; gap: 10px;
+}
+.author-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #C45B28, #8a3a1a);
+  color: var(--white); font-weight: 700; font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ARTICLE CONTAINER */
+.article {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  position: relative;
+}
+@media (max-width: 920px) {
+  .article { grid-template-columns: 1fr; }
+  .stats-rail { position: static !important; }
+}
+
+/* LEFT STATS RAIL — sticky */
+.stats-rail {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  padding-top: 56px;
+}
+.stat-block {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.stat-block:last-child { border-bottom: none; }
+.stat-block-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+  margin-bottom: 8px;
+}
+.stat-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1;
+}
+.stat-sub {
+  font-size: 13px; color: var(--stone); margin-top: 4px;
+}
+.stat-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 6px 0;
+  font-size: 13px;
+}
+.stat-row + .stat-row { border-top: 1px dashed var(--border); }
+.stat-row-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+}
+.stat-row-val { font-weight: 600; color: var(--forest); }
+.diff-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+.diff-badge.mod { background: var(--gold-light); color: var(--gold); }
+.rig-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px;
+  background: var(--mist);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--forest);
+  margin-top: 8px;
+}
+.rig-link:hover { background: var(--fog); }
+.rig-thumb {
+  width: 40px; height: 32px;
+  background: linear-gradient(135deg, #4d6b52, #1c2b1f);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.rig-link-name { font-weight: 600; font-size: 13px; }
+.rig-link-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone);
+}
+
+.act-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.btn-rail {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--white);
+  color: var(--forest);
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  text-decoration: none;
+}
+.btn-rail:hover { border-color: var(--forest); }
+.btn-rail.primary { background: var(--rust); color: var(--white); border-color: var(--rust); }
+.btn-rail.primary:hover { background: var(--rust-hover); }
+.btn-rail svg { width: 12px; height: 12px; }
+
+/* MAIN CONTENT */
+.content {
+  padding-top: 56px;
+  max-width: 720px;
+}
+
+/* INTRO */
+.intro {
+  font-family: 'Lora', serif;
+  font-size: 21px; line-height: 1.6;
+  color: var(--forest);
+  margin-bottom: 48px;
+  font-weight: 500;
+}
+.intro::first-letter {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  float: left;
+  line-height: 0.85;
+  margin: 6px 12px 0 0;
+  color: var(--rust);
+  letter-spacing: 1px;
+}
+
+/* MAP CARD inline */
+.inline-map {
+  height: 320px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 56px;
+  position: relative;
+  background: linear-gradient(180deg, #d8dbcf 0%, #c2c8b5 60%, #a8b09a 100%);
+  border: 1px solid var(--border);
+}
+.inline-map svg { width: 100%; height: 100%; display: block; }
+.inline-map-cta {
+  position: absolute; bottom: 16px; right: 16px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 3px;
+  color: var(--forest);
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.inline-map-cta svg { width: 11px; height: 11px; }
+
+/* DAY SECTIONS */
+.day-section { margin-bottom: 64px; }
+.day-header {
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--rust);
+}
+.day-num-block {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 1.5px;
+  color: var(--rust); line-height: 1;
+}
+.day-info { flex: 1; }
+.day-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.day-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+.day-meta strong { color: var(--forest); }
+
+.day-prose {
+  font-family: 'Lora', serif;
+  font-size: 17px; line-height: 1.75;
+  color: var(--forest);
+  margin-bottom: 24px;
+}
+.day-prose p + p { margin-top: 16px; }
+.day-prose em { color: var(--stone); }
+
+/* PHOTO GALLERY */
+.photo-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 8px;
+  margin: 28px 0;
+  height: 360px;
+}
+.photo-grid-tall { grid-template-columns: 1fr 1fr; height: 280px; }
+.photo {
+  background: var(--mist);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.photo svg { width: 100%; height: 100%; display: block; }
+.photo-grid > .photo:nth-child(2) {
+  display: grid; grid-template-rows: 1fr 1fr; gap: 8px;
+  background: transparent;
+}
+.photo-grid > .photo:nth-child(2) > div {
+  background: var(--mist);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.photo-caption {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+  text-align: center;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* CONDITION REPORT */
+.condition-card {
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 22px 28px;
+  margin: 28px 0;
+}
+.condition-head {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); font-weight: 700;
+  margin-bottom: 12px;
+}
+.condition-head svg { width: 14px; height: 14px; }
+.condition-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+  margin-bottom: 8px;
+}
+.condition-body {
+  font-size: 14px; color: var(--stone); line-height: 1.6;
+}
+.condition-meta {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+}
+.condition-meta strong { color: var(--forest); }
+
+/* WAYPOINT NOTE */
+.wp-note {
+  display: flex; gap: 16px;
+  padding: 18px 22px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin: 24px 0;
+}
+.wp-note-marker {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.wp-note-marker.water { border-color: var(--water); color: var(--water); }
+.wp-note-marker.gas { border-color: var(--pine); color: var(--pine); }
+.wp-note-content { flex: 1; }
+.wp-note-title {
+  font-weight: 700; font-size: 15px; color: var(--forest);
+}
+.wp-note-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.wp-note-body { font-size: 14px; line-height: 1.6; margin-top: 10px; color: var(--forest); }
+
+/* PULL QUOTE */
+.pull-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 1.5px;
+  line-height: 1.1;
+  color: var(--forest);
+  border-left: 3px solid var(--rust);
+  padding: 12px 0 12px 28px;
+  margin: 40px 0;
+}
+.pull-quote-cite {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+  display: block; margin-top: 12px;
+}
+
+/* LESSONS */
+.lessons {
+  background: var(--forest);
+  color: var(--white);
+  border-radius: 6px;
+  padding: 36px 40px;
+  margin: 56px 0;
+  position: relative;
+  overflow: hidden;
+}
+.lessons::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 90% 20%, rgba(196,91,40,0.18) 0%, transparent 60%);
+}
+.lessons-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 12px;
+  position: relative;
+}
+.lessons-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 2px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.lessons-list {
+  list-style: none; position: relative;
+}
+.lessons-list li {
+  padding: 14px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex; gap: 14px;
+  font-size: 15px; line-height: 1.5;
+}
+.lessons-list li:first-child { border-top: none; }
+.lesson-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; color: var(--rust);
+  letter-spacing: 1px;
+  width: 32px; flex-shrink: 0;
+}
+
+/* COMMENTS */
+.comments-section {
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+  margin-top: 40px;
+}
+.comments-head {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1.5px;
+  color: var(--forest);
+  margin-bottom: 20px;
+}
+.comment {
+  display: flex; gap: 14px; margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.comment:last-child { border-bottom: none; }
+.comment-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  color: var(--white); font-weight: 700; font-size: 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.comment-avatar.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.comment-body { flex: 1; }
+.comment-author {
+  font-weight: 700; color: var(--forest);
+  display: flex; align-items: center; gap: 8px;
+}
+.comment-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.comment-text { font-size: 14px; line-height: 1.6; margin-top: 6px; }
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="layers" viewBox="0 0 1440 600" preserveAspectRatio="none">
+    <!-- distant mesa silhouettes -->
+    <path d="M0 380 L90 320 L180 360 L260 280 L380 320 L500 240 L650 290 L780 220 L900 270 L1050 200 L1200 260 L1320 230 L1440 250 L1440 600 L0 600 Z"
+          fill="rgba(28,43,31,0.3)"/>
+    <path d="M0 460 L120 400 L240 440 L380 380 L520 420 L680 360 L820 400 L960 350 L1100 390 L1260 360 L1440 380 L1440 600 L0 600 Z"
+          fill="rgba(28,43,31,0.55)"/>
+    <path d="M0 530 L160 490 L320 520 L500 470 L680 510 L880 470 L1080 500 L1280 460 L1440 490 L1440 600 L0 600 Z"
+          fill="rgba(28,43,31,0.85)"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="breadcrumb"><a href="#">Trips</a> · <a href="#">Trip Journal</a> ·</span> Solo Run
+    </div>
+    <h1 class="hero-title">WHITE RIM<br>TRAIL · 2 DAYS</h1>
+    <div class="hero-byline">
+      <div class="byline-author">
+        <div class="author-avatar">MR</div>
+        <span><strong>Marcus Reyes</strong></span>
+      </div>
+      <span><strong>April 12–13, 2026</strong></span>
+      <span><strong>Canyonlands NP</strong> · UT</span>
+      <span><strong>102 mi</strong></span>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE -->
+<article class="article">
+
+  <!-- LEFT RAIL -->
+  <aside class="stats-rail">
+
+    <div class="stat-block">
+      <div class="stat-block-label">Trip Stats</div>
+      <div class="stat-big">102.4</div>
+      <div class="stat-sub">total miles</div>
+    </div>
+
+    <div class="stat-block">
+      <div class="stat-row">
+        <span class="stat-row-key">Days</span>
+        <span class="stat-row-val">2</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-key">Drive Time</span>
+        <span class="stat-row-val">14h 20m</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-key">Highest Pt</span>
+        <span class="stat-row-val">5,840 ft</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-key">Lowest Pt</span>
+        <span class="stat-row-val">3,950 ft</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-row-key">Permit</span>
+        <span class="stat-row-val">Yes · BLM</span>
+      </div>
+    </div>
+
+    <div class="stat-block">
+      <div class="stat-block-label">Difficulty</div>
+      <span class="diff-badge mod">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><path d="M3 18l5-9 4 6 3-3 6 6"/></svg>
+        Moderate
+      </span>
+    </div>
+
+    <div class="stat-block">
+      <div class="stat-block-label">The Rig</div>
+      <a href="#" class="rig-link">
+        <div class="rig-thumb"></div>
+        <div>
+          <div class="rig-link-name">'18 Tacoma TRD</div>
+          <div class="rig-link-sub">86,400 mi</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="stat-block">
+      <div class="stat-block-label">Visibility</div>
+      <div class="stat-row" style="padding: 0;">
+        <span class="stat-row-key">Public</span>
+        <span class="stat-row-val">●</span>
+      </div>
+    </div>
+
+    <div class="act-buttons">
+      <a href="#" class="btn-rail primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download GPX
+      </a>
+      <a href="#" class="btn-rail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Share
+      </a>
+      <a href="#" class="btn-rail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M4 12h16"/></svg>
+        Use as Template
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+
+    <p class="intro">
+      Two days, one truck, a hundred and two miles of canyon edge — and the kind of weather that makes you grateful for windshield wipers and second-guess your lift kit. Here's how it actually went, and what I'd do differently next time.
+    </p>
+
+    <!-- INLINE MAP -->
+    <div class="inline-map">
+      <svg viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="g2" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(28,43,31,0.06)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="800" height="320" fill="url(#g2)"/>
+        <!-- Canyon shape -->
+        <path d="M0 100 Q200 60 400 100 T800 80 L800 180 Q600 220 400 180 T0 200 Z" fill="rgba(196,168,125,0.4)"/>
+        <path d="M50 250 Q300 200 500 230 T800 250 L800 290 L0 280 L0 240 Z" fill="rgba(138,145,129,0.4)"/>
+        <!-- river -->
+        <path d="M0 180 Q200 220 400 180 T800 160" fill="none" stroke="#366ba5" stroke-width="2.5" opacity="0.5"/>
+        <!-- ROUTE - figure 8 ish loop -->
+        <path d="M120 200 Q180 170 240 180 Q320 190 380 150 Q450 110 540 130 Q620 150 680 200 Q700 230 660 250 Q580 260 500 240 Q400 220 320 240 Q220 250 160 230 Q120 220 120 200 Z"
+              fill="none" stroke="rgba(196,91,40,0.25)" stroke-width="9" stroke-linecap="round"/>
+        <path d="M120 200 Q180 170 240 180 Q320 190 380 150 Q450 110 540 130 Q620 150 680 200 Q700 230 660 250 Q580 260 500 240 Q400 220 320 240 Q220 250 160 230 Q120 220 120 200 Z"
+              fill="none" stroke="#C45B28" stroke-width="3" stroke-linecap="round"/>
+        <!-- Markers -->
+        <g transform="translate(120, 200)">
+          <circle r="11" fill="#3D6B4F" stroke="#fff" stroke-width="2.5"/>
+          <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#fff">A</text>
+        </g>
+        <g transform="translate(380, 150)">
+          <circle r="10" fill="#fff" stroke="#1c2b1f" stroke-width="2"/>
+          <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f">B</text>
+        </g>
+        <g transform="translate(540, 130)">
+          <circle r="11" fill="#fff" stroke="#B8960C" stroke-width="2.5"/>
+          <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#B8960C">C</text>
+        </g>
+        <g transform="translate(680, 200)">
+          <circle r="10" fill="#fff" stroke="#1c2b1f" stroke-width="2"/>
+          <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f">D</text>
+        </g>
+      </svg>
+      <a href="#" class="inline-map-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        Open Full Map
+      </a>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-section">
+      <div class="day-header">
+        <div class="day-num-block">D1</div>
+        <div class="day-info">
+          <div class="day-name">SHAFER TRAIL → MURPHY HOGBACK</div>
+          <div class="day-meta"><strong>54 miles</strong> · 8h drive · Murphy A camp</div>
+        </div>
+      </div>
+
+      <div class="day-prose">
+        <p>Aired down to 22 PSI at the Shafer Trail trailhead by 7:30. Cool morning, maybe 48°F, sky clear enough to lie about. The descent into the canyon is the part everyone talks about — fourteen switchbacks dropping fifteen hundred feet, with a sheer wall on one side and a thousand feet of nothing on the other. It's wider than it looks in photos. It's also a lot longer.</p>
+        <p>By 11 I was at Musselman Arch, which I'd planned to skip and ended up spending forty minutes at. The trail across the top of the arch is maybe ten feet wide with a six-hundred-foot drop on either side. I did not drive across it. The two guys in the Wrangler ahead of me did, slowly, and I watched their reverse lights flicker the whole way.</p>
+      </div>
+
+      <!-- PHOTO GRID -->
+      <div class="photo-grid">
+        <div class="photo">
+          <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="ph1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c47e5b"/>
+                <stop offset="100%" stop-color="#5c3424"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="360" fill="url(#ph1)"/>
+            <path d="M0 220 L80 180 L160 200 L240 160 L320 190 L400 150 L480 180 L560 140 L600 160 L600 360 L0 360 Z" fill="rgba(0,0,0,0.4)"/>
+            <path d="M0 280 L120 250 L240 270 L380 240 L500 270 L600 250 L600 360 L0 360 Z" fill="rgba(0,0,0,0.6)"/>
+            <circle cx="450" cy="80" r="40" fill="rgba(255,220,180,0.6)"/>
+          </svg>
+        </div>
+        <div class="photo">
+          <div>
+            <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice">
+              <rect width="300" height="170" fill="#8a6f4a"/>
+              <rect x="0" y="100" width="300" height="70" fill="#5c4a30"/>
+              <path d="M40 110 L80 60 L120 110 Z" fill="#3a2818"/>
+              <path d="M120 110 L180 50 L240 110 Z" fill="#4d3520"/>
+            </svg>
+          </div>
+          <div>
+            <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice">
+              <rect width="300" height="170" fill="#a8b09a"/>
+              <rect x="0" y="120" width="300" height="50" fill="#3D6B4F"/>
+              <rect x="80" y="60" width="140" height="60" fill="#1c2b1f" rx="4"/>
+              <rect x="100" y="80" width="100" height="20" fill="rgba(255,255,255,0.15)"/>
+              <circle cx="100" cy="120" r="10" fill="#0a0a0a"/>
+              <circle cx="200" cy="120" r="10" fill="#0a0a0a"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-prose">
+        <p>The middle section between Musselman and White Crack is where the trail earns its name — the rim of the canyon, sometimes literally six feet from your driver's window, with the Green River two thousand feet below. It is the most exposed driving I've done. I made coffee at White Crack at 1pm, ate two sandwiches, and didn't speak to another human for three hours.</p>
+      </div>
+
+      <!-- WAYPOINT NOTE -->
+      <div class="wp-note">
+        <div class="wp-note-marker">B</div>
+        <div class="wp-note-content">
+          <div class="wp-note-title">White Crack Camp Access</div>
+          <div class="wp-note-meta">Mile 32 · Established camp · Permit required</div>
+          <div class="wp-note-body">Side trail off the main route. About 1.5 miles in, all of it on slickrock. Beautiful spot but not worth it as a drive-by — you'd want to be camping here. The pit toilet is in surprisingly good shape.</div>
+        </div>
+      </div>
+
+      <div class="day-prose">
+        <p>Murphy Hogback at sunset is the photograph that sells the trip. I rolled into Murphy A around 6:45 with maybe forty minutes of usable light left. Set up the rooftop tent in twelve minutes — fastest deploy I've done — and was sitting on the cooler with a beer by 7:15. The light moved from gold to copper to bruise-purple in about ten minutes.</p>
+      </div>
+
+      <!-- CONDITION REPORT -->
+      <div class="condition-card">
+        <div class="condition-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
+          TRAIL CONDITION REPORT
+        </div>
+        <div class="condition-title">SHAFER SWITCHBACKS · GRADED, GOOD CONDITION</div>
+        <div class="condition-body">Recent grading (within the last 30 days judging by the surface). No major washouts. Two minor rockslides on the wall side of switchback 9 and 11 — easy to spot, plenty of room to go around. Drainage cuts are sharp; take them at an angle.</div>
+        <div class="condition-meta">
+          <span><strong>Logged:</strong> Apr 12, 8:15 AM</span>
+          <span><strong>Vehicle:</strong> Mid-size truck, 33s</span>
+          <span><strong>Posted to:</strong> Public Trail Intel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PULL QUOTE -->
+    <blockquote class="pull-quote">
+      "Murphy Hogback at sunset is the photograph that sells the trip. The light moved from gold to copper to bruise-purple in about ten minutes."
+      <cite class="pull-quote-cite">— Day One, 6:45 PM</cite>
+    </blockquote>
+
+    <!-- DAY 2 -->
+    <div class="day-section">
+      <div class="day-header">
+        <div class="day-num-block">D2</div>
+        <div class="day-info">
+          <div class="day-name">MURPHY HOGBACK → MINERAL BOTTOM EXIT</div>
+          <div class="day-meta"><strong>48 miles</strong> · 6h drive · Mineral Bottom Road exit</div>
+        </div>
+      </div>
+
+      <div class="day-prose">
+        <p>Storm rolled through overnight. Heard the first thunder at 2:14 AM and the first rain at 2:22. The Roofnest is dry as a bone — first real rain test and I have nothing bad to say. The thing I did <em>not</em> account for was how loud heavy rain on hardshell fiberglass actually is. I slept maybe three more hours.</p>
+        <p>Morning was overcast, with the kind of low ceiling that makes everything look closer than it is. The descent off Murphy is steep and twisty and it was wet. Crawled it in low range, didn't touch the brakes more than I had to. By the time I hit the river bottom at Hardscrabble it was clear again and warming up fast.</p>
+      </div>
+
+      <!-- WP NOTE WATER -->
+      <div class="wp-note">
+        <div class="wp-note-marker water">C</div>
+        <div class="wp-note-content">
+          <div class="wp-note-title">Hardscrabble Bottom · Green River Access</div>
+          <div class="wp-note-meta">Mile 71 · Water available · Filter required</div>
+          <div class="wp-note-body">The river is silty as expected. Pre-filter through a coffee filter then run it through a Sawyer or similar. Plenty of room to pull off and get to the water — don't drive on the riparian banks, there are tire ruts here from people who did and it looks bad.</div>
+        </div>
+      </div>
+
+      <div class="day-prose">
+        <p>Mineral Bottom Road on the exit is its own thing entirely — a series of switchbacks back up out of the canyon to the rim. After two days of canyon-edge driving, going <em>up</em> the cliff felt almost backward. Aired up at the top by 3:30 PM, made it to Moab by 4:15, ate a burger that was probably mediocre but tasted incredible.</p>
+      </div>
+    </div>
+
+    <!-- LESSONS -->
+    <div class="lessons">
+      <div class="lessons-eyebrow">Notes For Next Time</div>
+      <h3 class="lessons-title">WHAT I LEARNED</h3>
+      <ol class="lessons-list">
+        <li><span class="lesson-num">01</span><span><strong>Bring more water than you think.</strong> I brought 5 gallons, used 4. If anything went sideways and I was out there an extra night, I'd have been counting drops.</span></li>
+        <li><span class="lesson-num">02</span><span><strong>The Roofnest passes the rain test, but earplugs.</strong> Heavy rain on hardshell is loud. Pack the foam earplugs from the recovery kit.</span></li>
+        <li><span class="lesson-num">03</span><span><strong>Don't underestimate the time at viewpoints.</strong> I planned 8 hours of driving Day 1. It was 8 hours of driving plus 3 hours of stopping for photos and snacks. Realistic budget is 11.</span></li>
+        <li><span class="lesson-num">04</span><span><strong>Reservations the day-of are not a thing.</strong> Glad I booked Murphy A weeks out. The other camps were fully booked at the kiosk on Day 1.</span></li>
+      </ol>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="comments-section">
+      <h3 class="comments-head">3 COMMENTS</h3>
+
+      <div class="comment">
+        <div class="comment-avatar">JM</div>
+        <div class="comment-body">
+          <div class="comment-author">Jay Mendez <span class="comment-time">2 days ago</span></div>
+          <div class="comment-text">That photo at Murphy is exactly why I keep saying I need to do this trip. Question — did you do the lower or upper Murphy camp? I've been told upper has the better sunset but lower is easier to set up.</div>
+        </div>
+      </div>
+
+      <div class="comment">
+        <div class="comment-avatar tan">PW</div>
+        <div class="comment-body">
+          <div class="comment-author">Pat Weber <span class="comment-time">3 days ago</span></div>
+          <div class="comment-text">Good call on the airdown to 22. I went 18 last spring and beat my sidewalls up on the Shafer drainage cuts. 22 is the sweet spot for that surface.</div>
+        </div>
+      </div>
+
+      <div class="comment">
+        <div class="comment-avatar">SL</div>
+        <div class="comment-body">
+          <div class="comment-author">Sarah Liu <span class="comment-time">4 days ago</span></div>
+          <div class="comment-text">Saving this for our August run. Thank you for the trail report on the Shafer — that's exactly the kind of detail you can never get from the BLM website.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<footer>
+  © 2026 OVERLANDHUB · TRIP JOURNAL · BUILT BY OVERLANDERS
+</footer>
+
+</body>
+</html>
