@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcus Reyes — Profile & Garage | OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --pine-soft: #4A7D5E;
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--pine); }
+.nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ── BANNER / HERO ── */
+.banner {
+  margin-top: 72px;
+  height: 320px;
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(28,43,31,0.25) 0%, rgba(28,43,31,0.7) 100%),
+    linear-gradient(120deg, #2a4a3a 0%, #4d6b52 40%, #8a9c7a 100%);
+  overflow: hidden;
+}
+.banner::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 60%, rgba(255,255,255,0.06) 0%, transparent 30%),
+    radial-gradient(circle at 75% 30%, rgba(196,91,40,0.12) 0%, transparent 40%);
+}
+.banner svg.terrain {
+  position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 200px;
+  opacity: 0.4;
+}
+
+/* profile header — sits over banner */
+.profile-header {
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+}
+.profile-meta {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  gap: 32px;
+  align-items: end;
+  margin-top: -90px;
+  position: relative;
+  z-index: 5;
+}
+.avatar-large {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C45B28 0%, #8a3a1a 100%);
+  border: 5px solid var(--white);
+  box-shadow: 0 8px 24px rgba(28,43,31,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px; color: var(--white);
+  letter-spacing: 2px;
+}
+.profile-info { padding-bottom: 14px; }
+.profile-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px; line-height: 1; letter-spacing: 2px;
+  color: var(--white);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.profile-handle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  margin-top: 6px;
+}
+.profile-actions {
+  display: flex; gap: 10px; padding-bottom: 14px;
+}
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 12px 22px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover { border-color: var(--forest); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
+
+/* below-header strip: bio, location, social, stats */
+.profile-strip {
+  max-width: 1280px; margin: 0 auto;
+  padding: 28px 48px 0;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.profile-strip > div:first-child { /* spacer aligning under avatar */ }
+.profile-detail {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.profile-bio {
+  font-size: 16px; color: var(--stone); line-height: 1.6;
+  max-width: 720px;
+}
+.profile-tags {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+}
+.tag-meta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+}
+.tag-meta svg { width: 14px; height: 14px; }
+.dot-sep { width: 4px; height: 4px; background: var(--border-strong); border-radius: 50%; }
+.social-links { display: flex; gap: 8px; margin-left: auto; padding-right: 0; }
+.social-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  color: var(--stone);
+  text-decoration: none;
+  transition: all 0.25s;
+}
+.social-icon:hover { color: var(--pine); border-color: var(--pine); }
+.social-icon svg { width: 16px; height: 16px; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  max-width: 1280px; margin: 36px auto 0;
+  padding: 0 48px;
+}
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--mist);
+  border-left: 3px solid var(--rust);
+  padding: 24px 0;
+}
+.stat-item {
+  text-align: center;
+  border-right: 1px solid var(--border);
+  padding: 4px 16px;
+}
+.stat-item:last-child { border-right: none; }
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: 1px;
+  color: var(--forest); line-height: 1;
+}
+.stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); margin-top: 6px;
+}
+
+/* ── MAIN GRID ── */
+.page {
+  max-width: 1280px; margin: 0 auto;
+  padding: 56px 48px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+}
+@media (max-width: 980px) { .page { grid-template-columns: 1fr; } }
+
+/* section heads */
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title-block { display: flex; flex-direction: column; gap: 4px; }
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 2px;
+  color: var(--forest); line-height: 1;
+}
+.section-action {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--pine);
+  text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.25s, color 0.25s;
+}
+.section-action:hover { gap: 10px; color: var(--forest); }
+
+/* ── GARAGE ── */
+.garage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 720px) { .garage-grid { grid-template-columns: 1fr; } }
+
+.rig-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.3s;
+  display: flex; flex-direction: column;
+}
+.rig-card:hover {
+  border-color: var(--pine-border);
+  box-shadow: 0 8px 24px rgba(28,43,31,0.08);
+  transform: translateY(-2px);
+}
+.rig-image {
+  height: 200px;
+  background: linear-gradient(135deg, #4d6b52 0%, #2a4a3a 60%, #1c2b1f 100%);
+  position: relative;
+  overflow: hidden;
+}
+.rig-image.tan {
+  background: linear-gradient(135deg, #b89968 0%, #8a6f4a 60%, #5c4a30 100%);
+}
+.rig-image::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 70% 40%, rgba(255,255,255,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(0,0,0,0.2) 0%, transparent 50%);
+}
+.rig-image svg {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  width: 60%; height: auto; opacity: 0.92;
+}
+.rig-status {
+  position: absolute; top: 14px; left: 14px;
+  background: rgba(28,43,31,0.85);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 3px;
+  backdrop-filter: blur(8px);
+}
+.rig-status.listed {
+  background: var(--rust);
+}
+.rig-fav {
+  position: absolute; top: 14px; right: 14px;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--stone);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.rig-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+.rig-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.rig-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+.rig-mods {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0;
+}
+.mod-pill {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--pine);
+  background: var(--pine-light);
+  border: 1px solid var(--pine-border);
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.mod-pill.more { background: transparent; border-color: var(--border); color: var(--stone); }
+.rig-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin-top: auto;
+}
+.rig-stat { text-align: center; border-right: 1px solid var(--border); }
+.rig-stat:last-child { border-right: none; }
+.rig-stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 16px; color: var(--forest);
+}
+.rig-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.rig-actions {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 16px;
+}
+.btn-sm {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 10px 14px;
+  border: none; border-radius: 4px;
+  cursor: pointer;
+  text-align: center; text-decoration: none;
+  transition: all 0.25s;
+}
+.btn-list-sale {
+  background: var(--rust); color: var(--white);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-list-sale:hover { background: var(--rust-hover); }
+.btn-list-sale.active {
+  background: var(--mist);
+  color: var(--rust);
+  border: 1px solid var(--rust-border);
+}
+.btn-list-sale svg { width: 14px; height: 14px; }
+.btn-view {
+  background: transparent;
+  color: var(--forest);
+  border: 1px solid var(--border-strong);
+}
+.btn-view:hover { border-color: var(--forest); }
+
+/* "add a rig" tile */
+.add-rig {
+  background: var(--mist);
+  border: 2px dashed var(--border-strong);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  min-height: 380px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none; color: var(--stone);
+}
+.add-rig:hover {
+  border-color: var(--rust);
+  background: var(--rust-light);
+  color: var(--rust);
+}
+.add-rig svg { width: 32px; height: 32px; }
+.add-rig-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px;
+}
+
+/* ── ACTIVITY (right column) ── */
+.activity-section { display: flex; flex-direction: column; gap: 32px; }
+.activity-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.activity-head {
+  background: var(--forest);
+  color: var(--white);
+  padding: 14px 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 2px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.activity-list { padding: 4px 0; }
+.activity-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  display: flex; gap: 12px;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--pine-light);
+  color: var(--pine);
+  flex-shrink: 0;
+}
+.activity-icon.rust { background: var(--rust-light); color: var(--rust); }
+.activity-icon.gold { background: var(--gold-light); color: var(--gold); }
+.activity-icon svg { width: 14px; height: 14px; }
+.activity-text { flex: 1; line-height: 1.4; color: var(--forest); }
+.activity-text strong { font-weight: 700; }
+.activity-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+
+/* sponsor card */
+.sponsor-card {
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+}
+.sponsor-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 12px;
+}
+.sponsor-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.sponsor-body {
+  font-size: 13px; color: var(--stone); margin-top: 10px; line-height: 1.5;
+}
+.sponsor-cta {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  text-decoration: none;
+}
+.sponsor-disclosure {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 14px; opacity: 0.7;
+}
+
+/* trips strip */
+.trips-strip { display: flex; flex-direction: column; gap: 12px; padding: 16px 20px; }
+.trip-line {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.trip-line:last-child { border-bottom: none; }
+.trip-marker {
+  width: 36px; height: 36px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #4d6b52, #2a4a3a);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+}
+.trip-marker.rust { background: linear-gradient(135deg, #C45B28, #8a3a1a); }
+.trip-marker.tan { background: linear-gradient(135deg, #b89968, #8a6f4a); }
+.trip-marker svg { width: 14px; height: 14px; }
+.trip-content { flex: 1; }
+.trip-name {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+}
+.trip-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+
+/* ── LISTING CONVERSION CALLOUT ── */
+.callout {
+  margin: 56px auto 0;
+  max-width: 1280px;
+  padding: 0 48px;
+}
+.callout-inner {
+  background: var(--forest);
+  color: var(--white);
+  border-radius: 6px;
+  padding: 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.callout-inner::before {
+  content: ''; position: absolute; top: 0; right: 0; bottom: 0;
+  width: 50%;
+  background-image:
+    radial-gradient(circle at 80% 30%, rgba(196,91,40,0.18) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(61,107,79,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.callout-content { position: relative; z-index: 1; }
+.callout-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 12px;
+}
+.callout-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px; letter-spacing: 2px; line-height: 1.1;
+}
+.callout-body {
+  font-size: 16px; color: rgba(255,255,255,0.75);
+  margin-top: 14px; max-width: 540px; line-height: 1.6;
+}
+.callout-cta { position: relative; z-index: 1; }
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#" class="active">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<section class="banner">
+  <svg class="terrain" viewBox="0 0 1440 200" preserveAspectRatio="none">
+    <path d="M0 200 L0 130 L120 80 L260 110 L380 60 L520 90 L640 50 L780 95 L900 70 L1040 100 L1180 60 L1320 90 L1440 70 L1440 200 Z" fill="rgba(28,43,31,0.4)"/>
+    <path d="M0 200 L0 160 L140 120 L290 140 L420 100 L580 130 L720 90 L860 130 L1000 110 L1140 140 L1280 100 L1440 130 L1440 200 Z" fill="rgba(28,43,31,0.6)"/>
+  </svg>
+</section>
+
+<div class="profile-header">
+  <div class="profile-meta">
+    <div class="avatar-large">MR</div>
+    <div class="profile-info">
+      <h1 class="profile-name">MARCUS REYES</h1>
+      <div class="profile-handle">@desert_runner_4x4 · Member since 2022</div>
+    </div>
+    <div class="profile-actions">
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+        Follow
+      </button>
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Message
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-strip">
+  <div></div>
+  <div class="profile-detail">
+    <p class="profile-bio">
+      Solo overlander running the Western Rim and Mojave loops. Built my Tacoma over four years
+      from a base trade-in to a fully kitted expedition rig. Always happy to share trail intel,
+      gear feedback, or a coffee at camp.
+    </p>
+    <div class="profile-tags">
+      <span class="tag-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Flagstaff, AZ
+      </span>
+      <span class="dot-sep"></span>
+      <span class="tag-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        47 Trails Logged
+      </span>
+      <span class="dot-sep"></span>
+      <span class="tag-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
+        Trip Reports · 12
+      </span>
+      <div class="social-links">
+        <a class="social-icon" href="#" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1112.6 8 4 4 0 0116 11.4zM17.5 6.5h.01"/></svg>
+        </a>
+        <a class="social-icon" href="#" title="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.5 6.4a2.8 2.8 0 00-2-2C18.8 4 12 4 12 4s-6.8 0-8.5.4a2.8 2.8 0 00-2 2A29 29 0 001 12a29 29 0 00.5 5.6 2.8 2.8 0 002 2C5.2 20 12 20 12 20s6.8 0 8.5-.4a2.8 2.8 0 002-2A29 29 0 0023 12a29 29 0 00-.5-5.6z"/><path d="M9.75 15.02l5.75-3.27-5.75-3.27v6.54z" fill="currentColor"/></svg>
+        </a>
+        <a class="social-icon" href="#" title="Website">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </a>
+        <a class="social-icon" href="#" title="X">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Rigs in Garage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">47</div>
+      <div class="stat-label">Trails Logged</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">18,420</div>
+      <div class="stat-label">Trail Miles</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">214</div>
+      <div class="stat-label">Forum Posts</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">1.2K</div>
+      <div class="stat-label">Followers</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<section class="page">
+  <!-- LEFT: GARAGE -->
+  <div>
+    <div class="section-head">
+      <div class="section-title-block">
+        <div class="section-eyebrow">The Garage</div>
+        <h2 class="section-title">MARCUS' RIGS</h2>
+      </div>
+      <a href="#" class="section-action">+ Add a Rig</a>
+    </div>
+
+    <div class="garage-grid">
+
+      <!-- RIG 1 -->
+      <div class="rig-card">
+        <div class="rig-image">
+          <span class="rig-status listed">● LISTED FOR SALE</span>
+          <span class="rig-fav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </span>
+          <svg viewBox="0 0 200 100">
+            <path d="M20 70 L40 70 L50 50 L130 50 L140 70 L180 70 L180 80 L20 80 Z" fill="#1c2b1f" stroke="#fff" stroke-width="1.5"/>
+            <rect x="55" y="55" width="35" height="15" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1"/>
+            <rect x="95" y="55" width="35" height="15" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1"/>
+            <circle cx="50" cy="80" r="9" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="150" cy="80" r="9" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+            <rect x="40" y="38" width="100" height="14" fill="#C45B28" rx="2"/>
+          </svg>
+        </div>
+        <div class="rig-body">
+          <div class="rig-name">2018 TOYOTA TACOMA TRD</div>
+          <div class="rig-sub">Built · 4yrs Owned · 86K mi</div>
+          <div class="rig-mods">
+            <span class="mod-pill">Roofnest Falcon</span>
+            <span class="mod-pill">CBI Bumper</span>
+            <span class="mod-pill">Old Man Emu Lift</span>
+            <span class="mod-pill">35" KO2s</span>
+            <span class="mod-pill more">+8 more</span>
+          </div>
+          <div class="rig-stats">
+            <div class="rig-stat">
+              <div class="rig-stat-value">$48,500</div>
+              <div class="rig-stat-label">Asking</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">86,400</div>
+              <div class="rig-stat-label">Miles</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">14d</div>
+              <div class="rig-stat-label">Listed</div>
+            </div>
+          </div>
+          <div class="rig-actions">
+            <a href="#" class="btn-sm btn-list-sale active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Live in Listings
+            </a>
+            <a href="#" class="btn-sm btn-view">Manage</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIG 2 -->
+      <div class="rig-card">
+        <div class="rig-image tan">
+          <span class="rig-status">● Daily Driver</span>
+          <span class="rig-fav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </span>
+          <svg viewBox="0 0 200 100">
+            <path d="M20 70 L40 70 L48 48 L150 48 L160 70 L180 70 L180 80 L20 80 Z" fill="#3d2818" stroke="#fff" stroke-width="1.5"/>
+            <rect x="55" y="52" width="40" height="16" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="1"/>
+            <rect x="100" y="52" width="40" height="16" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="1"/>
+            <circle cx="50" cy="80" r="10" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="155" cy="80" r="10" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="rig-body">
+          <div class="rig-name">2021 LAND CRUISER 200</div>
+          <div class="rig-sub">Stock · 2yrs Owned · 42K mi</div>
+          <div class="rig-mods">
+            <span class="mod-pill">Stock</span>
+            <span class="mod-pill">Yakima Crossbars</span>
+            <span class="mod-pill">Maxtrax</span>
+          </div>
+          <div class="rig-stats">
+            <div class="rig-stat">
+              <div class="rig-stat-value">42,100</div>
+              <div class="rig-stat-label">Miles</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">3</div>
+              <div class="rig-stat-label">Mods</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">8</div>
+              <div class="rig-stat-label">Trips</div>
+            </div>
+          </div>
+          <div class="rig-actions">
+            <a href="#" class="btn-sm btn-list-sale">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              List for Sale
+            </a>
+            <a href="#" class="btn-sm btn-view">Manage</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIG 3 -->
+      <div class="rig-card">
+        <div class="rig-image">
+          <span class="rig-status">● Project Build</span>
+          <span class="rig-fav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </span>
+          <svg viewBox="0 0 200 100">
+            <path d="M30 70 L50 50 L150 50 L170 70 L170 80 L30 80 Z" fill="#1c2b1f" stroke="#fff" stroke-width="1.5"/>
+            <rect x="55" y="54" width="90" height="14" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="1"/>
+            <circle cx="55" cy="80" r="9" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="145" cy="80" r="9" fill="#0a0a0a" stroke="#fff" stroke-width="1.5"/>
+            <rect x="92" y="38" width="16" height="14" fill="#fff" stroke="#1c2b1f" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="rig-body">
+          <div class="rig-name">1992 LAND CRUISER FZJ80</div>
+          <div class="rig-sub">Restoring · 1yr Owned · 198K mi</div>
+          <div class="rig-mods">
+            <span class="mod-pill">3" Lift</span>
+            <span class="mod-pill">Slee Sliders</span>
+            <span class="mod-pill">ARB Front Bumper</span>
+            <span class="mod-pill">Warn 9.5 Winch</span>
+            <span class="mod-pill more">+5 more</span>
+          </div>
+          <div class="rig-stats">
+            <div class="rig-stat">
+              <div class="rig-stat-value">198,300</div>
+              <div class="rig-stat-label">Miles</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">9</div>
+              <div class="rig-stat-label">Mods</div>
+            </div>
+            <div class="rig-stat">
+              <div class="rig-stat-value">62</div>
+              <div class="rig-stat-label">Build Posts</div>
+            </div>
+          </div>
+          <div class="rig-actions">
+            <a href="#" class="btn-sm btn-list-sale">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              List for Sale
+            </a>
+            <a href="#" class="btn-sm btn-view">Manage</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD NEW RIG -->
+      <a href="#" class="add-rig">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        <div class="add-rig-text">ADD A RIG</div>
+        <div style="font-size: 13px; max-width: 220px; text-align: center; line-height: 1.4;">Document your build, log mods, and decide later if you want to list it for sale.</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: ACTIVITY + SPONSOR -->
+  <aside class="activity-section">
+
+    <div class="activity-card">
+      <div class="activity-head">
+        RECENT ACTIVITY
+        <span style="font-family: 'Barlow Condensed'; font-size: 11px; letter-spacing: 1.5px; opacity: 0.7;">LAST 30 DAYS</span>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon rust">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>
+          </div>
+          <div class="activity-text">
+            Listed <strong>2018 Tacoma TRD</strong> in classifieds
+            <div class="activity-time">2 weeks ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/></svg>
+          </div>
+          <div class="activity-text">
+            Replied in <strong>"35s vs 33s on 4Runner — daily driving"</strong>
+            <div class="activity-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="activity-text">
+            Logged <strong>White Rim Trail</strong> trip · 102 mi
+            <div class="activity-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="activity-text">
+            Reviewed <strong>Roofnest Falcon Pro</strong> — 5 stars
+            <div class="activity-time">3 weeks ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="activity-head">UPCOMING TRIPS</div>
+      <div class="trips-strip">
+        <div class="trip-line">
+          <div class="trip-marker rust">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="trip-content">
+            <div class="trip-name">Mojave Road Run</div>
+            <div class="trip-meta">May 9–12 · 4 going</div>
+          </div>
+        </div>
+        <div class="trip-line">
+          <div class="trip-marker">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="trip-content">
+            <div class="trip-name">Coyote Buttes Loop</div>
+            <div class="trip-meta">Jun 14–17 · solo</div>
+          </div>
+        </div>
+        <div class="trip-line">
+          <div class="trip-marker tan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="trip-content">
+            <div class="trip-name">Continental Divide Run</div>
+            <div class="trip-meta">Aug 2–14 · 6 going</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sponsor-card">
+      <div class="sponsor-tag">SPONSORED · CBI OFFROAD</div>
+      <div class="sponsor-title">SAVE 15% ON TACOMA BUMPERS</div>
+      <p class="sponsor-body">Built in Idaho. Trail-tested in your backyard. Code <strong>OVERLAND15</strong> at checkout.</p>
+      <a href="#" class="sponsor-cta">Shop CBI →</a>
+      <div class="sponsor-disclosure">Affiliate / Brand Partner</div>
+    </div>
+
+  </aside>
+</section>
+
+<!-- LISTING CONVERSION CALLOUT -->
+<section class="callout">
+  <div class="callout-inner">
+    <div class="callout-content">
+      <div class="callout-eyebrow">SELL IT WHEN YOU'RE READY</div>
+      <h2 class="callout-title">EVERY RIG IN YOUR GARAGE IS ONE TAP FROM A LISTING</h2>
+      <p class="callout-body">
+        Build it, document it, drive it. The day you decide to sell, your photos, mods, and miles
+        are already in place — listing takes a single button.
+      </p>
+    </div>
+    <div class="callout-cta">
+      <a href="#" class="btn btn-primary">+ Add a Rig</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED
+</footer>
+
+</body>
+</html>

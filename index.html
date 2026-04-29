@@ -161,6 +161,10 @@
     .preview-hub.journal::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(54,107,165,.14) 0%, transparent 70%); }
     .preview-hub.route::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0 49%, rgba(196,91,40,.5) 49% 51%, transparent 51% 100%), radial-gradient(circle at 20% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px), radial-gradient(circle at 80% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px); }
     .preview-hub.messages::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0 30%, rgba(28,43,31,.08) 30% 33%, transparent 33% 55%, rgba(28,43,31,.08) 55% 58%, transparent 58% 80%, rgba(196,91,40,.18) 80% 83%, transparent 83% 100%); }
+    .preview-hub.forums::after    { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 22px, rgba(28,43,31,.08) 22px 23px), linear-gradient(135deg, rgba(196,91,40,.12) 0%, transparent 55%); }
+    .preview-hub.garage           { background: #1C2B1F; color: #F4F5F0; border-bottom: 1px solid #2a3a2d; }
+    .preview-hub.garage::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(196,91,40,.22) 0%, transparent 55%), radial-gradient(circle at 75% 35%, rgba(184,150,12,.12) 0%, transparent 55%); }
+    .preview-hub.planner::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0 40%, rgba(196,91,40,.35) 40% 42%, transparent 42% 58%, rgba(196,91,40,.35) 58% 60%, transparent 60% 100%), radial-gradient(circle at 25% 75%, rgba(28,43,31,.18) 0 6px, transparent 7px), radial-gradient(circle at 75% 25%, rgba(28,43,31,.18) 0 6px, transparent 7px); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -500,6 +504,51 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">Planner</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="trip-planner.html">
+        <div class="card-preview preview-hub planner">
+          <span>Trip Planner</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Trip Planner</div>
+          <div class="card-desc">Plan your next run — itinerary, gear checklist, and similar trips for inspiration.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Planner</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="forums.html">
+        <div class="card-preview preview-hub forums">
+          <span>Forums</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Forums</div>
+          <div class="card-desc">Where overlanders talk shop — categories, trending threads, and community discussion.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Community</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="profile-garage.html">
+        <div class="card-preview preview-hub garage">
+          <span>Profile · Garage</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Profile &amp; Garage</div>
+          <div class="card-desc">Member profile with full garage of rigs, build history, and one-tap listing flow.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag rust">Profile</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>

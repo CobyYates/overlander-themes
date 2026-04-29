@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forums — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --pine-soft: #4A7D5E;
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* HERO */
+.hero {
+  margin-top: 72px;
+  background: var(--forest);
+  color: var(--white);
+  padding: 64px 48px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 80% 20%, rgba(196,91,40,0.18) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(61,107,79,0.18) 0%, transparent 50%);
+}
+.hero-inner {
+  max-width: 1280px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; letter-spacing: 3px; line-height: 0.95;
+  max-width: 800px;
+}
+.hero-sub {
+  font-size: 17px; color: rgba(255,255,255,0.7);
+  margin-top: 18px; max-width: 600px; line-height: 1.6;
+}
+.hero-search {
+  margin-top: 36px;
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 700px;
+}
+.hero-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 16px 20px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  color: var(--white);
+  outline: none;
+}
+.hero-search input::placeholder { color: rgba(255,255,255,0.4); }
+.hero-search button {
+  background: var(--rust);
+  border: none;
+  color: var(--white);
+  padding: 0 28px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.hero-search button:hover { background: var(--rust-hover); }
+
+.hero-stats {
+  display: flex; gap: 48px; margin-top: 36px;
+}
+.hero-stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 1px; color: var(--white);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); margin-top: 6px;
+}
+
+/* MAIN GRID */
+.page {
+  max-width: 1280px; margin: 0 auto;
+  padding: 56px 48px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+}
+@media (max-width: 980px) { .page { grid-template-columns: 1fr; } }
+
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: 2px;
+  color: var(--forest); line-height: 1; margin-top: 4px;
+}
+.section-action {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--pine);
+  text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.25s;
+}
+.section-action:hover { gap: 10px; color: var(--forest); }
+
+/* CATEGORIES */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+@media (max-width: 700px) { .cat-grid { grid-template-columns: 1fr; } }
+
+.cat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+  display: flex; gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s;
+  position: relative;
+}
+.cat-card:hover {
+  border-color: var(--pine-border);
+  box-shadow: 0 4px 16px rgba(28,43,31,0.06);
+  transform: translateY(-1px);
+}
+.cat-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--rust); opacity: 0;
+  transition: opacity 0.25s;
+}
+.cat-card:hover::before { opacity: 1; }
+.cat-icon {
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+  background: var(--mist);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--forest);
+}
+.cat-icon svg { width: 26px; height: 26px; }
+.cat-icon.rust { background: var(--rust-light); color: var(--rust); }
+.cat-icon.pine { background: var(--pine-light); color: var(--pine); }
+.cat-icon.gold { background: var(--gold-light); color: var(--gold); }
+.cat-content { flex: 1; min-width: 0; }
+.cat-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.cat-desc {
+  font-size: 13px; color: var(--stone);
+  margin-top: 6px; line-height: 1.4;
+}
+.cat-meta {
+  display: flex; gap: 14px; margin-top: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.cat-meta strong { color: var(--forest); font-weight: 700; }
+.cat-recent {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--pine);
+  margin-top: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.cat-recent strong { color: var(--forest); }
+.cat-pulse {
+  width: 6px; height: 6px;
+  background: var(--rust); border-radius: 50%;
+  animation: pulse 2.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* TRENDING THREADS */
+.threads-list {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.thread-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 18px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s;
+}
+.thread-row:last-child { border-bottom: none; }
+.thread-row:hover { background: var(--mist); }
+
+.thread-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+}
+.thread-avatar.rust { background: linear-gradient(135deg, #C45B28, #8a3a1a); }
+.thread-avatar.gold { background: linear-gradient(135deg, #B8960C, #7a6308); }
+.thread-avatar.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+
+.thread-body { min-width: 0; }
+.thread-title {
+  font-weight: 600; font-size: 16px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.thread-pin {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  background: var(--gold-light); color: var(--gold);
+  padding: 2px 6px; border-radius: 2px; font-weight: 700;
+}
+.thread-hot {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  background: var(--rust-light); color: var(--rust);
+  padding: 2px 6px; border-radius: 2px; font-weight: 700;
+}
+.thread-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+.thread-meta a { color: var(--pine); text-decoration: none; }
+
+.thread-stats { text-align: center; }
+.thread-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 1px;
+  color: var(--forest); line-height: 1;
+}
+.thread-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+
+.thread-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); white-space: nowrap;
+}
+
+/* RIGHT RAIL */
+.aside { display: flex; flex-direction: column; gap: 32px; }
+.aside-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.aside-head {
+  background: var(--forest);
+  color: var(--white);
+  padding: 14px 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 2px;
+}
+.aside-body { padding: 4px 0; }
+
+.contributor {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.contributor:last-child { border-bottom: none; }
+.contributor-rank {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; color: var(--lichen);
+  width: 28px;
+}
+.contributor:nth-child(1) .contributor-rank { color: var(--gold); }
+.contributor:nth-child(2) .contributor-rank { color: var(--pine); }
+.contributor-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+}
+.contributor-avatar.rust { background: linear-gradient(135deg, #C45B28, #8a3a1a); }
+.contributor-avatar.tan { background: linear-gradient(135deg, #8a6f4a, #5c4a30); }
+.contributor-avatar.gold { background: linear-gradient(135deg, #B8960C, #7a6308); }
+.contributor-info { flex: 1; min-width: 0; }
+.contributor-name {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+}
+.contributor-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+
+.recent-list { padding: 4px 20px; }
+.recent-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.recent-item:last-child { border-bottom: none; }
+.recent-title {
+  font-size: 14px; color: var(--forest);
+  font-weight: 500; line-height: 1.35;
+}
+.recent-title:hover { color: var(--rust); }
+.recent-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+
+/* SPONSOR */
+.sponsor-card {
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+}
+.sponsor-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 12px;
+}
+.sponsor-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.sponsor-body {
+  font-size: 13px; color: var(--stone); margin-top: 10px; line-height: 1.5;
+}
+.sponsor-cta {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  text-decoration: none;
+}
+.sponsor-disclosure {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 14px; opacity: 0.7;
+}
+
+/* NEW THREAD CTA */
+.new-thread-bar {
+  margin: 0 auto 32px;
+  max-width: 1280px;
+  padding: 0 48px;
+}
+.new-thread-inner {
+  background: var(--mist);
+  border-left: 3px solid var(--rust);
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
+}
+.new-thread-text {
+  display: flex; align-items: center; gap: 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px; color: var(--forest);
+}
+.new-thread-text strong { font-weight: 700; }
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 12px 22px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#">Trips</a>
+    <a href="#" class="active">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Community Forums</div>
+    <h1 class="hero-title">WHERE<br>OVERLANDERS<br>TALK SHOP.</h1>
+    <p class="hero-sub">Build threads, trail intel, gear opinions, and the occasional argument about whether 33s are enough. Real people, real rigs, no algorithm.</p>
+    <div class="hero-search">
+      <input type="text" placeholder="Search threads, builds, gear..." />
+      <button>Search</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-value">12,400+</div>
+        <div class="hero-stat-label">Members</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">48,200</div>
+        <div class="hero-stat-label">Threads</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">186</div>
+        <div class="hero-stat-label">Online Now</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW THREAD CTA -->
+<div class="new-thread-bar">
+  <div class="new-thread-inner">
+    <div class="new-thread-text">
+      <div class="nav-avatar" style="width: 32px; height: 32px; font-size: 11px;">MR</div>
+      <span>Have a question, a build update, or trail beta to share? <strong>Start a thread.</strong></span>
+    </div>
+    <a href="#" class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M5 12h14M12 5v14"/></svg>
+      New Thread
+    </a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<section class="page">
+  <div>
+    <!-- CATEGORIES -->
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Browse By Topic</div>
+        <h2 class="section-title">CATEGORIES</h2>
+      </div>
+    </div>
+
+    <div class="cat-grid">
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon rust">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 6V2a2 2 0 00-2-2H8a2 2 0 00-2 2v4M2 9h20l-2 11H4z"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">BUILDS & RIGS</div>
+          <div class="cat-desc">Build threads, work-in-progress shots, and post-mortems on what worked vs what didn't.</div>
+          <div class="cat-meta"><span><strong>8,420</strong> Threads</span><span><strong>62K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>14 active now</strong> · "FZJ80 axle swap, year 2"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon pine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">TRAIL REPORTS</div>
+          <div class="cat-desc">Conditions, closures, route notes, and the campsite that's actually worth the drive.</div>
+          <div class="cat-meta"><span><strong>5,210</strong> Threads</span><span><strong>34K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>8 active now</strong> · "Mojave Rd · current water status"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">GEAR TALK</div>
+          <div class="cat-desc">Honest takes on roof tents, recovery boards, kitchens, fridges, and the rest of the kit.</div>
+          <div class="cat-meta"><span><strong>11,800</strong> Threads</span><span><strong>91K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>22 active now</strong> · "iKamper vs Roofnest 2026"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon gold">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">REGIONAL</div>
+          <div class="cat-desc">Sub-forums by region — Southwest, Rockies, Pacific NW, East, International.</div>
+          <div class="cat-meta"><span><strong>14,300</strong> Threads</span><span><strong>108K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>31 active now</strong> · "AZ · permits for Vermillion Cliffs"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon rust">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">RECOVERY & WRENCHING</div>
+          <div class="cat-desc">Trailside fixes, recovery technique, and what to actually do when the diff seal blows.</div>
+          <div class="cat-meta"><span><strong>3,940</strong> Threads</span><span><strong>28K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>6 active now</strong> · "Winch line spool replacement"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon pine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">MEET-UPS & GROUP RUNS</div>
+          <div class="cat-desc">Find people heading the same direction. Caravans, weekend runs, multi-day trips.</div>
+          <div class="cat-meta"><span><strong>2,180</strong> Threads</span><span><strong>14K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>4 active now</strong> · "Mojave Rd Run · May 9–12"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">CLASSIFIEDS HELP</div>
+          <div class="cat-desc">Selling advice, valuation questions, and "should I take this offer" threads.</div>
+          <div class="cat-meta"><span><strong>1,640</strong> Threads</span><span><strong>9.2K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>3 active now</strong> · "Pricing a built FJ Cruiser"</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-icon gold">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="cat-content">
+          <div class="cat-name">NEW & INTRO</div>
+          <div class="cat-desc">First post here? Introduce your rig and your plans. The community will say hi.</div>
+          <div class="cat-meta"><span><strong>720</strong> Threads</span><span><strong>5.4K</strong> Posts</span></div>
+          <div class="cat-recent"><span class="cat-pulse"></span><strong>2 active now</strong> · "First overlander, GX470 questions"</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- TRENDING -->
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Hot This Week</div>
+        <h2 class="section-title">TRENDING THREADS</h2>
+      </div>
+      <a href="#" class="section-action">All Threads →</a>
+    </div>
+
+    <div class="threads-list">
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar gold">JM</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            iKamper Skycamp 3.0 vs Roofnest Falcon Pro — long term
+            <span class="thread-pin">PINNED</span>
+            <span class="thread-hot">🔥 HOT</span>
+          </div>
+          <div class="thread-meta">@jaymachine · in <a href="#">Gear Talk</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">142</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">3m ago</div>
+      </a>
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar rust">DR</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            Mojave Road · current water sources & closures (April 2026)
+            <span class="thread-hot">🔥 HOT</span>
+          </div>
+          <div class="thread-meta">@desert_runner · in <a href="#">Trail Reports</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">98</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">22m ago</div>
+      </a>
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar tan">PW</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            FZJ80 axle swap — year 2 update + cost breakdown
+          </div>
+          <div class="thread-meta">@pinewest · in <a href="#">Builds & Rigs</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">214</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">1h ago</div>
+      </a>
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar">SC</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            35s on a 4Runner without re-gearing — how bad is it really
+          </div>
+          <div class="thread-meta">@silvercurve · in <a href="#">Gear Talk</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">76</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">2h ago</div>
+      </a>
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar gold">EN</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            Anyone running solar on a soft-shell RTT setup? Wiring questions
+          </div>
+          <div class="thread-meta">@elnino · in <a href="#">Recovery & Wrenching</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">32</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">4h ago</div>
+      </a>
+
+      <a href="#" class="thread-row">
+        <div class="thread-avatar rust">KZ</div>
+        <div class="thread-body">
+          <div class="thread-title">
+            Continental Divide Run · August 2026 — looking for 1–2 more rigs
+          </div>
+          <div class="thread-meta">@kazimir · in <a href="#">Meet-Ups & Group Runs</a></div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat-num">48</div>
+          <div class="thread-stat-label">Replies</div>
+        </div>
+        <div class="thread-time">7h ago</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- RIGHT RAIL -->
+  <aside class="aside">
+
+    <div class="aside-card">
+      <div class="aside-head">TOP CONTRIBUTORS</div>
+      <div class="aside-body">
+        <div class="contributor">
+          <div class="contributor-rank">01</div>
+          <div class="contributor-avatar gold">JM</div>
+          <div class="contributor-info">
+            <div class="contributor-name">@jaymachine</div>
+            <div class="contributor-meta">2,148 Posts · 4 Years</div>
+          </div>
+        </div>
+        <div class="contributor">
+          <div class="contributor-rank">02</div>
+          <div class="contributor-avatar tan">PW</div>
+          <div class="contributor-info">
+            <div class="contributor-name">@pinewest</div>
+            <div class="contributor-meta">1,840 Posts · 3 Years</div>
+          </div>
+        </div>
+        <div class="contributor">
+          <div class="contributor-rank">03</div>
+          <div class="contributor-avatar rust">DR</div>
+          <div class="contributor-info">
+            <div class="contributor-name">@desert_runner</div>
+            <div class="contributor-meta">1,612 Posts · 3 Years</div>
+          </div>
+        </div>
+        <div class="contributor">
+          <div class="contributor-rank">04</div>
+          <div class="contributor-avatar">SC</div>
+          <div class="contributor-info">
+            <div class="contributor-name">@silvercurve</div>
+            <div class="contributor-meta">1,290 Posts · 2 Years</div>
+          </div>
+        </div>
+        <div class="contributor">
+          <div class="contributor-rank">05</div>
+          <div class="contributor-avatar tan">KZ</div>
+          <div class="contributor-info">
+            <div class="contributor-name">@kazimir</div>
+            <div class="contributor-meta">1,104 Posts · 2 Years</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside-card">
+      <div class="aside-head">RECENT ACTIVITY</div>
+      <div class="recent-list">
+        <div class="recent-item">
+          <a href="#" class="recent-title" style="text-decoration:none">@jaymachine replied to "iKamper Skycamp 3.0 vs Roofnest Falcon Pro"</a>
+          <div class="recent-meta">3 minutes ago · Gear Talk</div>
+        </div>
+        <div class="recent-item">
+          <a href="#" class="recent-title" style="text-decoration:none">New thread "Best fridges under $1,000" by @cooktop</a>
+          <div class="recent-meta">18 min ago · Gear Talk</div>
+        </div>
+        <div class="recent-item">
+          <a href="#" class="recent-title" style="text-decoration:none">@desert_runner posted in "Mojave Rd water sources"</a>
+          <div class="recent-meta">22 min ago · Trail Reports</div>
+        </div>
+        <div class="recent-item">
+          <a href="#" class="recent-title" style="text-decoration:none">@pinewest started "Year 2 FZJ80 axle swap update"</a>
+          <div class="recent-meta">1 hour ago · Builds & Rigs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sponsor-card">
+      <div class="sponsor-tag">SPONSORED · ARB 4X4</div>
+      <div class="sponsor-title">SUMMIT BAR · 15% OFF</div>
+      <p class="sponsor-body">The bumper that started it. ARB Summit bull bars now 15% off through May for forum members.</p>
+      <a href="#" class="sponsor-cta">Shop ARB →</a>
+      <div class="sponsor-disclosure">Affiliate / Brand Partner</div>
+    </div>
+
+  </aside>
+</section>
+
+<footer>
+  © 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED
+</footer>
+
+</body>
+</html>

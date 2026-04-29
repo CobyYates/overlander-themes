@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Planner — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --mist: #F4F5F0;
+  --fog: #E9EBE4;
+  --forest: #1C2B1F;
+  --forest-soft: #2A3B2E;
+  --rust: #C45B28;
+  --rust-hover: #D4682F;
+  --rust-light: rgba(196,91,40,0.07);
+  --rust-border: rgba(196,91,40,0.2);
+  --pine: #3D6B4F;
+  --pine-light: rgba(61,107,79,0.07);
+  --pine-border: rgba(61,107,79,0.18);
+  --pine-soft: #4A7D5E;
+  --lichen: #8A9181;
+  --stone: #6B7466;
+  --gold: #B8960C;
+  --gold-light: rgba(184,150,12,0.08);
+  --border: rgba(28,43,31,0.1);
+  --border-strong: rgba(28,43,31,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--white);
+  color: var(--forest);
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--forest);
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo svg { width: 30px; height: 30px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--lichen); text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--forest); }
+.nav-cta {
+  background: var(--rust); color: var(--white) !important;
+  padding: 10px 22px; border-radius: 4px;
+  font-size: 13px !important;
+  transition: background 0.25s, transform 0.2s;
+}
+.nav-cta:hover { background: var(--rust-hover) !important; transform: translateY(-1px); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--pine);
+  background: linear-gradient(135deg, var(--pine), var(--forest));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* page header */
+.page-header {
+  margin-top: 72px;
+  padding: 36px 48px 28px;
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+}
+.page-header-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 32px;
+}
+.ph-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600; margin-bottom: 8px;
+}
+.ph-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px; letter-spacing: 2px; line-height: 1; color: var(--forest);
+}
+.ph-sub {
+  font-size: 16px; color: var(--stone); margin-top: 12px; max-width: 560px;
+}
+.ph-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 12px 22px;
+  border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.25s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--rust); color: var(--white); }
+.btn-primary:hover { background: var(--rust-hover); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--forest);
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover { border-color: var(--forest); }
+.btn svg { width: 14px; height: 14px; }
+
+/* MAIN PLANNER LAYOUT */
+.planner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 0;
+  height: calc(100vh - 72px - 168px);
+  min-height: 640px;
+}
+@media (max-width: 1024px) {
+  .planner { grid-template-columns: 1fr; height: auto; }
+}
+
+/* SIDEBAR — Trip details */
+.planner-sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-right: none;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-tabs {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+.sb-tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 12px;
+  color: var(--stone);
+  background: var(--mist);
+  border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.sb-tab:last-child { border-right: none; }
+.sb-tab.active {
+  background: var(--white);
+  color: var(--forest);
+  border-bottom: 2px solid var(--rust);
+  margin-bottom: -1px;
+}
+
+.sb-content { flex: 1; overflow-y: auto; padding: 24px; }
+
+.trip-name-input {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 1.5px;
+  color: var(--forest);
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 4px 0;
+  border-bottom: 2px solid var(--border);
+  outline: none;
+  margin-bottom: 4px;
+}
+.trip-name-input:focus { border-bottom-color: var(--rust); }
+
+.trip-meta-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: 18px;
+}
+.field-block { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.field-value {
+  font-size: 15px; color: var(--forest); font-weight: 600;
+}
+.field-input {
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--white);
+  color: var(--forest);
+  outline: none;
+  transition: border-color 0.25s;
+}
+.field-input:focus { border-color: var(--pine); }
+
+/* WAYPOINTS */
+.waypoints-section { margin-top: 28px; }
+.section-mini-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.section-mini-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1.5px; color: var(--forest);
+}
+.add-waypoint {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  background: none; border: none; cursor: pointer;
+}
+
+.waypoint-list { display: flex; flex-direction: column; }
+.waypoint {
+  position: relative;
+  padding-left: 36px;
+  padding-bottom: 18px;
+  display: flex; flex-direction: column;
+}
+.waypoint::before {
+  content: '';
+  position: absolute;
+  left: 11px; top: 22px; bottom: -4px;
+  width: 2px;
+  background: var(--border-strong);
+}
+.waypoint:last-child::before { display: none; }
+.wp-marker {
+  position: absolute;
+  left: 0; top: 4px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px;
+  background: var(--white);
+  border: 2px solid var(--forest);
+  color: var(--forest);
+}
+.wp-marker.start { background: var(--pine); border-color: var(--pine); color: var(--white); }
+.wp-marker.end { background: var(--rust); border-color: var(--rust); color: var(--white); }
+.wp-marker.camp { background: var(--white); border-color: var(--gold); color: var(--gold); }
+.wp-name {
+  font-weight: 600; font-size: 14px; color: var(--forest);
+  display: flex; align-items: center; gap: 8px;
+}
+.wp-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+.wp-tag.camp { background: var(--gold-light); color: var(--gold); }
+.wp-tag.gas { background: var(--pine-light); color: var(--pine); }
+.wp-tag.water { background: rgba(54,107,165,0.1); color: #366ba5; }
+.wp-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 2px;
+}
+.wp-distance {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+  display: flex; gap: 8px;
+}
+.wp-distance strong { color: var(--forest); font-weight: 700; }
+
+/* MAP */
+.planner-map {
+  position: relative;
+  background: linear-gradient(180deg, #d8dbcf 0%, #c2c8b5 50%, #a8b09a 100%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.map-svg { width: 100%; height: 100%; display: block; }
+
+/* map controls overlay */
+.map-controls {
+  position: absolute; top: 16px; right: 16px;
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.map-ctrl {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white); color: var(--forest);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.map-ctrl:last-child { border-bottom: none; }
+.map-ctrl:hover { background: var(--mist); }
+.map-ctrl svg { width: 16px; height: 16px; }
+
+.map-legend {
+  position: absolute; top: 16px; left: 16px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone);
+  font-weight: 600;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.legend-line { width: 16px; height: 2px; }
+
+.map-summary {
+  position: absolute; bottom: 16px; left: 16px; right: 16px;
+  background: rgba(28,43,31,0.95);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 14px 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+.map-stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.15); }
+.map-stat:last-child { border-right: none; }
+.map-stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1px;
+}
+.map-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  opacity: 0.7;
+}
+.map-summary .btn { padding: 10px 18px; }
+
+/* ── BELOW-PLANNER STRIP: GEAR + COMMUNITY ── */
+.below {
+  max-width: 1440px;
+  margin: 56px auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
+}
+@media (max-width: 1024px) { .below { grid-template-columns: 1fr; } }
+
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--rust); font-weight: 600;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px; letter-spacing: 2px;
+  color: var(--forest); line-height: 1; margin-top: 4px;
+}
+.section-action {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--pine);
+  text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.25s;
+}
+.section-action:hover { gap: 10px; color: var(--forest); }
+
+/* GEAR CHECKLIST */
+.gear-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 700px) { .gear-grid { grid-template-columns: 1fr; } }
+
+.gear-cat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.gear-cat-head {
+  background: var(--mist);
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.gear-cat-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1.5px;
+  color: var(--forest);
+}
+.gear-cat-progress {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); font-weight: 600;
+}
+.gear-cat-progress strong { color: var(--pine); }
+.gear-list { padding: 12px 18px; }
+.gear-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+.gear-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.gear-check.done {
+  background: var(--pine); border-color: var(--pine);
+}
+.gear-check.done svg { display: block; }
+.gear-check svg { display: none; width: 12px; height: 12px; color: var(--white); }
+.gear-name { flex: 1; color: var(--forest); }
+.gear-name.done { color: var(--stone); text-decoration: line-through; }
+.gear-shop {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  text-decoration: none;
+}
+
+/* COMMUNITY TRIPS */
+.community-trips { display: flex; flex-direction: column; gap: 14px; }
+.ct-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.25s;
+  cursor: pointer;
+  display: flex;
+}
+.ct-card:hover {
+  border-color: var(--pine-border);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(28,43,31,0.06);
+}
+.ct-thumb {
+  width: 100px; flex-shrink: 0;
+  background: linear-gradient(135deg, #4d6b52 0%, #2a4a3a 100%);
+  position: relative;
+}
+.ct-thumb.tan { background: linear-gradient(135deg, #c2a77d 0%, #8a6f4a 100%); }
+.ct-thumb.dust { background: linear-gradient(135deg, #c47e5b 0%, #8a4f3a 100%); }
+.ct-thumb svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55;
+}
+.ct-body { flex: 1; padding: 14px 16px; }
+.ct-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.ct-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--stone); margin-top: 4px;
+}
+.ct-stats {
+  display: flex; gap: 14px; margin-top: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 1px;
+  color: var(--stone);
+}
+.ct-stats strong { color: var(--forest); font-weight: 700; }
+
+/* SPONSOR */
+.sponsor-strip {
+  margin-top: 32px;
+  padding: 22px;
+  background: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.sponsor-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 12px;
+}
+.sponsor-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px;
+  color: var(--forest); line-height: 1.1;
+}
+.sponsor-body {
+  font-size: 13px; color: var(--stone); margin-top: 10px; line-height: 1.5;
+}
+.sponsor-cta {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rust); font-weight: 700;
+  text-decoration: none;
+}
+
+footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M4 26 L10 14 L14 20 L20 8 L28 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+    <a href="#" class="nav-cta">+ List Rig</a>
+    <div class="nav-avatar">MR</div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="ph-eyebrow">Trip Planner</div>
+      <h1 class="ph-title">PLAN YOUR NEXT RUN</h1>
+      <p class="ph-sub">Drop pins, build the route, pack the rig. Save it private or share with the community when you're done.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Import GPX
+      </button>
+      <button class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        Save Trip
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PLANNER -->
+<section class="planner">
+
+  <!-- SIDEBAR -->
+  <aside class="planner-sidebar">
+    <div class="sidebar-tabs">
+      <button class="sb-tab active">Route</button>
+      <button class="sb-tab">Camps</button>
+      <button class="sb-tab">Notes</button>
+    </div>
+    <div class="sb-content">
+      <input type="text" class="trip-name-input" value="MOJAVE ROAD RUN" />
+      <div class="field-label">Trip Name</div>
+
+      <div class="trip-meta-row">
+        <div class="field-block">
+          <div class="field-label">Start Date</div>
+          <input type="text" class="field-input" value="May 9, 2026" />
+        </div>
+        <div class="field-block">
+          <div class="field-label">End Date</div>
+          <input type="text" class="field-input" value="May 12, 2026" />
+        </div>
+      </div>
+
+      <div class="trip-meta-row">
+        <div class="field-block">
+          <div class="field-label">Difficulty</div>
+          <select class="field-input">
+            <option>Easy</option><option selected>Moderate</option><option>Hard</option><option>Expert</option>
+          </select>
+        </div>
+        <div class="field-block">
+          <div class="field-label">Visibility</div>
+          <select class="field-input">
+            <option selected>Private</option><option>Friends Only</option><option>Public</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="waypoints-section">
+        <div class="section-mini-head">
+          <h3 class="section-mini-title">WAYPOINTS · 5</h3>
+          <button class="add-waypoint">+ Add</button>
+        </div>
+
+        <div class="waypoint-list">
+
+          <div class="waypoint">
+            <div class="wp-marker start">A</div>
+            <div class="wp-name">
+              Avi Casino, Laughlin
+              <span class="wp-tag gas">GAS · WATER</span>
+            </div>
+            <div class="wp-meta">Departure · Day 1, 7:00 AM</div>
+          </div>
+
+          <div class="waypoint">
+            <div class="wp-marker">B</div>
+            <div class="wp-name">
+              Fort Piute Spring
+              <span class="wp-tag water">WATER</span>
+            </div>
+            <div class="wp-meta">Lunch stop</div>
+            <div class="wp-distance"><span>From A:</span><strong>32.4 mi</strong><span>· 2h 10m</span></div>
+          </div>
+
+          <div class="waypoint">
+            <div class="wp-marker camp">C</div>
+            <div class="wp-name">
+              Marl Springs Camp
+              <span class="wp-tag camp">CAMP · NIGHT 1</span>
+            </div>
+            <div class="wp-meta">Dispersed · BLM land</div>
+            <div class="wp-distance"><span>From B:</span><strong>28.1 mi</strong><span>· 1h 50m</span></div>
+          </div>
+
+          <div class="waypoint">
+            <div class="wp-marker camp">D</div>
+            <div class="wp-name">
+              Soda Lake Crossing
+              <span class="wp-tag camp">CAMP · NIGHT 2</span>
+            </div>
+            <div class="wp-meta">Dry lakebed dispersed</div>
+            <div class="wp-distance"><span>From C:</span><strong>41.6 mi</strong><span>· 2h 40m</span></div>
+          </div>
+
+          <div class="waypoint">
+            <div class="wp-marker end">E</div>
+            <div class="wp-name">
+              Afton Canyon
+              <span class="wp-tag gas">GAS · 11 MI N</span>
+            </div>
+            <div class="wp-meta">Trip end · Day 4, ~4:00 PM</div>
+            <div class="wp-distance"><span>From D:</span><strong>26.3 mi</strong><span>· 1h 50m</span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAP -->
+  <div class="planner-map">
+    <svg class="map-svg" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(28,43,31,0.06)" stroke-width="1"/>
+        </pattern>
+        <linearGradient id="terrain1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#a8b09a"/>
+          <stop offset="100%" stop-color="#8a9181"/>
+        </linearGradient>
+      </defs>
+
+      <!-- terrain shapes -->
+      <rect width="900" height="640" fill="url(#grid)"/>
+      <path d="M0 200 Q200 140 350 180 T700 160 L900 200 L900 280 Q700 320 500 280 T200 300 L0 280 Z" fill="rgba(138,145,129,0.4)"/>
+      <path d="M100 380 Q300 340 500 380 T900 400 L900 480 Q700 510 500 480 T100 470 Z" fill="rgba(196,168,125,0.3)"/>
+      <path d="M0 480 Q200 460 400 490 T800 510 L900 530 L900 640 L0 640 Z" fill="rgba(184,150,12,0.15)"/>
+
+      <!-- mountains as triangle marks -->
+      <g opacity="0.45" stroke="#1c2b1f" stroke-width="1.2" fill="none">
+        <path d="M150 220 L170 195 L190 220 Z"/>
+        <path d="M280 240 L305 210 L330 240 Z"/>
+        <path d="M610 215 L635 185 L660 215 Z"/>
+        <path d="M740 250 L770 215 L795 250 Z"/>
+      </g>
+
+      <!-- existing trails (faint) -->
+      <g opacity="0.35" stroke="#3D6B4F" stroke-width="1.5" stroke-dasharray="4 4" fill="none">
+        <path d="M50 100 Q200 220 380 200 T700 240 L860 320"/>
+        <path d="M120 540 Q280 480 480 500 T820 460"/>
+      </g>
+
+      <!-- ROUTE LINE (rust) -->
+      <path d="M180 380 Q260 360 320 340 Q380 320 440 340 Q500 360 540 380 Q600 410 660 400 Q720 390 760 420"
+            fill="none" stroke="#C45B28" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="0"/>
+      <!-- shadow under route -->
+      <path d="M180 380 Q260 360 320 340 Q380 320 440 340 Q500 360 540 380 Q600 410 660 400 Q720 390 760 420"
+            fill="none" stroke="rgba(196,91,40,0.25)" stroke-width="9" stroke-linecap="round"/>
+
+      <!-- WAYPOINTS -->
+      <!-- A start -->
+      <g transform="translate(180, 380)">
+        <circle r="14" fill="#3D6B4F" stroke="#fff" stroke-width="3"/>
+        <text y="5" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="13" fill="#fff">A</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#1c2b1f" letter-spacing="1">AVI CASINO</text>
+      </g>
+      <!-- B -->
+      <g transform="translate(320, 340)">
+        <circle r="13" fill="#fff" stroke="#1c2b1f" stroke-width="2.5"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#1c2b1f">B</text>
+        <text y="-20" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">FORT PIUTE</text>
+      </g>
+      <!-- C camp -->
+      <g transform="translate(440, 340)">
+        <circle r="14" fill="#fff" stroke="#B8960C" stroke-width="3"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#B8960C">C</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">MARL SPRINGS · NIGHT 1</text>
+      </g>
+      <!-- D camp -->
+      <g transform="translate(600, 405)">
+        <circle r="14" fill="#fff" stroke="#B8960C" stroke-width="3"/>
+        <text y="4" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="12" fill="#B8960C">D</text>
+        <text y="32" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f" letter-spacing="1">SODA LAKE · NIGHT 2</text>
+      </g>
+      <!-- E end -->
+      <g transform="translate(760, 420)">
+        <circle r="14" fill="#C45B28" stroke="#fff" stroke-width="3"/>
+        <text y="5" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="13" fill="#fff">E</text>
+        <text y="-22" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#1c2b1f" letter-spacing="1">AFTON CANYON</text>
+      </g>
+
+      <!-- compass -->
+      <g transform="translate(820, 110)" opacity="0.55">
+        <circle r="22" fill="rgba(255,255,255,0.85)" stroke="#1c2b1f" stroke-width="1.5"/>
+        <path d="M0 -16 L4 0 L0 4 L-4 0 Z" fill="#C45B28"/>
+        <path d="M0 16 L-4 0 L0 -4 L4 0 Z" fill="#1c2b1f"/>
+        <text y="-26" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="10" fill="#1c2b1f">N</text>
+      </g>
+
+      <!-- scale -->
+      <g transform="translate(60, 600)" opacity="0.7">
+        <line x1="0" y1="0" x2="80" y2="0" stroke="#1c2b1f" stroke-width="2"/>
+        <line x1="0" y1="-4" x2="0" y2="4" stroke="#1c2b1f" stroke-width="2"/>
+        <line x1="80" y1="-4" x2="80" y2="4" stroke="#1c2b1f" stroke-width="2"/>
+        <text x="40" y="-8" text-anchor="middle" font-family="Barlow Condensed" font-weight="700" font-size="11" fill="#1c2b1f">25 MI</text>
+      </g>
+    </svg>
+
+    <div class="map-legend">
+      <div class="legend-item"><span class="legend-line" style="background: #C45B28"></span>Active Route</div>
+      <div class="legend-item"><span class="legend-line" style="background: #3D6B4F; border-top: 1px dashed; height: 1px;"></span>Other Trails</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #B8960C"></span>Camp Site</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #3D6B4F"></span>Start / End</div>
+    </div>
+
+    <div class="map-controls">
+      <button class="map-ctrl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg></button>
+      <button class="map-ctrl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5v14"/></svg></button>
+      <button class="map-ctrl" title="Layers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></button>
+      <button class="map-ctrl" title="My Location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button>
+    </div>
+
+    <div class="map-summary">
+      <div class="map-stat">
+        <div class="map-stat-value">128.4</div>
+        <div class="map-stat-label">Total Miles</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-value">4 Days</div>
+        <div class="map-stat-label">Duration</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-value">8h 30m</div>
+        <div class="map-stat-label">Drive Time</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-value">Mod.</div>
+        <div class="map-stat-label">Difficulty</div>
+      </div>
+      <button class="btn btn-primary">
+        Share Trip
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- BELOW -->
+<section class="below">
+
+  <!-- GEAR CHECKLIST -->
+  <div>
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Pack the Rig</div>
+        <h2 class="section-title">GEAR CHECKLIST</h2>
+      </div>
+      <a href="#" class="section-action">Auto-build from trip →</a>
+    </div>
+
+    <div class="gear-grid">
+
+      <div class="gear-cat">
+        <div class="gear-cat-head">
+          <span class="gear-cat-name">RECOVERY</span>
+          <span class="gear-cat-progress"><strong>3</strong>/4</span>
+        </div>
+        <div class="gear-list">
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Maxtrax MKII recovery boards</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Soft shackle (2)</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Snatch strap 30 ft</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">Tire deflator</span>
+            <a href="#" class="gear-shop">Shop →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="gear-cat">
+        <div class="gear-cat-head">
+          <span class="gear-cat-name">CAMP</span>
+          <span class="gear-cat-progress"><strong>4</strong>/6</span>
+        </div>
+        <div class="gear-list">
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Roof tent (Falcon Pro)</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Sleeping bag · 20°F</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Camp stove · fuel</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Headlamp · spare batteries</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">Awning</span>
+            <a href="#" class="gear-shop">Shop →</a>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">Camp chair</span>
+            <a href="#" class="gear-shop">Shop →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="gear-cat">
+        <div class="gear-cat-head">
+          <span class="gear-cat-name">WATER & FOOD</span>
+          <span class="gear-cat-progress"><strong>2</strong>/3</span>
+        </div>
+        <div class="gear-list">
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Water · 7 gal (1.5 gal/day)</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Cooler · 2 day ice</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">Meal plan · 4 days</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gear-cat">
+        <div class="gear-cat-head">
+          <span class="gear-cat-name">NAV & COMMS</span>
+          <span class="gear-cat-progress"><strong>2</strong>/4</span>
+        </div>
+        <div class="gear-list">
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">GPS · offline maps loaded</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name done">Garmin inReach</span>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">GMRS radio</span>
+            <a href="#" class="gear-shop">Shop →</a>
+          </div>
+          <div class="gear-item">
+            <span class="gear-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="gear-name">Paper map · backup</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMMUNITY -->
+  <aside>
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Inspiration</div>
+        <h2 class="section-title">SIMILAR TRIPS</h2>
+      </div>
+    </div>
+
+    <div class="community-trips">
+
+      <div class="ct-card">
+        <div class="ct-thumb">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 70 Q30 50 50 60 T100 50 L100 100 L0 100 Z" fill="rgba(0,0,0,0.3)"/>
+          </svg>
+        </div>
+        <div class="ct-body">
+          <div class="ct-name">EAST MOJAVE GRAND LOOP</div>
+          <div class="ct-meta">@trail_dust · 5 days</div>
+          <div class="ct-stats">
+            <span><strong>186</strong> mi</span>
+            <span><strong>4.8</strong> ★</span>
+            <span><strong>72</strong> done</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ct-card">
+        <div class="ct-thumb tan">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 80 Q30 60 50 70 T100 60 L100 100 L0 100 Z" fill="rgba(0,0,0,0.3)"/>
+          </svg>
+        </div>
+        <div class="ct-body">
+          <div class="ct-name">KELSO DUNES OVERNIGHTER</div>
+          <div class="ct-meta">@desert_co · 2 days</div>
+          <div class="ct-stats">
+            <span><strong>58</strong> mi</span>
+            <span><strong>4.6</strong> ★</span>
+            <span><strong>41</strong> done</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ct-card">
+        <div class="ct-thumb dust">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 70 Q30 50 50 60 T100 50 L100 100 L0 100 Z" fill="rgba(0,0,0,0.3)"/>
+          </svg>
+        </div>
+        <div class="ct-body">
+          <div class="ct-name">DEATH VALLEY · TITUS CROSS</div>
+          <div class="ct-meta">@mojave_mike · 3 days</div>
+          <div class="ct-stats">
+            <span><strong>112</strong> mi</span>
+            <span><strong>4.9</strong> ★</span>
+            <span><strong>128</strong> done</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sponsor-strip">
+      <div class="sponsor-tag">SPONSORED · GOAL ZERO</div>
+      <div class="sponsor-title">POWER FOR 4-DAY RUNS</div>
+      <p class="sponsor-body">Yeti 1500X portable power. Charges off your alternator while you drive — code <strong>HUB10</strong> for 10% off.</p>
+      <a href="#" class="sponsor-cta">Shop Goal Zero →</a>
+    </div>
+  </aside>
+
+</section>
+
+<footer>
+  © 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED
+</footer>
+
+</body>
+</html>
