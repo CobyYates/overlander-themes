@@ -160,6 +160,7 @@
     .preview-hub.rig::after       { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 60%, rgba(61,107,79,.18) 0%, transparent 70%); }
     .preview-hub.journal::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(54,107,165,.14) 0%, transparent 70%); }
     .preview-hub.route::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0 49%, rgba(196,91,40,.5) 49% 51%, transparent 51% 100%), radial-gradient(circle at 20% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px), radial-gradient(circle at 80% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px); }
+    .preview-hub.messages::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0 30%, rgba(28,43,31,.08) 30% 33%, transparent 33% 55%, rgba(28,43,31,.08) 55% 58%, transparent 58% 80%, rgba(196,91,40,.18) 80% 83%, transparent 83% 100%); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -469,6 +470,21 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">Journal</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="messages.html">
+        <div class="card-preview preview-hub messages">
+          <span>Messages</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Messages</div>
+          <div class="card-desc">Member-to-member inbox for classifieds inquiries and event coordination.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Inbox</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>
