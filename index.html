@@ -165,6 +165,7 @@
     .preview-hub.garage           { background: #1C2B1F; color: #F4F5F0; border-bottom: 1px solid #2a3a2d; }
     .preview-hub.garage::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(196,91,40,.22) 0%, transparent 55%), radial-gradient(circle at 75% 35%, rgba(184,150,12,.12) 0%, transparent 55%); }
     .preview-hub.planner::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0 40%, rgba(196,91,40,.35) 40% 42%, transparent 42% 58%, rgba(196,91,40,.35) 58% 60%, transparent 60% 100%), radial-gradient(circle at 25% 75%, rgba(28,43,31,.18) 0 6px, transparent 7px), radial-gradient(circle at 75% 25%, rgba(28,43,31,.18) 0 6px, transparent 7px); }
+    .preview-hub.packing::after   { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 24px, rgba(28,43,31,.1) 24px 25px), linear-gradient(90deg, rgba(196,91,40,.18) 0 6px, transparent 6px 100%); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -534,6 +535,21 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">Community</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="packing-list-builder.html">
+        <div class="card-preview preview-hub packing">
+          <span>Packing List</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Packing List Builder</div>
+          <div class="card-desc">Build and manage a trip-ready gear checklist with categories and saved presets.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Checklist</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>

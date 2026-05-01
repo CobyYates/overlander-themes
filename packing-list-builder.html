@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Packing List — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFAF8;--surface:#F2F1EC;--surface2:#E8E7E1;--card:#FFFFFF;
+  --text:#1A1A18;--text2:#4A4A46;--text3:#7A7A74;--text4:#A0A09A;
+  --pine:#2D6A4F;--pine-bg:rgba(45,106,79,0.06);--pine-border:rgba(45,106,79,0.15);--pine-text:#1B4332;
+  --rust:#C44B1A;--rust-bg:rgba(196,75,26,0.06);--rust-border:rgba(196,75,26,0.18);
+  --gold:#9A7B10;--gold-bg:rgba(154,123,16,0.06);
+  --border:rgba(26,26,24,0.08);--border2:rgba(26,26,24,0.14);
+  --r:10px;--r-sm:6px;--r-lg:14px;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(250,250,248,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo svg{width:26px;height:26px}
+.nav-center{display:flex;gap:24px;align-items:center;margin-left:48px}
+.nav-center a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);text-decoration:none}
+.nav-center a:hover{color:var(--pine)}
+.nav-center a.active{color:var(--pine)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border-radius:var(--r-sm);background:var(--rust);color:#fff;border:none;cursor:pointer}
+.nav-ava{width:28px;height:28px;border-radius:50%;background:var(--pine);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+
+/* HEADER */
+.page{padding:80px clamp(16px,4vw,48px) 120px;max-width:1100px;margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--text4);margin-bottom:10px}
+.breadcrumb a{color:var(--text4);text-decoration:none}.breadcrumb a:hover{color:var(--pine)}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4vw,42px);letter-spacing:1px;line-height:1;color:var(--text);margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--text3)}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 18px;border-radius:var(--r-sm);display:inline-flex;align-items:center;gap:6px;transition:all .2s;cursor:pointer;border:none;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:#d4571f}
+.btn-pine{background:var(--pine);color:#fff}.btn-pine:hover{background:#246342}
+.btn-outline{background:var(--card);color:var(--text2);border:1.5px solid var(--border2)}.btn-outline:hover{border-color:var(--pine-border);color:var(--pine)}
+
+/* TEMPLATE BAR */
+.tmpl-bar{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:24px;flex-wrap:wrap}
+.tmpl-name{font-family:'Barlow',sans-serif;font-size:16px;font-weight:700;color:var(--text);border:none;background:transparent;outline:none;flex:1;min-width:200px;padding:2px 0;border-bottom:2px solid transparent;transition:border-color .2s}
+.tmpl-name:focus{border-bottom-color:var(--pine)}
+.tmpl-name::placeholder{color:var(--text4);font-weight:500}
+.tmpl-meta{display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--text4)}
+.tmpl-meta .c{color:var(--pine);font-weight:500}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start}
+
+/* SIDEBAR */
+.side{position:sticky;top:76px}
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap input{width:100%;padding:9px 12px 9px 34px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--card);font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);outline:none}
+.search-wrap input:focus{border-color:var(--pine)}
+.search-wrap input::placeholder{color:var(--text4)}
+.search-wrap .si{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text4)}
+.side-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text4);margin-bottom:8px;padding:0 2px}
+.cat-nav{display:flex;flex-direction:column;gap:1px;margin-bottom:16px}
+.cn-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r-sm);background:transparent;border:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--text2);text-align:left;width:100%;transition:all .12s}
+.cn-btn:hover{background:var(--surface)}
+.cn-btn.active{background:var(--pine-bg);color:var(--pine-text)}
+.cn-icon{font-size:14px;width:20px;text-align:center}
+.cn-name{flex:1}
+.cn-ct{font-family:var(--mono);font-size:9px;color:var(--text4);background:var(--surface);padding:1px 5px;border-radius:3px}
+.cn-btn.active .cn-ct{background:rgba(45,106,79,0.1);color:var(--pine)}
+
+.side-divider{border:none;border-top:1px solid var(--border);margin:12px 0}
+.saved-list{display:flex;flex-direction:column;gap:2px}
+.sv-item{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r-sm);cursor:pointer;font-size:12px;color:var(--text2);transition:all .12s}
+.sv-item:hover{background:var(--surface)}
+.sv-icon{font-size:11px;color:var(--text4)}
+.sv-ct{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--text4)}
+
+.add-group-btn{margin-top:12px;width:100%;padding:8px;border-radius:var(--r-sm);border:1.5px dashed var(--border2);background:transparent;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.add-group-btn:hover{border-color:var(--pine-border);color:var(--pine);background:var(--pine-bg)}
+
+/* MAIN — CHECKLIST GROUPS (trip planner style) */
+.main{}
+.group{margin-bottom:16px}
+.group-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;cursor:pointer;user-select:none}
+.group-header.collapsed{border-radius:var(--r)}
+.gh-icon{font-size:16px}
+.gh-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+.gh-frac{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text4);margin-left:2px}
+.gh-frac b{color:var(--pine)}
+.gh-actions{margin-left:auto;display:flex;gap:6px;align-items:center}
+.gh-edit{font-family:var(--mono);font-size:9px;color:var(--text4);padding:2px 6px;border-radius:3px;cursor:pointer;border:none;background:transparent;transition:all .15s}
+.gh-edit:hover{background:var(--surface2);color:var(--text2)}
+.gh-selectall{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--rust);cursor:pointer;padding:2px 6px;border-radius:3px;border:none;background:transparent;transition:background .15s}
+.gh-selectall:hover{background:var(--rust-bg)}
+.gh-toggle{font-size:12px;color:var(--text4);transition:transform .25s;margin-left:4px}
+.group-header.collapsed .gh-toggle{transform:rotate(-90deg)}
+
+.group-body{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden}
+.group-body.hidden{display:none}
+
+/* ITEMS */
+.item{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .08s;user-select:none}
+.item:last-of-type{border-bottom:none}
+.item:hover{background:rgba(45,106,79,0.015)}
+.item.on{background:var(--pine-bg)}
+.item-chk{width:16px;height:16px;border-radius:3px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;font-size:10px}
+.item.on .item-chk{background:var(--pine);border-color:var(--pine);color:#fff}
+.item.on .item-chk::after{content:'✓'}
+.item-name{font-size:13px;color:var(--text);flex:1}
+.item.on .item-name{color:var(--pine-text);font-weight:600}
+.item-qty{font-family:var(--mono);font-size:10px;color:var(--text4);display:flex;align-items:center;gap:3px;opacity:0;transition:opacity .15s}
+.item.on .item-qty{opacity:1}
+.qb{width:18px;height:18px;border-radius:3px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:var(--text2);transition:all .12s}
+.qb:hover{border-color:var(--pine-border);color:var(--pine)}
+.qv{min-width:14px;text-align:center;font-weight:500;color:var(--text)}
+.item-shop{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--rust);text-decoration:none;opacity:0;transition:opacity .15s;padding:2px 6px;border-radius:3px}
+.item:not(.on) .item-shop{opacity:1}
+.item-shop:hover{background:var(--rust-bg)}
+
+/* ADD CUSTOM ROW */
+.add-row{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface);border-top:1px solid var(--border)}
+.add-row input{flex:1;padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--card);font-family:'Barlow',sans-serif;font-size:12px;color:var(--text);outline:none}
+.add-row input:focus{border-color:var(--pine)}
+.add-row input::placeholder{color:var(--text4)}
+.add-row-btn{padding:7px 12px;border-radius:var(--r-sm);background:var(--pine);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:4px}
+.add-row-btn:hover{background:#246342}
+
+/* AUTO BUILD TIP */
+.auto-tip{padding:12px 16px;background:var(--pine-bg);border:1px solid var(--pine-border);border-radius:var(--r);margin-bottom:20px;font-size:12px;color:var(--pine-text);display:flex;align-items:center;gap:10px}
+.auto-tip a{color:var(--pine);font-weight:700;text-decoration:none;margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.auto-tip a:hover{text-decoration:underline}
+
+/* STICKY FOOTER BAR */
+.foot-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:12px clamp(16px,4vw,48px);display:none;align-items:center;justify-content:space-between;gap:16px;z-index:50;box-shadow:0 -4px 20px rgba(26,26,24,0.04)}
+.foot-bar.show{display:flex}
+.fb-left{display:flex;align-items:center;gap:16px}
+.fb-stat{text-align:center}
+.fb-stat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--pine);line-height:1}
+.fb-stat-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text4)}
+.fb-div{width:1px;height:28px;background:var(--border)}
+.fb-pills{display:flex;gap:4px;flex-wrap:wrap}
+.fb-pill{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:50px;background:var(--pine-bg);border:1px solid var(--pine-border);color:var(--pine-text)}
+.fb-right{display:flex;gap:8px}
+
+/* SPONSORED */
+.sponsored{margin-top:24px;padding:18px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:16px}
+.sp-badge{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text4);writing-mode:vertical-lr;transform:rotate(180deg)}
+.sp-body{flex:1}
+.sp-brand{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--text)}
+.sp-text{font-size:12px;color:var(--text3);line-height:1.5;margin:4px 0 8px}
+.sp-link{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--rust);text-decoration:none}
+.sp-link:hover{text-decoration:underline}
+
+/* FOOTER */
+.footer{padding:16px clamp(16px,4vw,48px);border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--text4);text-align:center}
+
+/* MODALS */
+.modal-bg{position:fixed;inset:0;background:rgba(26,26,24,0.45);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:var(--r-lg);max-width:460px;width:100%;padding:24px}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--text);margin-bottom:4px}
+.modal p{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:16px}
+.m-field{margin-bottom:14px}
+.m-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:5px;display:block}
+.m-input{width:100%;padding:10px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg);font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);outline:none}
+.m-input:focus{border-color:var(--pine)}
+.m-textarea{width:100%;padding:10px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg);font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);outline:none;min-height:70px;resize:vertical}
+.m-select{width:100%;padding:10px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg);font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);cursor:pointer;appearance:auto}
+.m-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
+/* LOAD MODAL CARDS */
+.load-card{padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;transition:border-color .15s}
+.load-card:hover{border-color:var(--pine-border)}
+.load-card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.load-card-title{font-size:13px;font-weight:700;color:var(--text)}
+.load-card-sub{font-family:var(--mono);font-size:10px;color:var(--text4)}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .side{position:relative;top:0}
+  .cat-nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .cn-btn{width:auto;padding:6px 10px;font-size:12px}
+  .nav-center{display:none}
+  .foot-bar{flex-wrap:wrap}
+  .fb-left{width:100%;justify-content:center}
+  .fb-right{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#2D6A4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C44B1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-center">
+    <a href="#">Classifieds</a>
+    <a href="#" class="active">Trips</a>
+    <a href="#">Gear</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn">+ List Rig</button>
+    <div class="nav-ava">MR</div>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="breadcrumb">
+    <a href="#">TRIPS</a><span>›</span>
+    <a href="#">MOJAVE ROAD RUN</a><span>›</span>
+    <span style="color:var(--text2)">PACKING LIST</span>
+  </div>
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">PACK THE RIG</h1>
+      <p class="page-sub">Select from pre-built categories, add custom items, and save as a template. Drag groups to reorder.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="clearAll()">Clear All</button>
+      <button class="btn btn-outline" onclick="showLoad()">📋 Load Template</button>
+      <button class="btn btn-outline" onclick="showGroupModal()">+ New Group</button>
+      <button class="btn btn-rust" onclick="showSave()">💾 Save Template</button>
+    </div>
+  </div>
+
+  <!-- AUTO-BUILD TIP -->
+  <div class="auto-tip">
+    <span>💡</span>
+    <span>This trip is 4 days in the Mojave Desert — we've pre-suggested categories based on your route, duration, and conditions.</span>
+    <a href="#" onclick="autoFill();return false;">Auto-build from trip →</a>
+  </div>
+
+  <!-- TEMPLATE BAR -->
+  <div class="tmpl-bar" id="tmplBar">
+    <input type="text" class="tmpl-name" placeholder="Untitled packing list — click to name..." id="tmplName">
+    <div class="tmpl-meta">
+      <span><span class="c" id="totalCt">0</span> items</span>
+      <span>·</span>
+      <span><span class="c" id="groupCt">0</span> groups</span>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="side">
+      <div class="search-wrap">
+        <span class="si">🔍</span>
+        <input type="text" placeholder="Search items..." id="searchInput" oninput="doSearch()">
+      </div>
+      <div class="side-label">CATEGORIES</div>
+      <div class="cat-nav" id="catNav"></div>
+
+      <button class="add-group-btn" onclick="showGroupModal()">+ Add custom group</button>
+
+      <hr class="side-divider">
+      <div class="side-label">SAVED TEMPLATES</div>
+      <div class="saved-list">
+        <div class="sv-item" onclick="loadTmpl('weekend')"><span class="sv-icon">📋</span>Weekend warrior<span class="sv-ct">34</span></div>
+        <div class="sv-item" onclick="loadTmpl('week')"><span class="sv-icon">📋</span>Week-long expedition<span class="sv-ct">62</span></div>
+        <div class="sv-item" onclick="loadTmpl('day')"><span class="sv-icon">📋</span>Day trip essentials<span class="sv-ct">18</span></div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main" id="main"></div>
+  </div>
+
+  <!-- SPONSORED -->
+  <div class="sponsored">
+    <div class="sp-badge">SPONSORED</div>
+    <div class="sp-body">
+      <div class="sp-brand">MAXTRAX · RECOVERY BOARDS</div>
+      <div class="sp-text">Don't leave home without extraction gear. MKII boards handle mud, sand, and snow — code <strong>HUB15</strong> for 15% off.</div>
+      <a href="#" class="sp-link">Shop MAXTRAX →</a>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY FOOTER -->
+<div class="foot-bar" id="footBar">
+  <div class="fb-left">
+    <div class="fb-stat"><div class="fb-stat-num" id="fbItems">0</div><div class="fb-stat-label">Items</div></div>
+    <div class="fb-div"></div>
+    <div class="fb-stat"><div class="fb-stat-num" id="fbGroups">0</div><div class="fb-stat-label">Groups</div></div>
+    <div class="fb-div"></div>
+    <div class="fb-pills" id="fbPills"></div>
+  </div>
+  <div class="fb-right">
+    <button class="btn btn-outline" onclick="showSave()">Save Template</button>
+    <button class="btn btn-pine" onclick="alert('Packing list attached to Mojave Road Run!')">Attach to Trip ✓</button>
+  </div>
+</div>
+
+<!-- SAVE MODAL -->
+<div class="modal-bg" id="saveModal">
+  <div class="modal">
+    <h3>SAVE AS TEMPLATE</h3>
+    <p>Reuse this list on future trips. You can load and modify it anytime.</p>
+    <div class="m-field"><label class="m-label">Template Name</label><input type="text" class="m-input" placeholder="e.g., Weekend Warrior..." id="saveName"></div>
+    <div class="m-field"><label class="m-label">Description <span style="color:var(--text4);text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="m-textarea" placeholder="What kind of trip?" id="saveDesc"></textarea></div>
+    <div class="m-field"><label class="m-label">Trip Type</label><select class="m-select"><option>Day trip</option><option selected>Weekend (2–3 days)</option><option>Week-long</option><option>Multi-week</option></select></div>
+    <div class="m-actions"><button class="btn btn-outline" onclick="hideModals()">Cancel</button><button class="btn btn-rust" onclick="doSave()">Save Template</button></div>
+  </div>
+</div>
+
+<!-- LOAD MODAL -->
+<div class="modal-bg" id="loadModal">
+  <div class="modal">
+    <h3>LOAD A TEMPLATE</h3>
+    <p>Pre-fill your list from a saved template. You can add or remove items after.</p>
+    <div class="load-card" onclick="loadTmpl('weekend');hideModals()"><div class="load-card-icon" style="background:var(--pine-bg)">🏕️</div><div><div class="load-card-title">Weekend Warrior</div><div class="load-card-sub">34 items · 2–3 day trips</div></div></div>
+    <div class="load-card" onclick="loadTmpl('week');hideModals()"><div class="load-card-icon" style="background:var(--rust-bg)">🗺️</div><div><div class="load-card-title">Week-Long Expedition</div><div class="load-card-sub">62 items · extended overland</div></div></div>
+    <div class="load-card" onclick="loadTmpl('day');hideModals()"><div class="load-card-icon" style="background:var(--gold-bg)">☀️</div><div><div class="load-card-title">Day Trip Essentials</div><div class="load-card-sub">18 items · quick trail runs</div></div></div>
+    <div style="text-align:center;padding:10px;border:1.5px dashed var(--border);border-radius:8px;font-size:12px;color:var(--text4);cursor:pointer;margin-top:4px" onclick="hideModals()">Start from scratch</div>
+    <div class="m-actions"><button class="btn btn-outline" onclick="hideModals()">Cancel</button></div>
+  </div>
+</div>
+
+<!-- NEW GROUP MODAL -->
+<div class="modal-bg" id="groupModal">
+  <div class="modal">
+    <h3>ADD CUSTOM GROUP</h3>
+    <p>Create a new category to organize items your way.</p>
+    <div class="m-field"><label class="m-label">Group Name</label><input type="text" class="m-input" placeholder="e.g., Dog Gear, Photography Kit..." id="newGroupName"></div>
+    <div class="m-field"><label class="m-label">Icon <span style="color:var(--text4);text-transform:none;letter-spacing:0">(emoji)</span></label><input type="text" class="m-input" placeholder="📦" id="newGroupIcon" style="width:80px;text-align:center;font-size:20px"></div>
+    <div class="m-actions"><button class="btn btn-outline" onclick="hideModals()">Cancel</button><button class="btn btn-pine" onclick="addGroup()">Create Group</button></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">© 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED</div>
+
+<script>
+const CATS=[
+  {id:'recovery',icon:'🪢',name:'Recovery',items:['Recovery straps','Kinetic rope','Tree saver strap','Soft shackles (2)','D-ring shackles','Snatch block / pulley','Recovery boards (MAXTRAX)','Hi-lift jack','Bottle jack','Winch line extension','Winch damper blanket','Shovel','Gloves (leather)','Tire deflator','Tire plug kit','Portable air compressor']},
+  {id:'firstaid',icon:'🏥',name:'First Aid & Safety',items:['First aid kit','Trauma kit / IFAK','Snake bite kit','Prescription meds','Allergy meds (Benadryl)','Pain relievers','Sunscreen SPF 50+','Insect repellent','Burn cream','Emergency blanket','Tourniquet','SAM splint','Medical tape','Nitrile gloves','Fire extinguisher','Whistle','Signal mirror']},
+  {id:'camp',icon:'⛺',name:'Camp & Shelter',items:['Roof top tent','Ground tent','Sleeping bag','Sleeping pad','Pillow','Blankets / quilts','Awning','Awning walls','Camp chairs (x2)','Camp table','Tarp / ground sheet','Paracord (50ft)','Stakes & guy lines','Tent repair kit','Hammock','Camp rug / mat']},
+  {id:'kitchen',icon:'🍳',name:'Kitchen & Cooking',items:['Camp stove','Fuel canisters','Cast iron skillet','Cooking pot','Kettle / percolator','Cutting board','Knife set','Spatula & tongs','Can opener','Plates / bowls','Cups / mugs','Utensils set','Paper towels','Dish soap & sponge','Trash bags','Aluminum foil','Ziplock bags','Cooler / ice chest','12V fridge','Spice kit','Coffee maker / press','Collapsible sink']},
+  {id:'food',icon:'🥘',name:'Food & Water',items:['Water (1 gal/person/day)','Water jug (5 gal)','Water filter / purifier','Electrolyte mix','Coffee / tea','Breakfast items','Lunch items','Dinner items','Snacks (trail mix, jerky, bars)','Fresh fruit','Condiments','Cooking oil','Marshmallows / s\'mores','Ice']},
+  {id:'clothes',icon:'👕',name:'Clothing',items:['Base layers','Hiking pants','Shorts','T-shirts','Long sleeve shirts','Fleece / mid layer','Rain jacket','Insulated jacket','Sun hat','Beanie','Buff / neck gaiter','Hiking boots','Camp shoes / sandals','Wool socks (3+ pairs)','Underwear','Swimsuit','Cold weather gloves','Sunglasses']},
+  {id:'hygiene',icon:'🧴',name:'Toiletries & Hygiene',items:['Toothbrush & toothpaste','Biodegradable soap','Shampoo','Deodorant','Wet wipes','Hand sanitizer','Toilet paper','WAG bags / portable toilet','Trowel','Microfiber towel','Camp shower (solar)','Lip balm w/ SPF','Mirror (small)']},
+  {id:'tools',icon:'🔧',name:'Tools & Vehicle',items:['Tool kit (wrenches, sockets, pliers)','Zip ties (assorted)','Duct tape','JB Weld / epoxy','WD-40','Spare fuses (assorted)','Jump pack / jumper cables','Full-size spare tire','Lug wrench','Breaker bar','Ratchet straps','Bungee cords','Hose clamps','Mechanics wire','Spare fluids (oil, coolant)','Funnel','Fire starter kit','Multi-tool / Leatherman']},
+  {id:'power',icon:'🔋',name:'Power & Lighting',items:['Portable power station','Solar panel','Dual battery system','12V charger cables','USB cables & adapters','Headlamp','Flashlight','Lantern (camp)','Portable light bar','Spare batteries (AA, AAA)','LED string lights']},
+  {id:'nav',icon:'📡',name:'Nav & Comms',items:['GPS / phone mount','Paper maps (backup)','Compass','GMRS radio (handheld)','CB radio','Ham radio','Garmin inReach / sat comm','Cell phone booster','Spare phone charger','Trail guidebook']},
+  {id:'docs',icon:'📄',name:'Documents & Money',items:['Driver\'s license','Vehicle registration','Insurance cards','Trail permits','Cash (small bills)','Credit / debit card','Emergency contact list','Medical info card','Vehicle manual']},
+  {id:'misc',icon:'📦',name:'Miscellaneous',items:['Camera & memory cards','Drone & batteries','Binoculars','Book / reading material','Cards / games','Dog supplies','Firewood / firestarter','Bear spray','Dry bags','Flagging tape','Notepad & pen','Carabiners']}
+];
+
+let sel={};// {catId:[itemName,...]}
+let customGroups=[];// {id,icon,name,items:[]}
+
+function allCats(){return [...CATS,...customGroups]}
+
+function render(){
+  // Sidebar
+  const nav=document.getElementById('catNav');
+  nav.innerHTML=allCats().map(c=>{
+    const ct=(sel[c.id]||[]).length;
+    return `<button class="cn-btn${ct?'' :''} ${ct?' active':''}" onclick="scrollTo('${c.id}')">
+      <span class="cn-icon">${c.icon}</span><span class="cn-name">${c.name}</span>${ct?`<span class="cn-ct">${ct}</span>`:''}
+    </button>`;
+  }).join('');
+
+  // Main
+  const main=document.getElementById('main');
+  main.innerHTML=allCats().map(c=>{
+    const checked=sel[c.id]||[];
+    const allItems=[...c.items,...checked.filter(i=>!c.items.includes(i))];
+    const total=allItems.length;
+    const done=checked.length;
+    return `<div class="group" id="g-${c.id}">
+      <div class="group-header" onclick="toggleGroup('${c.id}')">
+        <span class="gh-icon">${c.icon}</span>
+        <span class="gh-name">${c.name}</span>
+        <span class="gh-frac"><b>${done}</b>/${total}</span>
+        <div class="gh-actions">
+          ${done<total?`<button class="gh-selectall" onclick="event.stopPropagation();selAll('${c.id}')">Select all</button>`:`<button class="gh-selectall" onclick="event.stopPropagation();deselAll('${c.id}')">Deselect</button>`}
+          <button class="gh-edit" onclick="event.stopPropagation();renameGroup('${c.id}')">✎</button>
+        </div>
+        <span class="gh-toggle">▾</span>
+      </div>
+      <div class="group-body" id="b-${c.id}">
+        ${allItems.map(it=>{
+          const on=checked.includes(it);
+          const esc=it.replace(/'/g,"\\'");
+          return `<div class="item${on?' on':''}" onclick="tog('${c.id}','${esc}')">
+            <div class="item-chk"></div>
+            <span class="item-name">${it}</span>
+            <div class="item-qty">
+              <div class="qb" onclick="event.stopPropagation();chgQty(this,-1)">−</div>
+              <span class="qv">1</span>
+              <div class="qb" onclick="event.stopPropagation();chgQty(this,1)">+</div>
+            </div>
+            <a href="#" class="item-shop" onclick="event.stopPropagation()">Shop →</a>
+          </div>`;
+        }).join('')}
+        <div class="add-row">
+          <input type="text" placeholder="+ Add custom item to ${c.name}..." id="ci-${c.id}" onkeydown="if(event.key==='Enter')addCustom('${c.id}')">
+          <button class="add-row-btn" onclick="addCustom('${c.id}')">Add</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  updateCounts();
+}
+
+function tog(cat,item){
+  if(!sel[cat])sel[cat]=[];
+  const i=sel[cat].indexOf(item);
+  if(i>-1){sel[cat].splice(i,1);if(!sel[cat].length)delete sel[cat]}
+  else sel[cat].push(item);
+  render();
+}
+function selAll(cat){
+  const c=allCats().find(x=>x.id===cat);
+  sel[cat]=[...c.items,...(sel[cat]||[]).filter(i=>!c.items.includes(i))];
+  render();
+}
+function deselAll(cat){delete sel[cat];render()}
+function toggleGroup(cat){
+  const b=document.getElementById('b-'+cat);
+  const h=b.previousElementSibling;
+  b.classList.toggle('hidden');h.classList.toggle('collapsed');
+}
+function scrollTo(cat){
+  const el=document.getElementById('g-'+cat);
+  if(el){window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-76,behavior:'smooth'})}
+}
+function addCustom(cat){
+  const inp=document.getElementById('ci-'+cat);
+  const v=inp.value.trim();if(!v)return;
+  if(!sel[cat])sel[cat]=[];
+  if(!sel[cat].includes(v))sel[cat].push(v);
+  inp.value='';render();
+}
+function chgQty(btn,d){
+  const el=btn.parentElement.querySelector('.qv');
+  let v=parseInt(el.textContent)+d;
+  el.textContent=Math.max(1,Math.min(99,v));
+}
+function clearAll(){sel={};render()}
+function doSearch(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.item').forEach(i=>{
+    i.style.display=(!q||i.querySelector('.item-name').textContent.toLowerCase().includes(q))?'':'none';
+  });
+  document.querySelectorAll('.group').forEach(g=>{
+    const vis=g.querySelectorAll('.item:not([style*="display: none"])');
+    g.style.display=(!q||vis.length)?'':'none';
+  });
+}
+function updateCounts(){
+  const total=Object.values(sel).reduce((a,b)=>a+b.length,0);
+  const groups=Object.keys(sel).length;
+  document.getElementById('totalCt').textContent=total;
+  document.getElementById('groupCt').textContent=groups;
+  document.getElementById('fbItems').textContent=total;
+  document.getElementById('fbGroups').textContent=groups;
+  const fb=document.getElementById('footBar');
+  fb.classList.toggle('show',total>0);
+  const pills=document.getElementById('fbPills');
+  pills.innerHTML=Object.keys(sel).map(id=>{
+    const c=allCats().find(x=>x.id===id);
+    return `<span class="fb-pill">${c?c.icon:'📦'} ${sel[id].length}</span>`;
+  }).join('');
+}
+
+// Groups
+function showGroupModal(){document.getElementById('groupModal').classList.add('show')}
+function addGroup(){
+  const name=document.getElementById('newGroupName').value.trim();
+  const icon=document.getElementById('newGroupIcon').value.trim()||'📦';
+  if(!name)return;
+  const id='custom_'+Date.now();
+  customGroups.push({id,icon,name,items:[]});
+  document.getElementById('newGroupName').value='';
+  document.getElementById('newGroupIcon').value='';
+  hideModals();render();
+  setTimeout(()=>scrollTo(id),100);
+}
+function renameGroup(catId){
+  const c=allCats().find(x=>x.id===catId);
+  const n=prompt('Rename group:',c.name);
+  if(n&&n.trim()){
+    const custom=customGroups.find(x=>x.id===catId);
+    if(custom)custom.name=n.trim();
+    else{const orig=CATS.find(x=>x.id===catId);if(orig)orig.name=n.trim();}
+    render();
+  }
+}
+
+// Templates
+function loadTmpl(type){
+  clearAll();
+  if(type==='weekend'){
+    sel={recovery:['Recovery straps','Soft shackles (2)','Recovery boards (MAXTRAX)','Shovel','Tire plug kit','Portable air compressor'],firstaid:['First aid kit','Sunscreen SPF 50+','Insect repellent','Pain relievers','Fire extinguisher'],camp:['Roof top tent','Sleeping bag','Pillow','Awning','Camp chairs (x2)','Camp table'],kitchen:['Camp stove','Fuel canisters','Cast iron skillet','Cooking pot','Plates / bowls','Utensils set','Cooler / ice chest','Coffee maker / press','Trash bags'],food:['Water (1 gal/person/day)','Water jug (5 gal)','Coffee / tea','Breakfast items','Dinner items','Snacks (trail mix, jerky, bars)'],clothes:['Hiking pants','T-shirts','Rain jacket','Sun hat','Hiking boots','Camp shoes / sandals','Wool socks (3+ pairs)'],hygiene:['Toothbrush & toothpaste','Wet wipes','Hand sanitizer','Toilet paper','Microfiber towel'],tools:['Tool kit (wrenches, sockets, pliers)','Zip ties (assorted)','Duct tape','Jump pack / jumper cables'],power:['Headlamp','Flashlight','Lantern (camp)','USB cables & adapters'],nav:['GPS / phone mount','GMRS radio (handheld)'],docs:['Driver\'s license','Vehicle registration','Insurance cards','Cash (small bills)']};
+    document.getElementById('tmplName').value='Weekend Warrior';
+  } else if(type==='day'){
+    sel={recovery:['Recovery straps','Soft shackles (2)','Tire plug kit','Portable air compressor'],firstaid:['First aid kit','Sunscreen SPF 50+','Pain relievers'],food:['Water (1 gal/person/day)','Snacks (trail mix, jerky, bars)','Lunch items'],clothes:['Hiking pants','T-shirts','Sun hat','Hiking boots','Sunglasses'],tools:['Tool kit (wrenches, sockets, pliers)','Zip ties (assorted)','Multi-tool / Leatherman'],nav:['GPS / phone mount','GMRS radio (handheld)'],docs:['Driver\'s license','Vehicle registration','Insurance cards']};
+    document.getElementById('tmplName').value='Day Trip Essentials';
+  } else if(type==='week'){
+    CATS.forEach(c=>{sel[c.id]=[...c.items]});
+    document.getElementById('tmplName').value='Week-Long Expedition';
+  }
+  render();
+}
+function autoFill(){loadTmpl('weekend');
+  const bar=document.getElementById('tmplBar');bar.style.borderColor='var(--pine)';bar.style.background='var(--pine-bg)';
+  document.getElementById('tmplName').value='Mojave Road Run — 4 Days';
+  setTimeout(()=>{bar.style.borderColor='';bar.style.background=''},2000);
+}
+
+// Modals
+function showSave(){document.getElementById('saveModal').classList.add('show');document.getElementById('saveName').value=document.getElementById('tmplName').value}
+function showLoad(){document.getElementById('loadModal').classList.add('show')}
+function hideModals(){document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('show'))}
+function doSave(){
+  const n=document.getElementById('saveName').value||'Untitled';
+  hideModals();document.getElementById('tmplName').value=n;
+  const bar=document.getElementById('tmplBar');bar.style.borderColor='var(--pine)';bar.style.background='var(--pine-bg)';
+  setTimeout(()=>{bar.style.borderColor='';bar.style.background=''},2000);
+}
+document.querySelectorAll('.modal-bg').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)hideModals()})});
+
+render();
+</script>
+
+</body>
+</html>
