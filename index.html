@@ -166,6 +166,9 @@
     .preview-hub.garage::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(196,91,40,.22) 0%, transparent 55%), radial-gradient(circle at 75% 35%, rgba(184,150,12,.12) 0%, transparent 55%); }
     .preview-hub.planner::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0 40%, rgba(196,91,40,.35) 40% 42%, transparent 42% 58%, rgba(196,91,40,.35) 58% 60%, transparent 60% 100%), radial-gradient(circle at 25% 75%, rgba(28,43,31,.18) 0 6px, transparent 7px), radial-gradient(circle at 75% 25%, rgba(28,43,31,.18) 0 6px, transparent 7px); }
     .preview-hub.packing::after   { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 24px, rgba(28,43,31,.1) 24px 25px), linear-gradient(90deg, rgba(196,91,40,.18) 0 6px, transparent 6px 100%); }
+    .preview-hub.designsys::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(28,43,31,.12) 0 33%, rgba(196,91,40,.18) 33% 66%, rgba(184,150,12,.18) 66% 100%); }
+    .preview-expedition           { background: #FFFFFF; color: #14130E; border-bottom: 1px solid #EAE6DC; }
+    .preview-expedition::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 40%, rgba(229,112,30,.18) 0%, transparent 60%), linear-gradient(180deg, transparent 0 70%, rgba(28,43,31,.08) 70% 100%); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -244,61 +247,6 @@
   </header>
 
   <main>
-
-    <!-- TrailBound Themes -->
-    <p class="section-label">TrailBound — Off-Road Classifieds &amp; Gear</p>
-    <div class="grid">
-
-      <a class="card" href="theme1.html">
-        <div class="card-preview preview-theme1">
-          <span>Theme 1</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">TrailBound — Theme 1</div>
-          <div class="card-desc">Dark, rugged layout with a neutral off-white palette and heavy Barlow typography.</div>
-          <div class="card-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">Barlow</span>
-            <span class="tag accent">Variant A</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="theme2.html">
-        <div class="card-preview preview-theme2">
-          <span>Theme 2</span>
-          <span class="tag">LIGHT</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">TrailBound — Theme 2</div>
-          <div class="card-desc">Light, clean version with a warm parchment background and bold red accents.</div>
-          <div class="card-tags">
-            <span class="tag">Light</span>
-            <span class="tag">Barlow</span>
-            <span class="tag accent">Variant B</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="theme3.html">
-        <div class="card-preview preview-theme3">
-          <span>Theme 3</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">TrailBound — Theme 3</div>
-          <div class="card-desc">Deep forest-green dark mode with subtle radial glows and earthy tones.</div>
-          <div class="card-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">Green</span>
-            <span class="tag green">Variant C</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-    </div>
 
     <!-- TrailRig Themes -->
     <p class="section-label">TrailRig — The Off-Road Marketplace</p>
@@ -567,6 +515,92 @@
             <span class="tag rust">Profile</span>
           </div>
           <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="expeditionist-homepage.html">
+        <div class="card-preview preview-expedition">
+          <span>Expeditionist</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Expeditionist — Homepage</div>
+          <div class="card-desc">All-in-one overlander platform homepage. White-dominant canvas with amber CTAs and forest accents.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag accent">Amber</span>
+            <span class="tag rust">Homepage</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="design-system.html">
+        <div class="card-preview preview-hub designsys">
+          <span>Design System</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Design System</div>
+          <div class="card-desc">Tokens, type scale, color, and component library reference for the Overlander Classifieds UI.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Reference</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- TrailBound Themes -->
+    <p class="section-label">TrailBound — Off-Road Classifieds &amp; Gear</p>
+    <div class="grid">
+
+      <a class="card" href="theme1.html">
+        <div class="card-preview preview-theme1">
+          <span>Theme 1</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 1</div>
+          <div class="card-desc">Dark, rugged layout with a neutral off-white palette and heavy Barlow typography.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Barlow</span>
+            <span class="tag accent">Variant A</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="theme2.html">
+        <div class="card-preview preview-theme2">
+          <span>Theme 2</span>
+          <span class="tag">LIGHT</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 2</div>
+          <div class="card-desc">Light, clean version with a warm parchment background and bold red accents.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Barlow</span>
+            <span class="tag accent">Variant B</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="theme3.html">
+        <div class="card-preview preview-theme3">
+          <span>Theme 3</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailBound — Theme 3</div>
+          <div class="card-desc">Deep forest-green dark mode with subtle radial glows and earthy tones.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Green</span>
+            <span class="tag green">Variant C</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
         </div>
       </a>
 

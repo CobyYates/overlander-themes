@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#1C2B1F" />
+<title>Expeditionist — The All-in-One Platform for Overlanders</title>
+<meta name="description" content="Plan trips. Document your rig. Compare gear from 340+ brands. Buy and sell built rigs. Connect with 12,000+ overlanders — all in one place." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* =============================================================
+     EXPEDITIONIST · HOMEPAGE
+     White-dominant · Amber CTA · Forest as deep accent
+     ============================================================= */
+
+  :root {
+    /* Surface */
+    --bg:           #FFFFFF;
+    --bg-2:         #FAF8F3;
+    --bg-3:         #F2EFE7;
+
+    /* Ink */
+    --ink:          #14130E;
+    --ink-soft:     #3D3B35;
+    --muted:        #76736A;
+    --line:         #EAE6DC;
+    --line-strong:  #D2CDBE;
+
+    /* Brand forest — used sparingly as deep accent */
+    --forest:       #1C2B1F;
+    --forest-deep:  #131C16;
+    --moss:         #4A5D3C;
+
+    /* Primary CTA — sun-baked amber */
+    --amber:        #E5701E;
+    --amber-deep:   #B95514;
+    --amber-soft:   #FFF1E0;
+
+    /* Type */
+    --display: 'Big Shoulders Display', Impact, sans-serif;
+    --sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+    --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --gutter: clamp(20px, 4vw, 56px);
+    --max:    1320px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* === Typography === */
+  h1, h2, h3, h4, h5 {
+    font-family: var(--display);
+    font-weight: 800;
+    letter-spacing: -0.005em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .mono, .overline {
+    font-family: var(--mono);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .overline {
+    font-size: 11px;
+    color: var(--amber);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .overline::before {
+    content: '';
+    width: 28px;
+    height: 1.5px;
+    background: var(--amber);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* ============================================================
+     BUTTONS
+     ============================================================ */
+  .btn {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 24px;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    border-radius: 2px;
+    letter-spacing: -0.005em;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+
+  .btn-amber {
+    background: var(--amber);
+    color: #FFF;
+    border-color: var(--amber);
+  }
+  .btn-amber:hover { background: var(--amber-deep); border-color: var(--amber-deep); color: #FFF; }
+
+  .btn-forest {
+    background: var(--forest);
+    color: var(--bg);
+    border-color: var(--forest);
+  }
+  .btn-forest:hover { background: var(--amber); border-color: var(--amber); color: #FFF; }
+
+  .btn-light {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #FFF;
+  }
+  .btn-light:hover { background: #FFF; color: var(--forest); border-color: #FFF; }
+
+  .btn-sm { padding: 10px 16px; font-size: 13px; }
+
+  /* ============================================================
+     TOP BAR
+     ============================================================ */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px var(--gutter);
+    max-width: var(--max);
+    margin: 0 auto;
+    gap: 32px;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--forest);
+  }
+  .brand-mark {
+    width: 26px;
+    height: 26px;
+    background: var(--forest);
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 900;
+    border-radius: 2px;
+  }
+
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav a {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    transition: color 0.15s;
+  }
+  .nav a:hover { color: var(--amber); }
+  .nav-cta { display: flex; gap: 10px; align-items: center; }
+
+  @media (max-width: 980px) { .nav { display: none; } }
+  @media (max-width: 600px) {
+    .nav-cta .btn:first-child { display: none; }
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    background: var(--bg);
+    padding: clamp(40px, 6vw, 80px) 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-text { padding-bottom: clamp(40px, 6vw, 80px); }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1.5px;
+    background: var(--amber);
+  }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    font-size: clamp(48px, 7vw, 96px);
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent { color: var(--amber); }
+
+  .hero-lede {
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .hero-meta strong {
+    font-family: var(--display);
+    font-size: 22px;
+    color: var(--ink);
+    margin-right: 6px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  /* hero visual — big bold imagery */
+  .hero-visual {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 5 / 4;
+    background: var(--bg-3);
+  }
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://a-us.storyblok.com/f/1022869/2874x1212/81080ff5fa/stock.png/m/2800x1180/filters:format(webp):quality(80)");
+    background-size: cover;
+    background-position: center;
+  }
+  .hero-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(28, 43, 31, 0.45) 100%);
+  }
+
+  /* small floating "feature" tags on hero image */
+  .hero-tag {
+    position: absolute;
+    background: #FFF;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 2px;
+    box-shadow: 0 4px 18px -6px rgba(20, 19, 14, 0.3);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--amber);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .hero-tag-1 { top: 22px; left: 22px; }
+  .hero-tag-2 { bottom: 28px; right: 22px; }
+  .hero-tag-3 { top: 50%; right: 30px; transform: translateY(-50%); }
+
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-text { padding-bottom: 24px; }
+    .hero-visual { aspect-ratio: 4 / 3; }
+  }
+
+  /* ============================================================
+     LOGO STRIP / TRUST
+     ============================================================ */
+  .trust {
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .trust-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .trust-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .trust-brands {
+    display: flex;
+    gap: 36px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .trust-brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .trust-brand:hover { opacity: 1; color: var(--amber); }
+
+  /* ============================================================
+     SECTION BASICS
+     ============================================================ */
+  .section { padding: clamp(80px, 10vw, 130px) 0; }
+  .section-tint { background: var(--bg-2); }
+  .section-dark { background: var(--forest); color: var(--bg); }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 60px;
+  }
+  .section-head h2 {
+    font-size: clamp(40px, 5.5vw, 80px);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+  .section-head h2 .accent { color: var(--amber); }
+  .section-dark .section-head h2 { color: var(--bg); }
+  .section-head .sub {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+  .section-dark .section-head .sub { color: rgba(255, 255, 255, 0.7); }
+
+  @media (max-width: 880px) {
+    .section-head { grid-template-columns: 1fr; gap: 22px; }
+  }
+
+  /* ============================================================
+     THREE PILLARS
+     ============================================================ */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .pillar {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 32px 28px;
+    transition: all 0.22s ease;
+    position: relative;
+  }
+  .pillar:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px -22px rgba(20, 19, 14, 0.18);
+  }
+  .pillar-icon-wrap {
+    width: 52px;
+    height: 52px;
+    background: var(--amber-soft);
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    margin-bottom: 22px;
+    transition: all 0.2s;
+  }
+  .pillar:hover .pillar-icon-wrap {
+    background: var(--amber);
+    color: #FFF;
+  }
+  .pillar-icon { width: 26px; height: 26px; }
+  .pillar h3 {
+    font-size: 28px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .pillar p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .pillar ul {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+  .pillar ul li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 8px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+  .pillar ul li::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--amber);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .pillar-link {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pillar-link::after { content: '→'; transition: transform 0.2s; }
+  .pillar:hover .pillar-link::after { transform: translateX(4px); }
+
+  @media (max-width: 980px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     FEATURES — 9 GRID
+     ============================================================ */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .feat {
+    padding: 32px 28px 30px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+    background: var(--bg);
+  }
+  .feat:hover { background: var(--bg-2); }
+  .feat:nth-child(3n) { border-right: none; }
+  .feat:nth-last-child(-n+3) { border-bottom: none; }
+  .feat-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .feat-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--forest);
+    margin-bottom: 18px;
+  }
+  .feat h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .feat p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 980px) {
+    .features { grid-template-columns: repeat(2, 1fr); }
+    .feat:nth-child(3n) { border-right: 1px solid var(--line); }
+    .feat:nth-child(2n) { border-right: none; }
+    .feat:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+    .feat:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  @media (max-width: 620px) {
+    .features { grid-template-columns: 1fr; }
+    .feat { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
+    .feat:last-child { border-bottom: none !important; }
+  }
+
+  /* ============================================================
+     SHOP BY CATEGORY
+     ============================================================ */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+  .cat {
+    aspect-ratio: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s;
+  }
+  .cat:hover {
+    border-color: var(--amber);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -16px rgba(20, 19, 14, 0.2);
+  }
+  .cat:hover .cat-icon { color: var(--amber); }
+  .cat-icon {
+    width: 30px;
+    height: 30px;
+    color: var(--forest);
+    transition: color 0.2s;
+  }
+  .cat-name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 16px;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .cat-count {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  @media (max-width: 980px) { .cat-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 620px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ============================================================
+     SHOWCASE — feature-in-use visual
+     ============================================================ */
+  .showcase {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .showcase-text h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    margin-bottom: 22px;
+    line-height: 0.92;
+  }
+  .showcase-text h2 .accent { color: var(--amber); }
+  .showcase-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .showcase-bullets {
+    list-style: none;
+    margin-bottom: 28px;
+  }
+  .showcase-bullets li {
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 500;
+  }
+  .showcase-bullets li:last-child { border-bottom: 1px solid var(--line); }
+  .showcase-bullets strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-family: var(--display);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    flex-shrink: 0;
+    min-width: 100px;
+  }
+  .showcase-visual {
+    background: var(--bg-3);
+    border-radius: 4px;
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .showcase-photo {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://a-us.storyblok.com/f/1022869/1891x810/5021e44da5/ford-bronco-with-callouts.png/m/2080x0/filters:format(webp):quality(80)");
+    background-size: cover;
+    background-position: center;
+  }
+  @media (max-width: 880px) {
+    .showcase { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  /* ============================================================
+     HOW IT WORKS — 4 STEPS
+     ============================================================ */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .step {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px 24px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .step:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+  }
+  .step-num {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 0.85;
+    color: var(--amber);
+    margin-bottom: 18px;
+    letter-spacing: -0.02em;
+  }
+  .step h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .step p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 880px) {
+    .steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     QUOTES
+     ============================================================ */
+  .quote-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .quote {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px 24px;
+  }
+  .quote-stars {
+    color: var(--amber);
+    font-size: 14px;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+  .quote p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .quote-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--forest);
+    color: var(--amber);
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .quote-meta .who { font-weight: 700; color: var(--ink); font-size: 14px; }
+  .quote-meta .who-rig { font-size: 12px; color: var(--muted); }
+  @media (max-width: 880px) {
+    .quote-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     PARTNER WITH US
+     ============================================================ */
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .partner-copy h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    margin-bottom: 22px;
+    line-height: 0.92;
+  }
+  .partner-copy h2 .accent { color: var(--amber); }
+  .partner-copy p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .partner-bullets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+    margin-bottom: 28px;
+  }
+  .partner-bullets span {
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+  .partner-bullets span::before {
+    content: '✦';
+    color: var(--amber);
+    font-size: 14px;
+  }
+
+  .partner-card {
+    background: var(--forest);
+    color: var(--bg);
+    padding: 36px;
+    border-radius: 4px;
+    position: relative;
+  }
+  .partner-card .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .partner-card .label::before {
+    content: '';
+    width: 24px;
+    height: 1.5px;
+    background: var(--amber);
+  }
+  .partner-card h3 {
+    font-size: 30px;
+    margin-bottom: 24px;
+    color: var(--bg);
+  }
+  .partner-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .partner-stat .num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--bg);
+    letter-spacing: -0.01em;
+  }
+  .partner-stat .num .unit {
+    font-size: 0.5em;
+    color: var(--amber);
+    margin-left: 3px;
+  }
+  .partner-stat .lbl {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  @media (max-width: 880px) {
+    .partner-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     FINAL CTA
+     ============================================================ */
+  .cta-block {
+    background: var(--forest);
+    color: var(--bg);
+    padding: clamp(70px, 10vw, 110px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 800 400' xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23E5701E' stroke-width='0.7' opacity='0.18'><path d='M-50,200 Q100,150 250,180 T550,140 T850,160'/><path d='M-50,240 Q100,190 250,220 T550,180 T850,200'/><path d='M-50,280 Q100,230 250,260 T550,220 T850,240'/><path d='M-50,160 Q100,110 250,140 T550,100 T850,120'/></svg>");
+    background-size: cover;
+    pointer-events: none;
+  }
+  .cta-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .cta-block h2 {
+    font-size: clamp(50px, 7vw, 110px);
+    line-height: 0.86;
+    color: var(--bg);
+  }
+  .cta-block h2 .accent { color: var(--amber); }
+  .cta-block .sub {
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 22px;
+    max-width: 50ch;
+  }
+  .cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cta-actions .btn { padding: 16px 22px; justify-content: center; }
+  .cta-foot {
+    margin-top: 24px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+  }
+  @media (max-width: 880px) {
+    .cta-inner { grid-template-columns: 1fr; gap: 36px; }
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    background: var(--bg);
+    padding: 60px 0 30px;
+    border-top: 1px solid var(--line);
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .foot-brand p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    max-width: 36ch;
+    line-height: 1.55;
+  }
+  .foot-col h5 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .foot-col a {
+    display: block;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--amber); }
+  .foot-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 980px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 620px) {
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     ANIMATION
+     ============================================================ */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim-1, .anim-2, .anim-3, .anim-4, .anim-5 {
+    opacity: 0;
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .anim-1 { animation-delay: 0.05s; }
+  .anim-2 { animation-delay: 0.18s; }
+  .anim-3 { animation-delay: 0.32s; }
+  .anim-4 { animation-delay: 0.46s; }
+  .anim-5 { animation-delay: 0.6s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim-1, .anim-2, .anim-3, .anim-4, .anim-5 { opacity: 1; animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOP BAR
+     ============================================================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">E</span>
+      <span>Expeditionist</span>
+    </a>
+    <nav class="nav">
+      <a href="#">Classifieds</a>
+      <a href="#">Gear</a>
+      <a href="#">Trips</a>
+      <a href="#">Forums</a>
+      <a href="#">Garage</a>
+      <a href="#partners">Partners</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-sm">Sign In</a>
+      <a href="#join" class="btn btn-amber btn-sm">Get Started →</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+
+      <div class="hero-text">
+        <div class="hero-eyebrow anim-1">The all-in-one platform for overlanders</div>
+        <h1 class="anim-2">
+          Built for the trail.<br/>
+          <span class="accent">Powered by the community.</span>
+        </h1>
+        <p class="hero-lede anim-3">
+          Plan trips with mapped routes. Document every mod in your garage. Compare gear from
+          340+ brands. Buy and sell built rigs. Connect with 12,000+ overlanders — all in one
+          place.
+        </p>
+        <div class="hero-cta anim-4">
+          <a href="#join" class="btn btn-amber">Create Your Free Account →</a>
+          <a href="#how" class="btn">See How It Works</a>
+        </div>
+        <div class="hero-meta anim-5">
+          <div><strong>12,400+</strong>Members</div>
+          <div><strong>9,140</strong>Routes Shared</div>
+          <div><strong>340+</strong>Brand Partners</div>
+        </div>
+      </div>
+
+      <div class="hero-visual anim-5">
+        <div class="hero-photo" role="img" aria-label="Overlander rig on the trail"></div>
+        <div class="hero-tag hero-tag-1">Trip Planner</div>
+        <div class="hero-tag hero-tag-3">Build Sheet</div>
+        <div class="hero-tag hero-tag-2">Gear Library</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TRUST STRIP
+     ============================================================ -->
+<section class="trust">
+  <div class="trust-inner">
+    <div class="trust-label">Featured brand partners</div>
+    <div class="trust-brands">
+      <a href="#" class="trust-brand">ARB</a>
+      <a href="#" class="trust-brand">Rhino-Rack</a>
+      <a href="#" class="trust-brand">Warn</a>
+      <a href="#" class="trust-brand">Front Runner</a>
+      <a href="#" class="trust-brand">Maxtrax</a>
+      <a href="#" class="trust-brand">Goose Gear</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THREE PILLARS
+     ============================================================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="overline" style="margin-bottom: 18px;">Three Workspaces</div>
+        <h2>Everything you need.<br/><span class="accent">In three places.</span></h2>
+      </div>
+      <p class="sub">
+        Expeditionist is built around three connected workspaces — your trips, your rig, and your
+        community. They share data, so anything you log in one place shows up where you need it next.
+      </p>
+    </div>
+
+    <div class="pillars">
+
+      <article class="pillar">
+        <div class="pillar-icon-wrap">
+          <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 8l4-2 10 5 4-2v17l-4 2-10-5-4 2z"/>
+            <path d="M9 6v18M19 11v15"/>
+          </svg>
+        </div>
+        <h3>Plan every trip.</h3>
+        <p>
+          Map your route with labeled waypoints, schedule the run on a shared calendar, build a
+          smart packing list, and assign roles to your group.
+        </p>
+        <ul>
+          <li>Route Planner & GPX Export</li>
+          <li>Calendar & Group Events</li>
+          <li>Packing Lists & Trip Roles</li>
+        </ul>
+        <a href="#features" class="pillar-link">Explore Trip Tools</a>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-icon-wrap">
+          <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 13l11-7 11 7v11H3z"/>
+            <path d="M3 17h22M10 22h3M15 22h3"/>
+          </svg>
+        </div>
+        <h3>Document your rig.</h3>
+        <p>
+          Build sheet, mod log, maintenance history, and trip miles — every wrench turn and trail
+          run, captured. Multiple rigs supported.
+        </p>
+        <ul>
+          <li>Build Sheet & Mod Log</li>
+          <li>Maintenance & Service History</li>
+          <li>Trip Journal Integration</li>
+        </ul>
+        <a href="#features" class="pillar-link">Explore Your Garage</a>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-icon-wrap">
+          <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="10" r="3.5"/>
+            <circle cx="19" cy="10" r="3.5"/>
+            <path d="M3 22c0-3 2.5-5.5 6-5.5s6 2.5 6 5.5M13 22c0-3 2.5-5.5 6-5.5s6 2.5 6 5.5"/>
+          </svg>
+        </div>
+        <h3>Find your tribe.</h3>
+        <p>
+          Forums and trip journals for the community. Classifieds for built rigs. A gear library
+          that compares specs from hundreds of brands side by side.
+        </p>
+        <ul>
+          <li>Forums & Trip Journals</li>
+          <li>Classifieds (Verified Builds)</li>
+          <li>Gear Comparison Library</li>
+        </ul>
+        <a href="#features" class="pillar-link">Explore Community</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PLATFORM FEATURES — 9 GRID
+     ============================================================ -->
+<section class="section section-tint" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="overline" style="margin-bottom: 18px;">What's Inside</div>
+        <h2>Nine tools.<br/><span class="accent">One platform.</span></h2>
+      </div>
+      <p class="sub">
+        We built every piece because we needed it ourselves. From the first idea on the forum to
+        the final journal entry — Expeditionist holds the whole arc of a trip.
+      </p>
+    </div>
+
+    <div class="features">
+
+      <article class="feat">
+        <div class="feat-num">01 / Garage</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 17l14-9 14 9v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V17z"/>
+          <path d="M4 22h28M12 28h5M19 28h5"/>
+        </svg>
+        <h3>Your rig, documented.</h3>
+        <p>Build sheet, spec sheet, maintenance log, and trip history. Every mod, every mile.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">02 / Route Planner</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9l6-3 12 6 6-3v21l-6 3-12-6-6 3z"/>
+          <path d="M12 6v24M24 12v18"/>
+        </svg>
+        <h3>Map it. Then drive it.</h3>
+        <p>Plot waypoints, label camps, mark hazards. Stage a multi-day route. Export GPX or share the link.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">03 / Calendar</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="8" width="26" height="23" rx="2"/>
+          <path d="M5 14h26M12 5v6M24 5v6"/>
+          <rect x="10" y="19" width="4" height="4"/>
+          <rect x="22" y="19" width="4" height="4"/>
+        </svg>
+        <h3>Trail rides & meetups.</h3>
+        <p>Find the next group run, host one yourself, or filter by region, club, or vehicle requirement.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">04 / Groups & Roles</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="14" r="4"/>
+          <circle cx="24" cy="14" r="4"/>
+          <path d="M5 28c0-3.5 3-6.5 7-6.5s7 3 7 6.5M17 28c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/>
+        </svg>
+        <h3>Squad up, organized.</h3>
+        <p>Build a group. Assign roles — Trip Leader, Tail Gunner, Medical, Comms. Show up knowing your job.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">05 / Packing Lists</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="6" width="20" height="25" rx="2"/>
+          <path d="M11 12h14M11 17h14M11 22h10M11 27h7"/>
+          <path d="M22 24l1.5 1.5L26 23"/>
+        </svg>
+        <h3>Never forget the boards.</h3>
+        <p>Smart packing lists scale with the trip — duration, terrain, weather, group size. Save templates.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">06 / Trip Journals</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 5h16l6 6v20H8z"/>
+          <path d="M24 5v6h6"/>
+          <path d="M13 17h12M13 22h12M13 27h7"/>
+        </svg>
+        <h3>The run, written down.</h3>
+        <p>Log miles, photos, camp, conditions. Pin trail-condition reports for the next driver.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">07 / Forums</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 7h20v14H15l-6 6v-6H5z"/>
+          <path d="M11 28h17v-10h2v14h-9l-6 4v-4h-4z"/>
+        </svg>
+        <h3>Talk shop with overlanders.</h3>
+        <p>Build threads, trail reports, gear takes. Regional sub-forums. No algorithm, no sponsored bait.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">08 / Gear Library</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="11" width="10" height="20"/>
+          <rect x="16" y="5" width="10" height="26"/>
+          <rect x="28" y="16" width="4" height="15"/>
+        </svg>
+        <h3>Compare specs. Skip hype.</h3>
+        <p>Hundreds of brands. Side-by-side specs. Owner reviews from verified rig profiles.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-num">09 / Classifieds</div>
+        <svg class="feat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 19l3-9h20l3 9v10H5z"/>
+          <circle cx="12" cy="29" r="3"/>
+          <circle cx="24" cy="29" r="3"/>
+          <path d="M11 19h14"/>
+        </svg>
+        <h3>Buy & sell built rigs.</h3>
+        <p>A marketplace for built overlanders. Every rig listed comes with a verified build sheet.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHOP BY CATEGORY
+     ============================================================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="overline" style="margin-bottom: 18px;">Browse the Gear Library</div>
+        <h2>Shop by<br/><span class="accent">category.</span></h2>
+      </div>
+      <p class="sub">
+        Browse products from our affiliate partners, compare brands head to head, and find exactly
+        the right gear for your build. Every link is disclosed.
+      </p>
+    </div>
+
+    <div class="cat-grid">
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l13-10 13 10v8H3z"/><path d="M9 26v-6h14v6"/></svg>
+        <div><div class="cat-name">Roof Tents</div><div class="cat-count">142 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h26M5 14l4 12M27 14l-4 12M9 26h14"/></svg>
+        <div><div class="cat-name">Awnings</div><div class="cat-count">86 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h24v6H4z"/><path d="M8 18v-4h16v4M12 24v3M20 24v3"/></svg>
+        <div><div class="cat-name">Front Bumpers</div><div class="cat-count">74 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h24v6H4z"/><circle cx="22" cy="20" r="4"/><path d="M8 20v3M14 20v3"/></svg>
+        <div><div class="cat-name">Rear Bumpers</div><div class="cat-count">68 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="6"/><path d="M16 6v4M16 22v4M6 16h4M22 16h4M9 9l2.5 2.5M20.5 20.5L23 23M9 23l2.5-2.5M20.5 11.5L23 9"/></svg>
+        <div><div class="cat-name">Lights</div><div class="cat-count">218 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="16" r="6"/><path d="M14 16h12M22 12l4 4-4 4"/></svg>
+        <div><div class="cat-name">Winches</div><div class="cat-count">52 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="24" height="18"/><path d="M4 16h24M16 8v18"/></svg>
+        <div><div class="cat-name">Drawers</div><div class="cat-count">38 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="20" height="22" rx="2"/><path d="M11 12h10M11 17h10M11 22h6"/></svg>
+        <div><div class="cat-name">Fridges</div><div class="cat-count">44 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 24l3-12h16l3 12z"/><path d="M11 12V8h10v4M14 17h4M14 20h4"/></svg>
+        <div><div class="cat-name">Kitchen</div><div class="cat-count">62 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h24v3H4zM6 17h20v3H6zM8 22h16"/></svg>
+        <div><div class="cat-name">Roof Racks</div><div class="cat-count">96 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22l4-10 4 8 4-12 4 14h6"/></svg>
+        <div><div class="cat-name">Suspension</div><div class="cat-count">128 products</div></div>
+      </a>
+      <a href="#" class="cat">
+        <svg class="cat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="26" height="6"/><path d="M7 16h18"/></svg>
+        <div><div class="cat-name">Light Bars</div><div class="cat-count">84 products</div></div>
+      </a>
+    </div>
+
+    <div style="margin-top: 36px; text-align: center;">
+      <a href="#" class="btn btn-amber">Browse All Categories →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHOWCASE — filter by mods feature
+     ============================================================ -->
+<section class="section section-tint">
+  <div class="wrap">
+    <div class="showcase">
+
+      <div class="showcase-text">
+        <div class="overline" style="margin-bottom: 18px;">Find What You're Looking For</div>
+        <h2>Filter rigs<br/>by their <span class="accent">mods.</span></h2>
+        <p>
+          Want a Bronco with sliders, 35s, and a roof tent? Use Expeditionist's mod-aware filters
+          to narrow classifieds by exactly the upgrades that matter — across every make and model.
+        </p>
+        <ul class="showcase-bullets">
+          <li><strong>Filter by mods</strong> — bumpers, lifts, lights, recovery, sleep setup</li>
+          <li><strong>Verified builds</strong> — every listing pulls from a real garage profile</li>
+          <li><strong>Trip history</strong> — see how the rig has actually been driven</li>
+          <li><strong>Save searches</strong> — get notified when a match hits the market</li>
+        </ul>
+        <a href="#" class="btn btn-amber">Start Searching →</a>
+      </div>
+
+      <div class="showcase-visual">
+        <div class="showcase-photo" role="img" aria-label="Filter vehicles by their existing modifications"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS — 4 STEPS
+     ============================================================ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="overline" style="margin-bottom: 18px;">How It Works</div>
+        <h2>Plan it. Pack it.<br/>Drive it. <span class="accent">Log it.</span></h2>
+      </div>
+      <p class="sub">
+        From a half-formed idea on the forum to a journal entry your future self will thank you
+        for — here's how a trip moves through Expeditionist.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Plan</h3>
+        <p>Browse the calendar for an event, or build your own route with mapped waypoints, stages, and alternates.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Pack</h3>
+        <p>Smart packing lists scale to weather, terrain, and trip length. Assign trip roles to your group.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Drive</h3>
+        <p>Live tracking, group messaging, role-based comms. Your route, your packing list, your group — in your pocket.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Log</h3>
+        <p>Pull route, photos, and notes into a clean trip journal. Drop a trail-condition report for the next driver.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUOTES
+     ============================================================ -->
+<section class="section section-tint">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="overline" style="margin-bottom: 18px;">From the Community</div>
+        <h2>Real people.<br/><span class="accent">Real rigs.</span></h2>
+      </div>
+      <p class="sub">
+        Twelve thousand members, hundreds of build threads, and the occasional argument about
+        whether 33s are enough.
+      </p>
+    </div>
+
+    <div class="quote-grid">
+      <blockquote class="quote">
+        <div class="quote-stars">★★★★★</div>
+        <p>"My garage page is basically my truck's autobiography now. The maintenance log alone has saved me twice when something felt familiar but I couldn't remember when I last touched it."</p>
+        <div class="quote-meta">
+          <div class="avatar">PW</div>
+          <div>
+            <div class="who">@pinewest</div>
+            <div class="who-rig">'94 FZJ80 · Member 3 yrs</div>
+          </div>
+        </div>
+      </blockquote>
+
+      <blockquote class="quote">
+        <div class="quote-stars">★★★★★</div>
+        <p>"The role assignments before a group run are the killer feature. Twelve trucks on a trip and everyone knows who's medical, who's tail, who's running comms. No more figuring it out at the trailhead."</p>
+        <div class="quote-meta">
+          <div class="avatar">DR</div>
+          <div>
+            <div class="who">@desert_runner</div>
+            <div class="who-rig">'19 Tacoma · Trip Leader</div>
+          </div>
+        </div>
+      </blockquote>
+
+      <blockquote class="quote">
+        <div class="quote-stars">★★★★★</div>
+        <p>"Sold my old build through classifieds in eight days because every mod and every mile was already documented. The buyer didn't need a long phone call — the rig page answered every question."</p>
+        <div class="quote-meta">
+          <div class="avatar">SC</div>
+          <div>
+            <div class="who">@silvercurve</div>
+            <div class="who-rig">'17 Tacoma → '23 4Runner</div>
+          </div>
+        </div>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNER WITH US
+     ============================================================ -->
+<section class="section" id="partners">
+  <div class="wrap">
+    <div class="partner-grid">
+
+      <div class="partner-copy">
+        <div class="overline" style="margin-bottom: 18px;">For Brands & Companies</div>
+        <h2>Partner with<br/><span class="accent">Expeditionist.</span></h2>
+        <p>
+          Want your products in front of thousands of active overlanders — not anonymous clicks?
+          Become an affiliate partner and get featured in our marketplace, comparison tools,
+          reviews, and sponsored placements across the platform.
+        </p>
+        <div class="partner-bullets">
+          <span>Product Listings</span>
+          <span>Comparison Pages</span>
+          <span>Sponsored Spots</span>
+          <span>Forum Features</span>
+          <span>Trip Sponsorships</span>
+          <span>Brand Collabs</span>
+        </div>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center;">
+          <a href="#" class="btn btn-amber">Become a Partner →</a>
+          <span style="font-size: 13px; color: var(--muted);">or partners@expeditionist.com</span>
+        </div>
+      </div>
+
+      <aside class="partner-card">
+        <div class="label">Audience Snapshot</div>
+        <h3>Who you'll<br/>reach.</h3>
+        <div class="partner-stats">
+          <div class="partner-stat">
+            <div class="num">12.4<span class="unit">K</span></div>
+            <div class="lbl">Verified Members</div>
+          </div>
+          <div class="partner-stat">
+            <div class="num">4.8<span class="unit">K</span></div>
+            <div class="lbl">Active Builds</div>
+          </div>
+          <div class="partner-stat">
+            <div class="num">186<span class="unit">K mi</span></div>
+            <div class="lbl">Annual Trail Miles</div>
+          </div>
+          <div class="partner-stat">
+            <div class="num">340<span class="unit">+</span></div>
+            <div class="lbl">Brand Partners</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="cta-block" id="join">
+  <div class="wrap cta-inner">
+    <div>
+      <div style="font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); margin-bottom: 22px; display: inline-flex; align-items: center; gap: 10px;">
+        <span style="background: var(--amber); width: 24px; height: 1.5px; display: inline-block;"></span>
+        Free to join · No credit card
+      </div>
+      <h2>Build the rig.<br/>Run the trail.<br/><span class="accent">Log every mile.</span></h2>
+      <p class="sub">
+        Sign up, claim your handle, and start your garage in under two minutes. The first trip
+        you log will already be more organized than the last ten.
+      </p>
+    </div>
+    <div class="cta-actions">
+      <a href="#" class="btn btn-amber">Create Free Account →</a>
+      <a href="#" class="btn btn-light">Take a Tour</a>
+      <div class="cta-foot">12,400 members · 9,140 routes · always growing</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <span class="brand-mark">E</span>
+          <span>Expeditionist</span>
+        </div>
+        <p>
+          The trip planner, build sheet, route map, gear catalog, and logbook for overlanders.
+          Built for the trail, powered by the community.
+        </p>
+      </div>
+
+      <div class="foot-col">
+        <h5>Platform</h5>
+        <a href="#">Garage</a>
+        <a href="#">Route Planner</a>
+        <a href="#">Calendar</a>
+        <a href="#">Trip Journals</a>
+        <a href="#">Packing Lists</a>
+      </div>
+
+      <div class="foot-col">
+        <h5>Marketplace</h5>
+        <a href="#">Classifieds</a>
+        <a href="#">Gear Library</a>
+        <a href="#">Compare Specs</a>
+        <a href="#">Brand Partners</a>
+      </div>
+
+      <div class="foot-col">
+        <h5>Community</h5>
+        <a href="#">Forums</a>
+        <a href="#">Featured Garages</a>
+        <a href="#">Trail Reports</a>
+        <a href="#">Events</a>
+      </div>
+
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">FAQs</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 Expeditionist · Built for the trail</div>
+      <div>Affiliate links disclosed · No algorithm</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

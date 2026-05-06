@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Backgrounds (no change) */
+  --dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;
+  --cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;
+  /* Accent fills — for backgrounds, borders, decorative use */
+  --sage:#3D6B4F;--sage-light:#4A7D5E;--rust:#C45B28;--rust-hover:#D4682F;--gold:#9A7B10;
+  /* ACCESSIBLE TEXT COLORS — context-dependent */
+  --sage-on-dark:#78A68E;--sage-on-light:#3D6B4F;
+  --rust-on-dark:#E0854E;--rust-on-light:#A04B1C;
+  --gold-on-dark:#B89430;--gold-on-light:#7A640B;
+  /* Text hierarchy */
+  --text:#F2F0EA;--text2:#B8B5AD;--text3-dark:#8A877F;--text4-dark:#9A9893;
+  --text3-light:#6E6B65;
+  /* Alpha backgrounds */
+  --sage-bg:rgba(61,107,79,.08);--rust-bg:rgba(196,91,40,.08);
+  /* Borders */
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+.ds-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(15,26,19,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px);gap:16px}
+.ds-nav-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text);display:flex;align-items:center;gap:8px}.ds-nav-logo svg{width:22px;height:22px}
+.accent{color:var(--rust-on-dark)}
+.ds-badge{font-family:var(--mono);font-size:9px;color:var(--text4-dark);padding:3px 10px;border:1px solid var(--border2);border-radius:4px}
+.ds-nav-links{display:flex;gap:14px;margin-left:auto}
+.ds-nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3-dark);text-decoration:none}
+
+.pg{padding:80px clamp(16px,4vw,48px) 60px;max-width:1200px;margin:0 auto}
+.hero-ds{text-align:center;padding:32px 0 44px;border-bottom:1px solid rgba(28,43,31,.08);margin-bottom:48px}
+.hero-ds h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,56px);letter-spacing:2px;color:var(--forest);line-height:1;margin-bottom:8px}
+.hero-ds h1 em{font-style:normal;color:var(--rust-on-light)}
+.hero-ds p{font-size:14px;color:var(--text3-light);max-width:500px;margin:0 auto;line-height:1.6}
+.hero-meta{display:flex;gap:12px;justify-content:center;margin-top:14px}
+.hero-meta .pill{font-family:var(--mono);font-size:10px;padding:3px 10px;background:var(--sage-bg);border:1px solid rgba(61,107,79,.15);border-radius:4px;color:var(--sage-on-light)}
+
+.sec{margin-bottom:56px}.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:10px;border-bottom:2px solid rgba(28,43,31,.04)}
+.sec-num{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--rust-on-light);padding:3px 10px;background:var(--rust-bg);border-radius:4px}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--forest)}
+.sub{margin-bottom:32px}
+.sub-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:8px}
+.note{font-size:13px;color:var(--text3-light);line-height:1.6;margin-bottom:16px;max-width:640px}
+
+.sp{border-radius:14px;overflow:hidden;border:1px solid rgba(28,43,31,.06);margin-bottom:12px}
+.sp-dk{background:var(--forest);border-color:rgba(255,255,255,.04);color:var(--text)}
+.sp-lt{background:var(--cream);color:var(--forest)}
+.sp-body{padding:28px 24px}
+.sp-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px}
+.sp-dk .sp-label{color:var(--text4-dark);background:var(--dark);border-bottom:1px solid rgba(255,255,255,.04)}
+.sp-lt .sp-label{color:var(--text3-light);background:var(--sand);border-bottom:1px solid rgba(28,43,31,.04)}
+.side{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid rgba(28,43,31,.06)}
+.sw-c{height:52px;position:relative}.sw-c span{position:absolute;bottom:5px;right:7px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.5);background:rgba(0,0,0,.3);padding:1px 6px;border-radius:3px}
+.sw-i{padding:8px 10px;background:var(--white)}.sw-n{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;color:var(--forest)}.sw-t{font-family:var(--mono);font-size:9px;color:var(--sage-on-light);margin-top:1px}
+.sw-pass{font-family:var(--mono);font-size:8px;color:#4A7D5E;background:rgba(61,107,79,.08);padding:1px 5px;border-radius:2px;display:inline-block;margin-top:2px}
+.sw-ctx{font-family:var(--mono);font-size:8px;color:var(--text3-light);margin-top:2px}
+
+.code{background:var(--forest);border-radius:8px;padding:14px 18px;font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--text2);overflow-x:auto;margin-top:10px;border:1px solid rgba(255,255,255,.04);white-space:pre}
+.code .k{color:var(--sage-on-dark)}.code .v{color:var(--rust-on-dark)}.code .c{color:var(--text4-dark)}
+
+.radius-row{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+.r-box{width:80px;height:80px;background:var(--sage-bg);border:2px solid var(--sage);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.r-box span:first-child{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--sage-on-light)}.r-box span:last-child{font-family:var(--mono);font-size:9px;color:var(--text3-light)}
+
+.border-row{display:flex;gap:12px;flex-wrap:wrap}
+.b-samp{width:120px;height:80px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;font-family:var(--mono);font-size:9px;text-align:center}
+
+.space-vis{display:flex;flex-direction:column;gap:8px}
+.space-row{display:flex;align-items:center;gap:12px}
+.space-bar{height:16px;background:var(--sage-bg);border:1px solid rgba(61,107,79,.12);border-radius:3px}
+.space-name{font-family:var(--mono);font-size:10px;color:var(--text3-light);width:100px;flex-shrink:0}
+.space-val{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);width:60px;flex-shrink:0;text-align:right}
+
+/* Inline accessible tag */
+.at{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;vertical-align:middle;margin:0 2px}
+
+@media(max-width:768px){.ds-nav-links{display:none}.sw-grid{grid-template-columns:repeat(2,1fr)}.side{grid-template-columns:1fr}.radius-row{gap:10px}.r-box{width:64px;height:64px}}
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <div class="ds-nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></div>
+  <span class="ds-badge">v1.1 · WCAG AA</span>
+  <div class="ds-nav-links"><a href="#colors">Colors</a><a href="#type">Type</a><a href="#buttons">Buttons</a><a href="#cards">Cards</a><a href="#spacing">Spacing</a><a href="#config">Config</a></div>
+</nav>
+
+<div class="pg">
+
+<div class="hero-ds">
+  <h1>DESIGN <em>SYSTEM</em></h1>
+  <p>WCAG AA accessible color palette. Every text color passes 4.5:1 contrast minimum on its intended background. Accent colors have dark-bg and light-bg variants.</p>
+  <div class="hero-meta"><span class="pill">WCAG AA 4.5:1</span><span class="pill">VUETIFY 3</span><span class="pill">TAILWIND CSS</span></div>
+</div>
+
+<!-- ════════════════════ 01 ACCESSIBLE COLORS ════════════════════ -->
+<div class="sec" id="colors">
+  <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">ACCESSIBLE COLOR PALETTE</span></div>
+
+  <div class="sub">
+    <div class="sub-title">The key change — dual accent colors</div>
+    <p class="note">Accent colors (sage, rust, gold) now have two text variants: one for dark backgrounds, one for light. The original hex values are preserved for background fills, borders, and decorative use — only the text-on-background colors change.</p>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Sage — section labels, tags, accents</div>
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">SAGE ON DARK BACKGROUNDS</div>
+        <div class="sp-body">
+          <p style="font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#78A68E;margin-bottom:12px">SELL YOUR RIG IN ONE CLICK</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.08);border:1px solid rgba(61,107,79,.15);color:#78A68E">ICON STAGE 3</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.08);border:1px solid rgba(61,107,79,.15);color:#78A68E">CORE TOOL</span>
+          </div>
+          <p style="font-family:var(--mono);font-size:11px;color:#78A68E">#78A68E · 4.79:1 min</p>
+          <p style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-top:4px">Tailwind: text-sage-on-dark</p>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">SAGE ON LIGHT BACKGROUNDS</div>
+        <div class="sp-body">
+          <p style="font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#3D6B4F;margin-bottom:12px">SHOP BY CATEGORY</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.06);border:1px solid rgba(61,107,79,.12);color:#3D6B4F">ICON STAGE 3</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.06);border:1px solid rgba(61,107,79,.12);color:#3D6B4F">CORE TOOL</span>
+          </div>
+          <p style="font-family:var(--mono);font-size:11px;color:#3D6B4F">#3D6B4F · 5.80:1 min</p>
+          <p style="font-family:var(--mono);font-size:9px;color:var(--text3-light);margin-top:4px">Tailwind: text-sage-on-light</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Rust — primary accent, CTAs, emphasis</div>
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">RUST ON DARK BACKGROUNDS</div>
+        <div class="sp-body">
+          <p style="font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;color:var(--text);line-height:1;margin-bottom:8px">GEAR <span style="color:#E0854E">MARKETPLACE</span></p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.08);border:1px solid rgba(196,91,40,.15);color:#E0854E">FOR SALE</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.08);border:1px solid rgba(196,91,40,.15);color:#E0854E">SPONSOR</span>
+          </div>
+          <p style="font-family:var(--mono);font-size:11px;color:#E0854E">#E0854E · 4.78:1 min</p>
+          <p style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-top:4px">Tailwind: text-rust-on-dark · bg-rust for button fills</p>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">RUST ON LIGHT BACKGROUNDS</div>
+        <div class="sp-body">
+          <p style="font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;color:var(--forest);line-height:1;margin-bottom:8px">GEAR <span style="color:#A04B1C">MARKETPLACE</span></p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.06);border:1px solid rgba(196,91,40,.12);color:#A04B1C">48 THIS MONTH</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.06);border:1px solid rgba(196,91,40,.12);color:#A04B1C">FOR SALE</span>
+          </div>
+          <p style="font-family:var(--mono);font-size:11px;color:#A04B1C">#A04B1C · 5.63:1 min</p>
+          <p style="font-family:var(--mono);font-size:9px;color:var(--text3-light);margin-top:4px">Tailwind: text-rust-on-light</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Gold & text hierarchy</div>
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">GOLD + TEXT HIERARCHY ON DARK</div>
+        <div class="sp-body">
+          <p style="font-size:17px;color:#F2F0EA;margin-bottom:8px;font-weight:600">Primary — #F2F0EA <span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark)">15.65:1</span></p>
+          <p style="font-size:15px;color:#B8B5AD;margin-bottom:8px">Secondary — #B8B5AD <span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark)">8.71:1</span></p>
+          <p style="font-size:14px;color:#8A877F;margin-bottom:8px">Tertiary — #8A877F <span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark)">4.97:1</span></p>
+          <p style="font-size:13px;color:#9A9893;margin-bottom:12px">Muted — #9A9893 <span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark)">6.19:1 ← was #5E5C56 (2.67)</span></p>
+          <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(154,123,16,.08);border:1px solid rgba(154,123,16,.15);color:#B89430">GOLD #B89430 · 4.58:1</span>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">GOLD + TEXT HIERARCHY ON LIGHT</div>
+        <div class="sp-body">
+          <p style="font-size:17px;color:#1C2B1F;margin-bottom:8px;font-weight:600">Primary — #1C2B1F <span style="font-family:var(--mono);font-size:9px;color:var(--text3-light)">13.99:1</span></p>
+          <p style="font-size:15px;color:#6E6B65;margin-bottom:8px">Secondary — #6E6B65 <span style="font-family:var(--mono);font-size:9px;color:var(--text3-light)">5.01:1 ← was #8A877F (3.38)</span></p>
+          <p style="font-size:14px;color:#5E5C56;margin-bottom:12px">Muted — #5E5C56 <span style="font-family:var(--mono);font-size:9px;color:var(--text3-light)">6.30:1</span></p>
+          <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(154,123,16,.06);border:1px solid rgba(154,123,16,.12);color:#7A640B">GOLD #7A640B · 5.42:1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Background fills (unchanged)</div>
+    <p class="note">These are used for button backgrounds, card fills, section backgrounds, and borders. They don't need contrast ratios because they're not text.</p>
+    <div class="sw-grid">
+      <div class="sw"><div class="sw-c" style="background:#0F1A13"><span>#0F1A13</span></div><div class="sw-i"><div class="sw-n">Dark</div><div class="sw-t">bg-dark</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#1C2B1F"><span>#1C2B1F</span></div><div class="sw-i"><div class="sw-n">Forest</div><div class="sw-t">bg-forest</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#243428"><span>#243428</span></div><div class="sw-i"><div class="sw-n">Forest 2</div><div class="sw-t">bg-forest-2</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#3D6B4F"><span>#3D6B4F</span></div><div class="sw-i"><div class="sw-n">Sage Fill</div><div class="sw-t">bg-sage</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#C45B28"><span>#C45B28</span></div><div class="sw-i"><div class="sw-n">Rust Fill</div><div class="sw-t">bg-rust</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#D4682F"><span>#D4682F</span></div><div class="sw-i"><div class="sw-n">Rust Hover</div><div class="sw-t">hover:bg-rust-hover</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#FAF8F4;border-bottom:1px solid rgba(28,43,31,.06)"><span style="color:rgba(0,0,0,.3);background:rgba(0,0,0,.06)">#FAF8F4</span></div><div class="sw-i"><div class="sw-n">Cream</div><div class="sw-t">bg-cream</div></div></div>
+      <div class="sw"><div class="sw-c" style="background:#F4F1EB;border-bottom:1px solid rgba(28,43,31,.06)"><span style="color:rgba(0,0,0,.3);background:rgba(0,0,0,.06)">#F4F1EB</span></div><div class="sw-i"><div class="sw-n">Sand</div><div class="sw-t">bg-sand</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 02 TYPOGRAPHY ════════════════════ -->
+<div class="sec" id="type">
+  <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">TYPOGRAPHY</span></div>
+
+  <div class="sub">
+    <div class="sub-title">Bebas Neue — display / font-display</div>
+    <div class="sp sp-dk">
+      <div class="sp-label">HERO & SECTION TITLES</div>
+      <div class="sp-body">
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:2px;line-height:.9;color:#F2F0EA;margin-bottom:16px">BUILD IT. PLAN IT.<br>RIDE IT. <span style="color:#E0854E">SELL IT.</span></p>
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:1px;color:#F2F0EA;margin-bottom:8px">CLASSIFIEDS THAT <span style="color:#E0854E">BUILD THEMSELVES</span></p>
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:#78A68E;line-height:1">180+</p>
+        <p style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-top:10px">Hero: clamp(44px,6vw,76px) · Section: clamp(32px,4.5vw,52px) · Stats: 26–34px · Always uppercase</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Barlow Condensed — headings, buttons, nav / font-heading</div>
+    <div class="sp sp-lt">
+      <div class="sp-label">CARD TITLES · NAV LINKS · BUTTONS</div>
+      <div class="sp-body">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:10px">2021 Toyota 4Runner TRD Pro</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:10px">RECOVERY GEAR</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3-light);margin-bottom:14px">CLASSIFIEDS &nbsp; GEAR &nbsp; TRIPS &nbsp; FORUMS &nbsp; GARAGE</p>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:12px 24px;background:var(--rust);color:white;border-radius:6px">CREATE FREE ACCOUNT →</span>
+        <p style="font-family:var(--mono);font-size:9px;color:var(--text3-light);margin-top:10px">Card title: 700, 17px · Category: 700, 14px · Nav: 600, 13px · Button: 700, 13px · Always uppercase, tracking 0.5–1.5px</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Barlow — body text / font-body</div>
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">BODY ON DARK</div>
+        <div class="sp-body">
+          <p style="font-family:'Barlow',sans-serif;font-size:17px;line-height:1.7;color:#F2F0EA;margin-bottom:10px">The platform built for the trail, not the timeline.</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:15px;line-height:1.7;color:#B8B5AD;margin-bottom:10px">One place to research every mod for your build.</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:13px;line-height:1.6;color:#8A877F">78K mi · 24 mods · 3 trip journals</p>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">BODY ON LIGHT</div>
+        <div class="sp-body">
+          <p style="font-family:'Barlow',sans-serif;font-size:17px;line-height:1.7;color:#1C2B1F;margin-bottom:10px">The platform built for the trail, not the timeline.</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:15px;line-height:1.7;color:#6E6B65;margin-bottom:10px">One place to research every mod for your build.</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:13px;line-height:1.6;color:#5E5C56">78K mi · 24 mods · 3 trip journals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">JetBrains Mono — metadata, tags, labels / font-mono</div>
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">MONO ON DARK</div>
+        <div class="sp-body">
+          <p style="font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#78A68E;margin-bottom:10px">SELL YOUR RIG IN ONE CLICK</p>
+          <p style="font-family:var(--mono);font-size:10px;color:#9A9893;margin-bottom:10px">78K MI · MAGNETIC GRAY · 24 MODS</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.08);border:1px solid rgba(61,107,79,.15);color:#78A68E">ICON STAGE 3</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.08);border:1px solid rgba(196,91,40,.15);color:#E0854E">FOR SALE</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(154,123,16,.08);border:1px solid rgba(154,123,16,.15);color:#B89430">PREMIUM</span>
+          </div>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">MONO ON LIGHT</div>
+        <div class="sp-body">
+          <p style="font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#3D6B4F;margin-bottom:10px">SHOP BY CATEGORY</p>
+          <p style="font-family:var(--mono);font-size:10px;color:#5E5C56;margin-bottom:10px">180+ BRANDS · 3,200+ PRODUCTS</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.06);border:1px solid rgba(61,107,79,.12);color:#3D6B4F">CORE TOOL</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(196,91,40,.06);border:1px solid rgba(196,91,40,.12);color:#A04B1C">48 THIS MONTH</span>
+            <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(154,123,16,.06);border:1px solid rgba(154,123,16,.12);color:#7A640B">PREMIUM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 03 BUTTONS ════════════════════ -->
+<div class="sec" id="buttons">
+  <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">BUTTONS</span></div>
+  <div class="sub">
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">BUTTONS ON DARK</div>
+        <div class="sp-body" style="display:flex;flex-direction:column;gap:12px">
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;background:#C45B28;color:white;border-radius:6px;display:inline-block">Create Free Account →</span><span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-left:8px">v-btn color="rust"</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:13px 28px;background:transparent;color:#B8B5AD;border:1.5px solid rgba(255,255,255,.1);border-radius:6px;display:inline-block">See What's Inside</span><span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-left:8px">outlined</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;background:#C45B28;color:white;border-radius:6px;display:inline-block">+ List Rig</span><span style="font-family:var(--mono);font-size:9px;color:var(--text4-dark);margin-left:8px">size="small"</span></div>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">BUTTONS ON LIGHT</div>
+        <div class="sp-body" style="display:flex;flex-direction:column;gap:12px">
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;background:#C45B28;color:white;border-radius:6px;display:inline-block">Browse Classifieds</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:13px 28px;background:transparent;color:#1C2B1F;border:1.5px solid rgba(28,43,31,.15);border-radius:6px;display:inline-block">Add a Listing</span></div>
+          <div>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;background:#1C2B1F;color:#F4F1EB;border-radius:6px;display:inline-block">Forest Solid</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;background:#3D6B4F;color:white;border-radius:6px;display:inline-block;margin-left:4px">Sage Solid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:8px">All buttons: Barlow Condensed 700 · 13–14px · tracking 0.1em · uppercase · rounded-sm (6px) · Padding: 14px 28px default, 8px 16px small · Hover: translateY(-1px) · White text on all filled buttons passes AA.</p>
+  </div>
+</div>
+
+<!-- ════════════════════ 04 CARDS ════════════════════ -->
+<div class="sec" id="cards">
+  <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">CARDS & SECTION HEADERS</span></div>
+  <div class="sub">
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">CARD ON DARK · bg-white/[0.03] border-white/[0.06]</div>
+        <div class="sp-body">
+          <div style="padding:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:48px;height:36px;border-radius:8px;background:var(--forest3);display:flex;align-items:center;justify-content:center;font-size:18px">🚙</div>
+              <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:#F2F0EA">2021 4Runner TRD Pro</div><div style="font-family:var(--mono);font-size:10px;color:#9A9893">78K MI · 24 MODS · 6 TRIPS</div></div>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+              <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.08);border:1px solid rgba(61,107,79,.15);color:#78A68E">ICON STAGE 3</span>
+              <span style="padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:500;background:rgba(61,107,79,.08);border:1px solid rgba(61,107,79,.15);color:#78A68E">35" KO2s</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(196,91,40,.08);border:1px solid rgba(196,91,40,.15);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E0854E">
+              <span>LIST FOR SALE</span>
+              <div style="width:36px;height:18px;border-radius:9px;background:var(--rust);position:relative"><div style="position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;background:white"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">CARD ON LIGHT · bg-white border-forest/[0.06]</div>
+        <div class="sp-body">
+          <div style="padding:18px;background:white;border:1px solid rgba(28,43,31,.06);border-radius:14px">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--forest);margin-bottom:3px">Mojave Road Run 2026</div>
+            <div style="font-family:var(--mono);font-size:10px;color:#5E5C56;margin-bottom:12px">MAY 9–12 · MODERATE/HARD</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px">
+              <div style="padding:8px 4px;background:var(--sand);border-radius:6px;text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#3D6B4F">14</div><div style="font-family:var(--mono);font-size:9px;color:#5E5C56">Going</div></div>
+              <div style="padding:8px 4px;background:var(--sand);border-radius:6px;text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#3D6B4F">3</div><div style="font-family:var(--mono);font-size:9px;color:#5E5C56">Wait</div></div>
+              <div style="padding:8px 4px;background:var(--sand);border-radius:6px;text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#3D6B4F">4</div><div style="font-family:var(--mono);font-size:9px;color:#5E5C56">Days</div></div>
+              <div style="padding:8px 4px;background:var(--sand);border-radius:6px;text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#3D6B4F">12</div><div style="font-family:var(--mono);font-size:9px;color:#5E5C56">Points</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:7px 0;font-size:12px">
+              <div style="width:26px;height:26px;border-radius:6px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white">JT</div>
+              <span style="font-weight:700;color:var(--forest);flex:1">Jake T.</span>
+              <span style="font-family:var(--mono);font-size:10px;color:#5E5C56">4Runner</span>
+              <span style="font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;background:rgba(196,91,40,.06);color:#A04B1C">LEAD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 05 RADIUS ════════════════════ -->
+<div class="sec" id="radius">
+  <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">BORDER RADIUS</span></div>
+  <div class="sub">
+    <div class="radius-row">
+      <div class="r-box" style="border-radius:6px"><span>6px</span><span>sm</span></div>
+      <div class="r-box" style="border-radius:10px"><span>10px</span><span>DEFAULT</span></div>
+      <div class="r-box" style="border-radius:14px"><span>14px</span><span>lg</span></div>
+      <div class="r-box" style="border-radius:20px"><span>20px</span><span>xl</span></div>
+      <div class="r-box" style="border-radius:50%;width:80px"><span>full</span><span>pill</span></div>
+    </div>
+    <p class="note" style="margin-top:12px">sm (6px): buttons, inputs, tags · DEFAULT (10px): cards, panels · lg (14px): feature cards, mock windows · xl (20px): hero, partner visual · full: avatars, pills, badges</p>
+  </div>
+</div>
+
+<!-- ════════════════════ 06 BORDERS ════════════════════ -->
+<div class="sec" id="borders">
+  <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">BORDERS</span></div>
+  <div class="sub">
+    <div class="border-row">
+      <div class="b-samp" style="background:var(--forest);border:1px solid rgba(255,255,255,.06)"><span style="color:#9A9893">Subtle dark</span><span style="color:var(--text4-dark)">white/[0.06]</span></div>
+      <div class="b-samp" style="background:var(--forest);border:1px solid rgba(255,255,255,.1)"><span style="color:#9A9893">Hover dark</span><span style="color:var(--text4-dark)">white/10</span></div>
+      <div class="b-samp" style="background:var(--cream);border:1px solid rgba(28,43,31,.06)"><span style="color:var(--forest)">Subtle light</span><span style="color:var(--text3-light)">forest/[0.06]</span></div>
+      <div class="b-samp" style="background:var(--cream);border:1px solid rgba(28,43,31,.15)"><span style="color:var(--forest)">Hover light</span><span style="color:var(--text3-light)">forest/[0.15]</span></div>
+      <div class="b-samp" style="background:var(--forest);border:1px solid rgba(196,91,40,.12)"><span style="color:#E0854E">Rust</span><span style="color:var(--text4-dark)">rust/[0.12]</span></div>
+      <div class="b-samp" style="background:var(--cream);border:1px solid rgba(61,107,79,.15)"><span style="color:#3D6B4F">Sage</span><span style="color:var(--text3-light)">sage/[0.15]</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 07 SPACING ════════════════════ -->
+<div class="sec" id="spacing">
+  <div class="sec-head"><span class="sec-num">07</span><span class="sec-title">SPACING</span></div>
+  <div class="sub">
+    <div class="space-vis">
+      <div class="space-row"><span class="space-name">Section pad</span><div class="space-bar" style="width:100%"></div><span class="space-val">60–100px</span></div>
+      <div class="space-row"><span class="space-name">Feature gap</span><div class="space-bar" style="width:56%"></div><span class="space-val">56px</span></div>
+      <div class="space-row"><span class="space-name">Sub → content</span><div class="space-bar" style="width:40%"></div><span class="space-val">40px</span></div>
+      <div class="space-row"><span class="space-name">Card gap</span><div class="space-bar" style="width:16%"></div><span class="space-val">12–16px</span></div>
+      <div class="space-row"><span class="space-name">Title → sub</span><div class="space-bar" style="width:12%"></div><span class="space-val">12px</span></div>
+      <div class="space-row"><span class="space-name">Label → title</span><div class="space-bar" style="width:8%"></div><span class="space-val">8px</span></div>
+    </div>
+    <p class="note" style="margin-top:12px">Max width: 1200px · Nav: 64px · Section padding: clamp(60px,10vw,100px) vertical, clamp(16px,4vw,48px) horizontal</p>
+  </div>
+</div>
+
+<!-- ════════════════════ 08 BACKGROUNDS ════════════════════ -->
+<div class="sec" id="bgs">
+  <div class="sec-head"><span class="sec-num">08</span><span class="sec-title">BACKGROUND ALTERNATION</span></div>
+  <div class="sub">
+    <div style="display:flex;flex-direction:column;gap:3px;border-radius:10px;overflow:hidden;border:1px solid rgba(28,43,31,.06)">
+      <div style="padding:10px 16px;background:#0F1A13;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Hero</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-dark</span></div>
+      <div style="padding:10px 16px;background:#FAF8F4;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#6E6B65">Built for the Trail</span><span style="font-family:var(--mono);font-size:9px;color:#6E6B65">bg-cream</span></div>
+      <div style="padding:10px 16px;background:#1C2B1F;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Five Pillars</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-forest</span></div>
+      <div style="padding:10px 16px;background:#0F1A13;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Rig Garage</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-dark</span></div>
+      <div style="padding:10px 16px;background:#FAF8F4;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#6E6B65">Trip Planning</span><span style="font-family:var(--mono);font-size:9px;color:#6E6B65">bg-cream</span></div>
+      <div style="padding:10px 16px;background:#243428;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Classifieds</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-forest-2</span></div>
+      <div style="padding:10px 16px;background:#FAF8F4;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#6E6B65">Gear</span><span style="font-family:var(--mono);font-size:9px;color:#6E6B65">bg-cream</span></div>
+      <div style="padding:10px 16px;background:#0F1A13;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Brands</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-dark</span></div>
+      <div style="padding:10px 16px;background:#243428;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Sponsored</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-forest-2</span></div>
+      <div style="padding:10px 16px;background:#1C2B1F;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Community</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-forest</span></div>
+      <div style="padding:10px 16px;background:#3D6B4F;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.8)">Mod CTA</span><span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.5)">bg-sage</span></div>
+      <div style="padding:10px 16px;background:linear-gradient(180deg,#1C2B1F,#0F1A13);display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Partners</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">gradient</span></div>
+      <div style="padding:10px 16px;background:#C45B28;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.9)">Newsletter</span><span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.6)">bg-rust</span></div>
+      <div style="padding:10px 16px;background:#0F1A13;display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:10px;color:#9A9893">Footer</span><span style="font-family:var(--mono);font-size:9px;color:#9A9893">bg-dark</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 09 LOGO ════════════════════ -->
+<div class="sec" id="logo">
+  <div class="sec-head"><span class="sec-num">09</span><span class="sec-title">LOGO</span></div>
+  <div class="sub">
+    <div class="side">
+      <div class="sp sp-dk">
+        <div class="sp-label">ON DARK</div>
+        <div class="sp-body" style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 32 32" fill="none" width="32" height="32"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:#F2F0EA">OVERLANDER <span style="color:#E0854E">CLASSIFIEDS</span></span></div>
+          <div style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 32 32" fill="none" width="24" height="24"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#F2F0EA">OVERLANDER <span style="color:#E0854E">CLASSIFIEDS</span></span></div>
+        </div>
+      </div>
+      <div class="sp sp-lt">
+        <div class="sp-label">ON LIGHT</div>
+        <div class="sp-body" style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 32 32" fill="none" width="32" height="32"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:#1C2B1F">OVERLANDER <span style="color:#A04B1C">CLASSIFIEDS</span></span></div>
+          <div style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 32 32" fill="none" width="24" height="24"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#1C2B1F">OVERLANDER <span style="color:#A04B1C">CLASSIFIEDS</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ 10 CONFIG ════════════════════ -->
+<div class="sec" id="config">
+  <div class="sec-head"><span class="sec-num">10</span><span class="sec-title">CONFIGURATION — COPY & PASTE</span></div>
+
+  <div class="sub">
+    <div class="sub-title">tailwind.config.js</div>
+    <div class="code"><span class="k">export default</span> {
+  content: [<span class="v">'./src/**/*.{vue,js,ts}'</span>],
+  theme: {
+    extend: {
+      colors: {
+        dark: <span class="v">'#0F1A13'</span>,
+        forest: { DEFAULT: <span class="v">'#1C2B1F'</span>, 2: <span class="v">'#243428'</span>, 3: <span class="v">'#2E4233'</span> },
+        sage: { DEFAULT: <span class="v">'#3D6B4F'</span>, light: <span class="v">'#4A7D5E'</span>,
+                <span class="v">'on-dark'</span>: <span class="v">'#78A68E'</span>, <span class="v">'on-light'</span>: <span class="v">'#3D6B4F'</span> },
+        rust: { DEFAULT: <span class="v">'#C45B28'</span>, hover: <span class="v">'#D4682F'</span>,
+                <span class="v">'on-dark'</span>: <span class="v">'#E0854E'</span>, <span class="v">'on-light'</span>: <span class="v">'#A04B1C'</span> },
+        gold: { DEFAULT: <span class="v">'#9A7B10'</span>,
+                <span class="v">'on-dark'</span>: <span class="v">'#B89430'</span>, <span class="v">'on-light'</span>: <span class="v">'#7A640B'</span> },
+        cream: <span class="v">'#FAF8F4'</span>,
+        sand: { DEFAULT: <span class="v">'#F4F1EB'</span>, 2: <span class="v">'#E8E4DC'</span> },
+        <span class="v">'oc-text'</span>: { DEFAULT: <span class="v">'#F2F0EA'</span>, 2: <span class="v">'#B8B5AD'</span>,
+                   3: <span class="v">'#8A877F'</span>, 4: <span class="v">'#9A9893'</span> },
+        <span class="v">'oc-body'</span>: { DEFAULT: <span class="v">'#6E6B65'</span>, muted: <span class="v">'#5E5C56'</span> },
+      },
+      fontFamily: {
+        display: [<span class="v">'Bebas Neue'</span>, <span class="v">'sans-serif'</span>],
+        heading: [<span class="v">'Barlow Condensed'</span>, <span class="v">'sans-serif'</span>],
+        body: [<span class="v">'Barlow'</span>, <span class="v">'sans-serif'</span>],
+        mono: [<span class="v">'JetBrains Mono'</span>, <span class="v">'monospace'</span>],
+      },
+      borderRadius: { sm: <span class="v">'6px'</span>, DEFAULT: <span class="v">'10px'</span>, lg: <span class="v">'14px'</span>, xl: <span class="v">'20px'</span> },
+      letterSpacing: { label: <span class="v">'0.15em'</span>, btn: <span class="v">'0.1em'</span>, brand: <span class="v">'0.2em'</span> },
+    },
+  },
+}</div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Vuetify theme — plugins/vuetify.js</div>
+    <div class="code"><span class="k">const</span> ocTheme = {
+  dark: <span class="v">true</span>,
+  colors: {
+    background: <span class="v">'#0F1A13'</span>, surface: <span class="v">'#1C2B1F'</span>,
+    <span class="v">'surface-variant'</span>: <span class="v">'#243428'</span>,
+    primary: <span class="v">'#C45B28'</span>, secondary: <span class="v">'#3D6B4F'</span>,
+    accent: <span class="v">'#4A7D5E'</span>, warning: <span class="v">'#9A7B10'</span>,
+    <span class="v">'on-background'</span>: <span class="v">'#F2F0EA'</span>, <span class="v">'on-surface'</span>: <span class="v">'#F2F0EA'</span>,
+    rust: <span class="v">'#C45B28'</span>, sage: <span class="v">'#3D6B4F'</span>,
+    forest: <span class="v">'#1C2B1F'</span>, gold: <span class="v">'#9A7B10'</span>,
+    cream: <span class="v">'#FAF8F4'</span>, sand: <span class="v">'#F4F1EB'</span>,
+  },
+}
+<span class="c">// Component defaults</span>
+defaults: {
+  VBtn: { rounded: <span class="v">'sm'</span>, variant: <span class="v">'flat'</span>,
+    class: <span class="v">'font-heading tracking-btn uppercase font-bold'</span> },
+  VCard: { rounded: <span class="v">'lg'</span>, variant: <span class="v">'outlined'</span> },
+  VChip: { rounded: <span class="v">'sm'</span>, size: <span class="v">'small'</span>, class: <span class="v">'font-mono'</span> },
+  VTextField: { variant: <span class="v">'outlined'</span>, density: <span class="v">'comfortable'</span>, rounded: <span class="v">'sm'</span> },
+}</div>
+  </div>
+
+  <div class="sub">
+    <div class="sub-title">Google Fonts</div>
+    <div class="code">&lt;link href="<span class="v">https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow:wght@300;400;500;600;700;800&amp;family=Barlow+Condensed:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap</span>" rel="stylesheet"&gt;</div>
+  </div>
+</div>
+
+</div>
+
+<footer style="background:var(--dark);padding:20px clamp(16px,4vw,48px);border-top:1px solid var(--border)">
+  <div style="text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--text4-dark)">© 2026 OVERLANDER CLASSIFIEDS · DESIGN SYSTEM v1.1 · WCAG AA COMPLIANT · VUETIFY 3 + TAILWIND CSS</div>
+</footer>
+
+</body>
+</html>
