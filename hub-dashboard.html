@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — OverlandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFAF8;--surface:#F2F1EC;--surface2:#E8E7E1;--card:#FFFFFF;
+  --text:#1A1A18;--text2:#4A4A46;--text3:#7A7A74;--text4:#A0A09A;
+  --pine:#2D6A4F;--pine-bg:rgba(45,106,79,0.06);--pine-border:rgba(45,106,79,0.15);--pine-text:#1B4332;
+  --rust:#C44B1A;--rust-bg:rgba(196,75,26,0.06);--rust-border:rgba(196,75,26,0.18);
+  --gold:#9A7B10;--gold-bg:rgba(154,123,16,0.06);--gold-border:rgba(154,123,16,0.18);
+  --blue:#2563EB;--blue-bg:rgba(37,99,235,0.06);--blue-border:rgba(37,99,235,0.15);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.06);
+  --border:rgba(26,26,24,0.08);--border2:rgba(26,26,24,0.14);
+  --r:10px;--r-sm:6px;--r-lg:14px;--r-xl:18px;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(250,250,248,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 clamp(16px,4vw,40px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo svg{width:26px;height:26px}
+.nav-center{display:flex;gap:24px;align-items:center;margin-left:48px}
+.nav-center a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);text-decoration:none}
+.nav-center a:hover{color:var(--pine)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .15s}
+.nav-icon-btn:hover{border-color:var(--pine-border);background:var(--pine-bg)}
+.nav-icon-btn svg{width:16px;height:16px;stroke:var(--text3);fill:none;stroke-width:2}
+.nav-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:var(--rust);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff}
+.nav-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border-radius:var(--r-sm);background:var(--rust);color:#fff;border:none;cursor:pointer}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--pine);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+
+/* PAGE */
+.page{padding:76px clamp(16px,4vw,40px) 40px;max-width:1180px;margin:0 auto}
+
+/* WELCOME */
+.welcome{display:flex;align-items:center;justify-content:space-between;padding:20px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.welcome-text h1{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--text);line-height:1}
+.welcome-text p{font-size:13px;color:var(--text3);margin-top:2px}
+.welcome-text p strong{color:var(--text2)}
+.welcome-actions{display:flex;gap:8px}
+.wa-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;text-decoration:none;color:var(--text)}
+.wa-btn:hover{border-color:var(--pine-border);background:var(--pine-bg)}
+.wa-btn.primary{background:var(--rust);border-color:var(--rust);color:#fff}
+.wa-btn.primary:hover{background:#d4571f}
+.wa-btn-icon{font-size:16px}
+.wa-btn-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+
+/* STATUS ROW */
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.status-card{padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:all .2s;position:relative;overflow:hidden;text-decoration:none;color:inherit}
+.status-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,26,24,0.04);border-color:var(--pine-border)}
+.status-card-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sc-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.sc-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:50px}
+.sc-value{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text);line-height:1;margin-bottom:2px}
+.sc-label{font-size:12px;color:var(--text3);font-weight:500}
+.sc-sub{font-family:var(--mono);font-size:10px;color:var(--text4);margin-top:6px}
+
+/* MAIN GRID */
+.dashboard{display:grid;grid-template-columns:1fr 340px;gap:20px;margin-bottom:24px}
+
+/* TOOLS SECTION */
+.tools-section{margin-bottom:20px}
+.ts-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ts-icon{font-size:14px}
+.ts-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+.ts-count{font-family:var(--mono);font-size:10px;color:var(--text4)}
+.ts-viewall{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--rust);text-decoration:none;font-weight:500}
+.ts-viewall:hover{text-decoration:underline}
+
+/* TILE GRID */
+.tile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:all .2s;text-decoration:none;color:inherit;position:relative;min-height:110px}
+.tile:hover{transform:translateY(-3px);border-color:var(--pine-border);box-shadow:0 8px 24px rgba(26,26,24,0.05)}
+.tile-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px}
+.tile-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--text);text-align:center;line-height:1.2;margin-bottom:3px}
+.tile-sub{font-family:var(--mono);font-size:9px;color:var(--text4);text-align:center}
+.tile-badge{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:8px;font-weight:500;padding:2px 6px;border-radius:50px}
+.tile-notif{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--rust);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
+
+/* WIDE TILE */
+.tile.wide{flex-direction:row;gap:14px;padding:16px 18px;min-height:auto;justify-content:flex-start}
+.tile.wide .tile-icon{margin-bottom:0;flex-shrink:0}
+.tile.wide .tile-info{text-align:left}
+.tile.wide .tile-name{text-align:left;font-size:14px}
+.tile.wide .tile-sub{text-align:left}
+.tile-wide-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* RIGHT SIDEBAR */
+.sidebar{}
+
+/* ACTIVITY FEED */
+.feed{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px}
+.feed-header{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.feed-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+.feed-live{width:6px;height:6px;border-radius:50%;background:var(--pine);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.feed-filter{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text4);cursor:pointer}
+.feed-items{}
+.feed-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .1s}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover{background:rgba(45,106,79,0.015)}
+.fi-ava{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.fi-body{flex:1;min-width:0}
+.fi-text{font-size:12px;color:var(--text2);line-height:1.4}
+.fi-text strong{color:var(--text);font-weight:700}
+.fi-time{font-family:var(--mono);font-size:9px;color:var(--text4);margin-top:2px}
+.fi-icon{font-size:14px;flex-shrink:0;margin-top:2px}
+
+/* UPCOMING */
+.upcoming{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px}
+.up-header{padding:14px 16px;border-bottom:1px solid var(--border)}
+.up-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+.up-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.up-item:last-child{border-bottom:none}
+.up-item:hover{background:rgba(45,106,79,0.015)}
+.up-date{text-align:center;min-width:36px}
+.up-date-month{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--rust)}
+.up-date-day{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);line-height:1}
+.up-info{flex:1}
+.up-name{font-size:13px;font-weight:700;color:var(--text)}
+.up-meta{font-family:var(--mono);font-size:10px;color:var(--text4)}
+.up-role{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;background:var(--rust-bg);color:var(--rust)}
+
+/* QUICK STATS */
+.quick-stats{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.qs-item{text-align:center;padding:10px 8px;background:var(--surface);border-radius:8px}
+.qs-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--pine);line-height:1}
+.qs-label{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--text4)}
+
+/* SPONSORED */
+.sponsored{padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:16px}
+.sp-badge{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text4);margin-bottom:6px}
+.sp-brand{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text)}
+.sp-text{font-size:11px;color:var(--text3);line-height:1.4;margin:3px 0 6px}
+.sp-link{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--rust);text-decoration:none}
+.sp-link:hover{text-decoration:underline}
+
+/* FOOTER */
+.footer{padding:14px clamp(16px,4vw,40px);border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--text4);text-align:center}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:1024px){
+  .dashboard{grid-template-columns:1fr}
+  .nav-center{display:none}
+  .status-row{grid-template-columns:repeat(2,1fr)}
+  .tile-grid{grid-template-columns:repeat(2,1fr)}
+  .tile-wide-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .status-row{grid-template-columns:1fr}
+  .tile-grid{grid-template-columns:repeat(2,1fr)}
+  .welcome{flex-direction:column;align-items:flex-start;gap:12px}
+  .welcome-actions{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#2D6A4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C44B1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    OVERLANDHUB
+  </a>
+  <div class="nav-center">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#">Trips</a>
+    <a href="#">Forums</a>
+    <a href="#">Garage</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-icon-btn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <div class="nav-badge">3</div>
+    </div>
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg>
+      <div class="nav-badge">2</div>
+    </div>
+    <button class="nav-btn">+ New</button>
+    <div class="nav-ava">MR</div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- WELCOME -->
+  <div class="welcome fade-up">
+    <div class="welcome-text">
+      <h1>WELCOME BACK, MARCUS</h1>
+      <p>Your next trip is in <strong>6 days</strong> · <strong>2</strong> unread messages · <strong>3</strong> new events near you</p>
+    </div>
+    <div class="welcome-actions">
+      <a href="#" class="wa-btn primary"><span class="wa-btn-icon">🗺️</span><span class="wa-btn-text">Plan a Trip</span></a>
+      <a href="#" class="wa-btn"><span class="wa-btn-icon">📋</span><span class="wa-btn-text">Packing List</span></a>
+      <a href="#" class="wa-btn"><span class="wa-btn-icon">💰</span><span class="wa-btn-text">List a Rig</span></a>
+    </div>
+  </div>
+
+  <!-- STATUS CARDS -->
+  <div class="status-row fade-up">
+    <a href="#" class="status-card">
+      <div class="status-card-accent" style="background:var(--pine)"></div>
+      <div class="sc-top">
+        <div class="sc-icon" style="background:var(--pine-bg)">🗺️</div>
+        <span class="sc-badge" style="background:var(--pine-bg);color:var(--pine)">IN 6 DAYS</span>
+      </div>
+      <div class="sc-value">Mojave Road</div>
+      <div class="sc-label">Your next trip</div>
+      <div class="sc-sub">MAY 9–12 · 14 GOING · YOU: TRAIL LEAD</div>
+    </a>
+    <a href="#" class="status-card">
+      <div class="status-card-accent" style="background:var(--rust)"></div>
+      <div class="sc-top">
+        <div class="sc-icon" style="background:var(--rust-bg)">🚙</div>
+        <span class="sc-badge" style="background:var(--rust-bg);color:var(--rust)">FOR SALE</span>
+      </div>
+      <div class="sc-value">4Runner TRD Pro</div>
+      <div class="sc-label">Your rig</div>
+      <div class="sc-sub">24 MODS · 3 WATCHERS · $48,500</div>
+    </a>
+    <a href="#" class="status-card">
+      <div class="status-card-accent" style="background:var(--gold)"></div>
+      <div class="sc-top">
+        <div class="sc-icon" style="background:var(--gold-bg)">📓</div>
+        <span class="sc-badge" style="background:var(--gold-bg);color:var(--gold)">DRAFT</span>
+      </div>
+      <div class="sc-value">Rubicon Trail</div>
+      <div class="sc-label">Latest journal</div>
+      <div class="sc-sub">12 WAYPOINTS · 48 PHOTOS · DAY 2</div>
+    </a>
+    <a href="#" class="status-card">
+      <div class="status-card-accent" style="background:var(--blue)"></div>
+      <div class="sc-top">
+        <div class="sc-icon" style="background:var(--blue-bg)">🏔️</div>
+        <span class="sc-badge" style="background:var(--blue-bg);color:var(--blue)">MEMBER</span>
+      </div>
+      <div class="sc-value">Wasatch Crawlers</div>
+      <div class="sc-label">Your club</div>
+      <div class="sc-sub">248 MEMBERS · 3 UPCOMING EVENTS</div>
+    </a>
+  </div>
+
+  <!-- MAIN DASHBOARD GRID -->
+  <div class="dashboard">
+    <div class="main-col">
+
+      <!-- TRIP PLANNING -->
+      <div class="tools-section fade-up">
+        <div class="ts-header">
+          <span class="ts-icon">🗺️</span>
+          <span class="ts-title">Trip Planning</span>
+          <span class="ts-count">6</span>
+        </div>
+        <div class="tile-grid">
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--pine-bg)">🗺️</div>
+            <div class="tile-name">Trip Planner</div>
+            <div class="tile-sub">ITINERARY · WAYPOINTS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--rust-bg)">📍</div>
+            <div class="tile-name">Route Planner</div>
+            <div class="tile-sub">MAP · GPX IMPORT</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--gold-bg)">📦</div>
+            <div class="tile-name">Packing Lists</div>
+            <div class="tile-sub">190+ ITEMS · TEMPLATES</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--pine-bg)">🗓️</div>
+            <div class="tile-name">Calendar</div>
+            <div class="tile-sub">EVENTS · RSVP</div>
+            <div class="tile-notif">3</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--rust-bg)">🛡️</div>
+            <div class="tile-name">Safety Briefing</div>
+            <div class="tile-sub">RULES · ACKNOWLEDGE</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--surface)">📡</div>
+            <div class="tile-name">Comms Plan</div>
+            <div class="tile-sub">RADIO · CHECK-INS</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- GARAGE & MARKET -->
+      <div class="tools-section fade-up">
+        <div class="ts-header">
+          <span class="ts-icon">🚙</span>
+          <span class="ts-title">Garage &amp; Classifieds</span>
+          <span class="ts-count">5</span>
+        </div>
+        <div class="tile-grid">
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--pine-bg)">🚙</div>
+            <div class="tile-name">Rig Garage</div>
+            <div class="tile-sub">YOUR BUILDS · MODS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--rust-bg)">💰</div>
+            <div class="tile-name">Classifieds</div>
+            <div class="tile-sub">2,400+ LISTINGS</div>
+            <span class="tile-badge" style="background:var(--rust-bg);color:var(--rust)">12 NEW</span>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--gold-bg)">📋</div>
+            <div class="tile-name">Create Listing</div>
+            <div class="tile-sub">VEHICLE · TRAILER · PARTS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--surface)">🔔</div>
+            <div class="tile-name">Saved Searches</div>
+            <div class="tile-sub">ALERTS · FILTERS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--surface)">🔧</div>
+            <div class="tile-name">Maintenance</div>
+            <div class="tile-sub">SERVICE LOG</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- JOURNALS & GEAR -->
+      <div class="tools-section fade-up">
+        <div class="ts-header">
+          <span class="ts-icon">📓</span>
+          <span class="ts-title">Journals &amp; Gear</span>
+          <span class="ts-count">6</span>
+        </div>
+        <div class="tile-wide-grid">
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--pine-bg)">📓</div>
+            <div class="tile-info"><div class="tile-name">Trip Journals</div><div class="tile-sub">LOG TRIPS · TRAIL CONDITIONS · PHOTOS</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--rust-bg)">⚙️</div>
+            <div class="tile-info"><div class="tile-name">Gear Marketplace</div><div class="tile-sub">180+ BRANDS · COMPARE · SPECS</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--gold-bg)">🌍</div>
+            <div class="tile-info"><div class="tile-name">Trail Experience Map</div><div class="tile-sub">HEAT MAP · WHO'S BEEN WHERE</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--blue-bg)">⚠️</div>
+            <div class="tile-info"><div class="tile-name">Trail Condition Reports</div><div class="tile-sub">CROWDSOURCED · REAL-TIME</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--surface)">📊</div>
+            <div class="tile-info"><div class="tile-name">Product Compare Tool</div><div class="tile-sub">SIDE-BY-SIDE SPECS</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:var(--surface)">📝</div>
+            <div class="tile-info"><div class="tile-name">Blog &amp; Buying Guides</div><div class="tile-sub">REVIEWS · GUIDES · TIPS</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- COMMUNITY -->
+      <div class="tools-section fade-up">
+        <div class="ts-header">
+          <span class="ts-icon">👥</span>
+          <span class="ts-title">Community</span>
+          <span class="ts-count">6</span>
+        </div>
+        <div class="tile-grid">
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--pine-bg)">💬</div>
+            <div class="tile-name">Forums</div>
+            <div class="tile-sub">6.3K THREADS</div>
+            <div class="tile-notif">5</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--rust-bg)">🏔️</div>
+            <div class="tile-name">Clubs</div>
+            <div class="tile-sub">320+ GROUPS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--gold-bg)">⭐</div>
+            <div class="tile-name">Reputation</div>
+            <div class="tile-sub">VOUCHES · SKILLS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--blue-bg)">👤</div>
+            <div class="tile-name">Members</div>
+            <div class="tile-sub">45K OVERLANDERS</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--surface)">✉️</div>
+            <div class="tile-name">Messages</div>
+            <div class="tile-sub">INBOX</div>
+            <div class="tile-notif">2</div>
+          </a>
+          <a href="#" class="tile">
+            <div class="tile-icon" style="background:var(--surface)">🛡️</div>
+            <div class="tile-name">Safety Guide</div>
+            <div class="tile-sub">TRANSACTIONS · TRAIL</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- MODERATOR -->
+      <div class="tools-section fade-up">
+        <div class="ts-header">
+          <span class="ts-icon">🔑</span>
+          <span class="ts-title">Moderator Tools</span>
+          <span class="ts-count">3</span>
+          <a href="#" class="ts-viewall">Club Pro →</a>
+        </div>
+        <div class="tile-wide-grid">
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:rgba(26,26,24,0.05)">📊</div>
+            <div class="tile-info"><div class="tile-name">Moderator Dashboard</div><div class="tile-sub">RSVPS · ROSTER · APPROVALS</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:rgba(26,26,24,0.05)">👥</div>
+            <div class="tile-info"><div class="tile-name">Roster &amp; Skill Gaps</div><div class="tile-sub">ATTENDEE SPECS · ROLE MATCHING</div></div>
+          </a>
+          <a href="#" class="tile wide">
+            <div class="tile-icon" style="background:rgba(26,26,24,0.05)">🏥</div>
+            <div class="tile-info"><div class="tile-name">Emergency Info</div><div class="tile-sub">CONTACTS · MEDICAL · HOSPITALS</div></div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- UPCOMING EVENTS -->
+      <div class="upcoming fade-up">
+        <div class="up-header"><div class="up-title">UPCOMING</div></div>
+        <a href="#" class="up-item">
+          <div class="up-date"><div class="up-date-month">MAY</div><div class="up-date-day">9</div></div>
+          <div class="up-info"><div class="up-name">Mojave Road Run</div><div class="up-meta">4 days · 14 going</div></div>
+          <span class="up-role">LEAD</span>
+        </a>
+        <a href="#" class="up-item">
+          <div class="up-date"><div class="up-date-month">MAY</div><div class="up-date-day">16</div></div>
+          <div class="up-info"><div class="up-name">Holy Cross Pass</div><div class="up-meta">Day trip · 4/6 spots</div></div>
+        </a>
+        <a href="#" class="up-item">
+          <div class="up-date"><div class="up-date-month">MAY</div><div class="up-date-day">23</div></div>
+          <div class="up-info"><div class="up-name">Wasatch Crawlers BBQ</div><div class="up-meta">Meetup · 28 going</div></div>
+        </a>
+        <a href="#" class="up-item">
+          <div class="up-date"><div class="up-date-month">JUN</div><div class="up-date-day">6</div></div>
+          <div class="up-info"><div class="up-name">Rubicon Trail Run</div><div class="up-meta">3 days · 2/10 spots</div></div>
+        </a>
+      </div>
+
+      <!-- ACTIVITY FEED -->
+      <div class="feed fade-up">
+        <div class="feed-header">
+          <div class="feed-live"></div>
+          <div class="feed-title">ACTIVITY</div>
+          <span class="feed-filter">All ▾</span>
+        </div>
+        <div class="feed-items">
+          <div class="feed-item">
+            <div class="fi-ava" style="background:var(--pine)">JT</div>
+            <div class="fi-body">
+              <div class="fi-text"><strong>Jake T.</strong> sent you a message about your 4Runner listing</div>
+              <div class="fi-time">2 MIN AGO</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="fi-ava" style="background:var(--rust)">MK</div>
+            <div class="fi-body">
+              <div class="fi-text"><strong>Maria K.</strong> vouched for your recovery skills</div>
+              <div class="fi-time">14 MIN AGO</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="fi-ava" style="background:#8B7355">WC</div>
+            <div class="fi-body">
+              <div class="fi-text"><strong>Wasatch Crawlers</strong> posted a new event</div>
+              <div class="fi-time">28 MIN AGO</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="fi-ava" style="background:var(--gold)">EN</div>
+            <div class="fi-body">
+              <div class="fi-text"><strong>Elena N.</strong> filed a trail report near your saved route</div>
+              <div class="fi-time">1 HR AGO</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="fi-ava" style="background:var(--pine)">SL</div>
+            <div class="fi-body">
+              <div class="fi-text"><strong>Sarah L.</strong> RSVP'd to Mojave Road Run</div>
+              <div class="fi-time">2 HR AGO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK STATS -->
+      <div class="quick-stats fade-up">
+        <div class="qs-item"><div class="qs-num">6</div><div class="qs-label">Trips logged</div></div>
+        <div class="qs-item"><div class="qs-num">24</div><div class="qs-label">Mods documented</div></div>
+        <div class="qs-item"><div class="qs-num">8</div><div class="qs-label">Vouches earned</div></div>
+        <div class="qs-item"><div class="qs-num">3</div><div class="qs-label">Clubs joined</div></div>
+      </div>
+
+      <!-- SPONSORED -->
+      <div class="sponsored fade-up">
+        <div class="sp-badge">SPONSORED</div>
+        <div class="sp-brand">GARMIN · INREACH MINI 2</div>
+        <div class="sp-text">Stay connected off-grid. Two-way sat messaging + SOS. Code <strong>HUB10</strong> for 10% off.</div>
+        <a href="#" class="sp-link">Shop Garmin →</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">© 2026 OVERLANDHUB · BUILT BY OVERLANDERS · AFFILIATE LINKS DISCLOSED</div>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),o.unobserve(e.target))})},{threshold:.06});
+document.querySelectorAll('.fade-up').forEach(e=>o.observe(e));
+</script>
+
+</body>
+</html>

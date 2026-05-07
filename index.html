@@ -151,6 +151,7 @@
 
     /* OverlandHub previews — shared cream/forest palette with per-card accents */
     .preview-hub { background: #F4F5F0; color: #1C2B1F; border-bottom: 1px solid #E9EBE4; }
+    .preview-hub.dashboard::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45,106,79,.14) 0%, transparent 45%), repeating-linear-gradient(0deg, transparent 0 26px, rgba(28,43,31,.05) 26px 27px), repeating-linear-gradient(90deg, transparent 0 26px, rgba(28,43,31,.05) 26px 27px); }
     .preview-hub.calendar::after  { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 28px, rgba(28,43,31,.06) 28px 29px), repeating-linear-gradient(90deg, transparent 0 28px, rgba(28,43,31,.06) 28px 29px); }
     .preview-hub.event::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,91,40,.18) 0%, transparent 60%); }
     .preview-hub.event-alt        { background: #1C2B1F; color: #F4F5F0; border-bottom: 1px solid #2a3a2d; }
@@ -337,6 +338,21 @@
     <!-- OverlandHub Pages -->
     <p class="section-label">OverlandHub — Community Pages (Build Preview)</p>
     <div class="grid">
+
+      <a class="card" href="hub-dashboard.html">
+        <div class="card-preview preview-hub dashboard">
+          <span>Dashboard</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Hub Dashboard</div>
+          <div class="card-desc">Member home base — status snapshot, quick tools, and recent activity at a glance.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">OverlandHub</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
 
       <a class="card" href="calendar.html">
         <div class="card-preview preview-hub calendar">
