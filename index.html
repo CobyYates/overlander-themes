@@ -170,6 +170,8 @@
     .preview-hub.designsys::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(28,43,31,.12) 0 33%, rgba(196,91,40,.18) 33% 66%, rgba(184,150,12,.18) 66% 100%); }
     .preview-expedition           { background: #FFFFFF; color: #14130E; border-bottom: 1px solid #EAE6DC; }
     .preview-expedition::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 40%, rgba(229,112,30,.18) 0%, transparent 60%), linear-gradient(180deg, transparent 0 70%, rgba(28,43,31,.08) 70% 100%); }
+    .preview-waypoints            { background: #F5F0E4; color: #1A1814; border-bottom: 1px solid #DCD4BE; }
+    .preview-waypoints::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0 18%, rgba(220,106,43,.55) 18% 20%, transparent 20% 42%, rgba(45,82,57,.45) 42% 44%, transparent 44% 70%, rgba(26,24,20,.4) 70% 72%, transparent 72% 100%), radial-gradient(circle at 18% 40%, rgba(26,24,20,.3) 0 5px, transparent 6px), radial-gradient(circle at 42% 65%, rgba(220,106,43,.4) 0 5px, transparent 6px), radial-gradient(circle at 71% 30%, rgba(45,82,57,.4) 0 5px, transparent 6px); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -248,92 +250,6 @@
   </header>
 
   <main>
-
-    <!-- TrailRig Themes -->
-    <p class="section-label">TrailRig — The Off-Road Marketplace</p>
-    <div class="grid">
-
-      <a class="card" href="theme4.html">
-        <div class="card-preview preview-theme4">
-          <span>Theme 4</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">TrailRig — Theme 4</div>
-          <div class="card-desc">Warm amber-toned dark marketplace with condensed headline type and dusty accents.</div>
-          <div class="card-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">Amber</span>
-            <span class="tag accent">TrailRig</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="variant-a-dark-military.html">
-        <div class="card-preview preview-military">
-          <span>Military</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">Variant A — Dark Military</div>
-          <div class="card-desc">Tactical monochrome palette with IBM Plex Sans, muted OD-green tones and sharp grid lines.</div>
-          <div class="card-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">IBM Plex</span>
-            <span class="tag green">Military</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="variant-b-desert-light.html">
-        <div class="card-preview preview-desert">
-          <span>Desert</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">Variant B — Desert Light</div>
-          <div class="card-desc">Warm cream and sand tones with Outfit font. Bright, airy, and sun-bleached.</div>
-          <div class="card-tags">
-            <span class="tag">Light</span>
-            <span class="tag">Outfit</span>
-            <span class="tag accent">Desert</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="variant-c-neon-mud.html">
-        <div class="card-preview preview-neon">
-          <span>Neon Mud</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">Variant C — Neon Mud</div>
-          <div class="card-desc">High-contrast dark void with electric cyan highlights and DM Sans. Aggressive and electric.</div>
-          <div class="card-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">DM Sans</span>
-            <span class="tag green">Neon</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-      <a class="card" href="variant-modern-minimal.html">
-        <div class="card-preview preview-minimal">
-          <span style="color:#111; text-shadow:none;">Minimal</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">Modern Minimal</div>
-          <div class="card-desc">Ultra-clean white canvas with Instrument Sans and Syne headlines. Refined and editorial.</div>
-          <div class="card-tags">
-            <span class="tag">Light</span>
-            <span class="tag">Syne</span>
-            <span class="tag accent">Minimal</span>
-          </div>
-          <div class="card-arrow">View Theme →</div>
-        </div>
-      </a>
-
-    </div>
 
     <!-- OverlandHub Pages -->
     <p class="section-label">OverlandHub — Community Pages (Build Preview)</p>
@@ -469,6 +385,22 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">Planner</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="expedition-waypoints-final.html">
+        <div class="card-preview preview-waypoints">
+          <span>Waypoints</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Expedition · Waypoints</div>
+          <div class="card-desc">Editorial waypoint planner with serif headlines, color-coded routes, and a cream canvas.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag accent">Fraunces</span>
+            <span class="tag rust">Waypoints</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>
@@ -615,6 +547,92 @@
             <span class="tag">Dark</span>
             <span class="tag">Green</span>
             <span class="tag green">Variant C</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- TrailRig Themes -->
+    <p class="section-label">TrailRig — The Off-Road Marketplace</p>
+    <div class="grid">
+
+      <a class="card" href="theme4.html">
+        <div class="card-preview preview-theme4">
+          <span>Theme 4</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TrailRig — Theme 4</div>
+          <div class="card-desc">Warm amber-toned dark marketplace with condensed headline type and dusty accents.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Amber</span>
+            <span class="tag accent">TrailRig</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-a-dark-military.html">
+        <div class="card-preview preview-military">
+          <span>Military</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant A — Dark Military</div>
+          <div class="card-desc">Tactical monochrome palette with IBM Plex Sans, muted OD-green tones and sharp grid lines.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">IBM Plex</span>
+            <span class="tag green">Military</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-b-desert-light.html">
+        <div class="card-preview preview-desert">
+          <span>Desert</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant B — Desert Light</div>
+          <div class="card-desc">Warm cream and sand tones with Outfit font. Bright, airy, and sun-bleached.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Outfit</span>
+            <span class="tag accent">Desert</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-c-neon-mud.html">
+        <div class="card-preview preview-neon">
+          <span>Neon Mud</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Variant C — Neon Mud</div>
+          <div class="card-desc">High-contrast dark void with electric cyan highlights and DM Sans. Aggressive and electric.</div>
+          <div class="card-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">DM Sans</span>
+            <span class="tag green">Neon</span>
+          </div>
+          <div class="card-arrow">View Theme →</div>
+        </div>
+      </a>
+
+      <a class="card" href="variant-modern-minimal.html">
+        <div class="card-preview preview-minimal">
+          <span style="color:#111; text-shadow:none;">Minimal</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Modern Minimal</div>
+          <div class="card-desc">Ultra-clean white canvas with Instrument Sans and Syne headlines. Refined and editorial.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Syne</span>
+            <span class="tag accent">Minimal</span>
           </div>
           <div class="card-arrow">View Theme →</div>
         </div>
