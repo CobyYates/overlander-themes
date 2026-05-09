@@ -172,6 +172,8 @@
     .preview-expedition::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 40%, rgba(229,112,30,.18) 0%, transparent 60%), linear-gradient(180deg, transparent 0 70%, rgba(28,43,31,.08) 70% 100%); }
     .preview-waypoints            { background: #F5F0E4; color: #1A1814; border-bottom: 1px solid #DCD4BE; }
     .preview-waypoints::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0 18%, rgba(220,106,43,.55) 18% 20%, transparent 20% 42%, rgba(45,82,57,.45) 42% 44%, transparent 44% 70%, rgba(26,24,20,.4) 70% 72%, transparent 72% 100%), radial-gradient(circle at 18% 40%, rgba(26,24,20,.3) 0 5px, transparent 6px), radial-gradient(circle at 42% 65%, rgba(220,106,43,.4) 0 5px, transparent 6px), radial-gradient(circle at 71% 30%, rgba(45,82,57,.4) 0 5px, transparent 6px); }
+    .preview-distance             { background: #ECE6D6; color: #1A1814; border-bottom: 1px solid #DCD4BE; font-size: 1.4rem; }
+    .preview-distance::after      { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 32px, rgba(26,24,20,.06) 32px 33px), linear-gradient(90deg, rgba(220,106,43,.18) 0 4px, transparent 4px 49%, rgba(45,82,57,.18) 49% 53%, transparent 53% 96%, rgba(220,106,43,.18) 96% 100%); }
 
     .tag.rust  { background: rgba(196,91,40,.12); color: #C45B28; border-color: rgba(196,91,40,.3); }
 
@@ -401,6 +403,22 @@
             <span class="tag">Light</span>
             <span class="tag accent">Fraunces</span>
             <span class="tag rust">Waypoints</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="waypoint-distance-options.html">
+        <div class="card-preview preview-distance">
+          <span>Distance · Layouts</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Waypoint Distance Layouts</div>
+          <div class="card-desc">Side-by-side refinements exploring how distance and elevation deltas display on each waypoint row.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag">Inter</span>
+            <span class="tag rust">Refinements</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>

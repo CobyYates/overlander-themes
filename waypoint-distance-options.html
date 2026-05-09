@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Waypoints — Distance Display Refinements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:           #F5F0E4;
+    --bg-2:         #ECE6D6;
+    --bg-3:         #FFFFFF;
+    --bg-card:      #FCFAF3;
+    --bg-soft:      #FAF6EA;
+    --ink:          #1A1814;
+    --ink-soft:     #3D3B35;
+    --muted:        #76736A;
+    --line:         #DCD4BE;
+    --line-soft:    #E8E2CE;
+    --forest:       #2D5239;
+    --forest-deep:  #1C2B1F;
+    --amber:        #DC6A2B;
+    --amber-deep:   #B0541F;
+    --amber-soft:   #FCEAD8;
+    --danger:       #B91C1C;
+    --danger-soft:  #FCE8E8;
+
+    --sans:   'Inter', system-ui, sans-serif;
+    --mono:   'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button { font: inherit; cursor: pointer; }
+  input { font: inherit; }
+
+  /* ==========================================================
+     SWITCHER
+     ========================================================== */
+  .switcher {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 24px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .switcher-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 228, 0.6);
+    margin-right: 4px;
+  }
+  .switcher-btn {
+    background: transparent;
+    border: 1px solid rgba(245, 240, 228, 0.25);
+    color: var(--bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .switcher-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .switcher-btn.active { background: var(--amber); border-color: var(--amber); color: #FFF; }
+  .switcher-btn .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+  .switcher-btn.active .num { background: rgba(255, 255, 255, 0.25); opacity: 1; }
+  .switcher-btn .tag-new {
+    background: var(--amber);
+    color: #FFF;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+  .switcher-btn.active .tag-new { background: rgba(0,0,0,0.25); color: #FFF; }
+  .switcher-spacer { flex: 1; }
+  .switcher-note { font-size: 12px; color: rgba(245, 240, 228, 0.55); }
+  .switcher-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(245, 240, 228, 0.15);
+    margin: 0 4px;
+  }
+
+  /* ==========================================================
+     STAGE
+     ========================================================== */
+  .stage {
+    padding: 40px 32px 80px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .panel {
+    width: 380px;
+    max-width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 8px 32px -16px rgba(20, 19, 14, 0.12);
+    position: relative;
+  }
+  .panel-stage-label {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ==========================================================
+     PANEL HEADER
+     ========================================================== */
+  .panel-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 14px;
+  }
+  .panel-title-row > svg { width: 16px; height: 16px; color: var(--ink); flex-shrink: 0; }
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .panel-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ==========================================================
+     SHARED — waypoint card
+     ========================================================== */
+  .wp-card {
+    background: var(--bg-3);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .wp-card:hover {
+    border-color: var(--line);
+    box-shadow: 0 2px 8px -4px rgba(20, 19, 14, 0.08);
+  }
+
+  .marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--amber);
+    color: #FFF;
+  }
+  .marker.start { background: var(--forest); }
+  .marker svg { width: 14px; height: 14px; fill: currentColor; }
+
+  .wp-main { flex: 1; min-width: 0; }
+  .wp-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  .wp-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wp-sub .color-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .wp-actions {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .icon-btn {
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--bg-2); color: var(--ink); }
+  .icon-btn.danger:hover { background: var(--danger-soft); color: var(--danger); }
+  .icon-btn svg { width: 14px; height: 14px; }
+
+  /* ==========================================================
+     DAY CHIP — green draggable
+     ========================================================== */
+  .day-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--forest);
+    color: #FFF;
+    border-radius: 6px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s;
+    margin: 8px 0;
+    box-shadow: 0 2px 8px -4px rgba(45, 82, 57, 0.4);
+  }
+  .day-chip:hover { background: #1F3D2A; box-shadow: 0 3px 10px -3px rgba(45, 82, 57, 0.5); }
+  .day-chip:active { cursor: grabbing; }
+  .day-chip.dragging { opacity: 0.4; }
+  .day-chip .grip {
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    cursor: grab;
+  }
+  .day-chip .grip svg { width: 12px; height: 16px; }
+  .day-chip-label {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .day-chip-label-input {
+    background: transparent;
+    border: none;
+    color: #FFF;
+    font: inherit;
+    outline: none;
+    padding: 1px 4px;
+    border-radius: 2px;
+    width: 90px;
+    transition: background 0.15s;
+  }
+  .day-chip-label-input:focus, .day-chip-label-input:hover { background: rgba(255, 255, 255, 0.1); }
+  .day-chip .x-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .day-chip .x-btn:hover { background: rgba(255, 255, 255, 0.15); color: #FFF; }
+
+  .drop-target {
+    height: 4px;
+    background: transparent;
+    margin: 0;
+    transition: height 0.15s, background 0.15s, margin 0.15s;
+    border-radius: 2px;
+  }
+  .drop-target.show {
+    height: 4px;
+    background: var(--amber);
+    margin: 6px 0;
+  }
+
+  /* ==========================================================
+     INSERT DAY BREAK BUTTON (hover state)
+     ========================================================== */
+  .insert-btn-wrap { position: relative; }
+  .insert-day-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.15s;
+    background: var(--bg-card);
+    border: 1px dashed var(--line);
+    color: var(--ink-soft);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .insert-btn-wrap:hover .insert-day-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .insert-day-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    border-style: solid;
+    background: var(--amber-soft);
+  }
+  .insert-day-btn svg { width: 10px; height: 10px; }
+
+  /* ==========================================================
+     LIST WRAPPER
+     ========================================================== */
+  .wp-list { display: flex; flex-direction: column; }
+  .mi {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============================================================
+     OPT 1 — DASHED LEFT RAIL (kept favorite)
+     ┊ 0.4 mi
+     ============================================================ */
+  .opt1 .distance {
+    padding: 4px 0 4px 14px;
+    margin: 0 0 0 16px;
+    border-left: 2px dashed var(--amber);
+    height: 26px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ============================================================
+     OPT 2 — CAPPED RAIL (NEW)
+     ●│●  0.4 mi  (vertical line with circle endpoints)
+     ============================================================ */
+  .opt2 .distance {
+    padding-left: 14px;
+    margin-left: 4px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opt2 .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 8px;
+    flex-shrink: 0;
+  }
+  .opt2 .rail .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--bg-card);
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .opt2 .rail .line {
+    flex: 1;
+    width: 2px;
+    background: var(--amber);
+  }
+
+  /* ============================================================
+     OPT 3 — SOLID COLORED TIMELINE (kept favorite)
+     │ 0.4 mi   line is in route color
+     ============================================================ */
+  .opt3 .distance {
+    padding-left: 14px;
+    margin-left: 16px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .opt3 .distance::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -2px;
+    bottom: -2px;
+    width: 2px;
+    background: var(--route-color, var(--amber));
+  }
+  .opt3 .distance .mi {
+    color: var(--ink-soft);
+    background: var(--bg-card);
+    padding: 0 4px;
+    margin-left: -4px;
+  }
+
+  /* ============================================================
+     OPT 4 — CENTER HAIRLINE RULE (kept favorite)
+     ──── 0.4 mi ────
+     ============================================================ */
+  .opt4 .distance {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    height: 28px;
+  }
+  .opt4 .distance::before, .opt4 .distance::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .opt4 .distance .mi {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     OPT 5 — RULE WITH ROUTE DOT (NEW)
+     ──── ● 0.4 mi ────   small dot in route color
+     ============================================================ */
+  .opt5 .distance {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    height: 28px;
+  }
+  .opt5 .distance::before, .opt5 .distance::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .opt5 .distance .mi-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .opt5 .distance .route-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--route-color, var(--amber));
+    flex-shrink: 0;
+  }
+  .opt5 .distance .mi {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     OPT 6 — RULE WITH CHEVRON (NEW)
+     ──── ↓ 0.4 mi ────   downward arrow indicator
+     ============================================================ */
+  .opt6 .distance {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    height: 28px;
+  }
+  .opt6 .distance::before, .opt6 .distance::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .opt6 .distance .mi-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .opt6 .distance .chev {
+    width: 11px;
+    height: 11px;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+  .opt6 .distance .mi {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+     ========================================================== */
+  @media (max-width: 540px) {
+    .stage { padding: 32px 16px; }
+    .panel { padding: 16px; }
+    .switcher { padding: 10px 16px; }
+    .switcher-note { display: none; }
+    .switcher-btn { padding: 6px 10px; font-size: 11px; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="switcher">
+  <span class="switcher-label">Distance</span>
+
+  <button class="switcher-btn active" data-opt="1"><span class="num">1</span>Dashed Rail</button>
+  <button class="switcher-btn" data-opt="2"><span class="num">2</span>Capped Rail <span class="tag-new">NEW</span></button>
+  <button class="switcher-btn" data-opt="3"><span class="num">3</span>Colored Timeline</button>
+
+  <span class="switcher-divider"></span>
+
+  <button class="switcher-btn" data-opt="4"><span class="num">4</span>Center Rule</button>
+  <button class="switcher-btn" data-opt="5"><span class="num">5</span>Rule + Route Dot <span class="tag-new">NEW</span></button>
+  <button class="switcher-btn" data-opt="6"><span class="num">6</span>Rule + Arrow <span class="tag-new">NEW</span></button>
+
+  <span class="switcher-spacer"></span>
+  <span class="switcher-note">Vertical rails · Horizontal rules</span>
+</nav>
+
+<div class="stage">
+  <div class="panel" id="panel">
+    <div class="panel-stage-label" id="stageLabel">1 · Dashed Left Rail</div>
+
+    <div class="panel-title-row">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5C5 1.5 3 3.5 3 6c0 3.5 5 8.5 5 8.5s5-5 5-8.5c0-2.5-2-4.5-5-4.5z"/><circle cx="8" cy="6" r="1.5"/></svg>
+      <span class="panel-title">Waypoints</span>
+      <span class="panel-count" id="wpCount">5 added</span>
+    </div>
+
+    <div class="wp-list" id="wpList"></div>
+  </div>
+</div>
+
+<script>
+  /* ============================================================
+     STATE
+     ============================================================ */
+  const COLORS = ['#1A1814', '#DC6A2B', '#EAB308', '#DC6A2B', '#2D5239'];
+
+  const state = {
+    items: [
+      { type: 'wp',      id: 'wp_1', name: 'Start',      sub: 'Trailhead',  color: COLORS[0], isStart: true,  distFromPrev: null },
+      { type: 'wp',      id: 'wp_2', name: 'Waypoint 2', sub: 'Auto-route', color: COLORS[1], isStart: false, distFromPrev: 0.4 },
+      { type: 'divider', id: 'd_1',  label: 'Day 2' },
+      { type: 'wp',      id: 'wp_3', name: 'Waypoint 3', sub: 'Auto-route', color: COLORS[2], isStart: false, distFromPrev: 0.2 },
+      { type: 'wp',      id: 'wp_4', name: 'Waypoint 4', sub: 'Auto-route', color: COLORS[3], isStart: false, distFromPrev: 0.2 },
+      { type: 'wp',      id: 'wp_5', name: 'Waypoint 5', sub: 'Auto-route', color: COLORS[4], isStart: false, distFromPrev: 0.6 },
+    ],
+    activeOpt: 1,
+  };
+
+  const I = {
+    flag: `<svg viewBox="0 0 16 16"><path d="M3.5 1a.5.5 0 0 0-.5.5V15a.5.5 0 0 0 1 0v-5h7l-1.4-2.5L11 5H4V1.5a.5.5 0 0 0-.5-.5z"/></svg>`,
+    binoculars: `<svg viewBox="0 0 16 16"><path d="M3 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v.5a2 2 0 0 1-4 0zm6 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v.5a2 2 0 0 1-4 0zM4 8a2.5 2.5 0 1 0 5 0 2.5 2.5 0 1 0 5 0v3a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0V8z"/></svg>`,
+    pencil: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2l3 3-9 9H2v-3z"/></svg>`,
+    trash: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h10M5 5V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 5l1 9a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1l1-9"/></svg>`,
+    plus: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 4v8M4 8h8"/></svg>`,
+    chevDown: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>`,
+    grip: `<svg viewBox="0 0 12 16" fill="currentColor"><circle cx="3" cy="4" r="1.2"/><circle cx="9" cy="4" r="1.2"/><circle cx="3" cy="8" r="1.2"/><circle cx="9" cy="8" r="1.2"/><circle cx="3" cy="12" r="1.2"/><circle cx="9" cy="12" r="1.2"/></svg>`,
+    close: `<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>`,
+  };
+
+  const STAGE_LABELS = {
+    1: '1 · Dashed Left Rail',
+    2: '2 · Capped Rail (line with endpoint dots)',
+    3: '3 · Solid Colored Timeline (route color)',
+    4: '4 · Center Hairline Rule',
+    5: '5 · Rule with Route Dot',
+    6: '6 · Rule with Down Arrow',
+  };
+
+  /* ============================================================
+     RENDER DISTANCE — varies by option
+     ============================================================ */
+  function renderDistance(item, opt, idx) {
+    const dist = document.createElement('div');
+    dist.className = 'distance insert-btn-wrap';
+    dist.dataset.gapIndex = idx;
+
+    const mi = item.distFromPrev.toFixed(1);
+
+    // For option 3 (timeline), set the route color CSS var on this row
+    if (opt === 3) dist.style.setProperty('--route-color', item.color);
+
+    let inner = '';
+    switch (opt) {
+      case 1: // Dashed Left Rail
+        inner = `<span class="mi">${mi} mi</span>`;
+        break;
+
+      case 2: // Capped Rail
+        inner = `
+          <div class="rail">
+            <span class="dot"></span>
+            <span class="line"></span>
+            <span class="dot"></span>
+          </div>
+          <span class="mi">${mi} mi</span>
+        `;
+        break;
+
+      case 3: // Solid Colored Timeline
+        inner = `<span class="mi">${mi} mi</span>`;
+        break;
+
+      case 4: // Center Hairline Rule
+        inner = `<span class="mi">${mi} mi</span>`;
+        break;
+
+      case 5: // Rule with Route Dot
+        inner = `
+          <span class="mi-group">
+            <span class="route-dot" style="background: ${item.color};"></span>
+            <span class="mi">${mi} mi</span>
+          </span>
+        `;
+        break;
+
+      case 6: // Rule with Down Arrow
+        inner = `
+          <span class="mi-group">
+            <span class="chev">${I.chevDown}</span>
+            <span class="mi">${mi} mi</span>
+          </span>
+        `;
+        break;
+    }
+
+    dist.innerHTML = inner;
+
+    // Hover insert button
+    const insertBtn = document.createElement('button');
+    insertBtn.className = 'insert-day-btn';
+    insertBtn.innerHTML = `${I.plus} Day Break`;
+    insertBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      insertDayBreakAt(idx);
+    });
+    dist.appendChild(insertBtn);
+
+    return dist;
+  }
+
+  /* ============================================================
+     RENDER FULL LIST
+     ============================================================ */
+  function render() {
+    const list = document.getElementById('wpList');
+    const opt = state.activeOpt;
+    list.innerHTML = '';
+    list.className = 'wp-list opt' + opt;
+
+    document.getElementById('stageLabel').textContent = STAGE_LABELS[opt];
+    const wpTotal = state.items.filter(i => i.type === 'wp').length;
+    document.getElementById('wpCount').textContent = `${wpTotal} added`;
+
+    state.items.forEach((item, idx) => {
+      const drop = document.createElement('div');
+      drop.className = 'drop-target';
+      drop.dataset.dropIndex = idx;
+      list.appendChild(drop);
+
+      if (item.type === 'wp') {
+        const isFirstWp = !state.items.slice(0, idx).some(i => i.type === 'wp');
+
+        if (!isFirstWp && item.distFromPrev != null) {
+          list.appendChild(renderDistance(item, opt, idx));
+        }
+
+        const card = document.createElement('div');
+        card.className = 'wp-card';
+        card.dataset.id = item.id;
+        card.innerHTML = `
+          <span class="marker ${item.isStart ? 'start' : ''}">
+            ${item.isStart ? I.flag : I.binoculars}
+          </span>
+          <div class="wp-main">
+            <div class="wp-name">${escapeHtml(item.name)}</div>
+            <div class="wp-sub">
+              <span class="color-dot" style="background: ${item.color};"></span>
+              <span>${escapeHtml(item.sub)}</span>
+            </div>
+          </div>
+          <div class="wp-actions">
+            <button class="icon-btn" aria-label="Edit">${I.pencil}</button>
+            <button class="icon-btn danger" aria-label="Delete">${I.trash}</button>
+          </div>
+        `;
+        list.appendChild(card);
+
+      } else if (item.type === 'divider') {
+        const chip = document.createElement('div');
+        chip.className = 'day-chip';
+        chip.dataset.id = item.id;
+        chip.draggable = true;
+        chip.innerHTML = `
+          <span class="grip">${I.grip}</span>
+          <div class="day-chip-label">
+            <input type="text" class="day-chip-label-input" value="${escapeHtml(item.label)}" />
+          </div>
+          <button class="x-btn" aria-label="Remove day break">${I.close}</button>
+        `;
+
+        chip.querySelector('.x-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          state.items.splice(idx, 1);
+          render();
+        });
+
+        chip.querySelector('.day-chip-label-input').addEventListener('input', (e) => {
+          item.label = e.target.value;
+        });
+        chip.querySelector('.day-chip-label-input').addEventListener('mousedown', (e) => {
+          e.stopPropagation();
+        });
+
+        chip.addEventListener('dragstart', (e) => {
+          dragSrcId = item.id;
+          chip.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        chip.addEventListener('dragend', () => {
+          chip.classList.remove('dragging');
+          document.querySelectorAll('.drop-target').forEach(d => d.classList.remove('show'));
+          dragSrcId = null;
+        });
+
+        list.appendChild(chip);
+      }
+    });
+
+    const endDrop = document.createElement('div');
+    endDrop.className = 'drop-target';
+    endDrop.dataset.dropIndex = state.items.length;
+    list.appendChild(endDrop);
+
+    document.querySelectorAll('.drop-target').forEach(dt => {
+      dt.addEventListener('dragover', (e) => {
+        if (!dragSrcId) return;
+        e.preventDefault();
+        document.querySelectorAll('.drop-target').forEach(d => d.classList.remove('show'));
+        dt.classList.add('show');
+      });
+      dt.addEventListener('dragleave', () => dt.classList.remove('show'));
+      dt.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (!dragSrcId) return;
+        const dropIdx = Number(dt.dataset.dropIndex);
+        moveDivider(dragSrcId, dropIdx);
+      });
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  function insertDayBreakAt(insertIdx) {
+    const existingCount = state.items.filter(i => i.type === 'divider').length;
+    const newDivider = {
+      type: 'divider',
+      id: 'd_' + Date.now(),
+      label: `Day ${existingCount + 2}`,
+    };
+    state.items.splice(insertIdx, 0, newDivider);
+    render();
+    setTimeout(() => {
+      const newChip = document.querySelector(`[data-id="${newDivider.id}"] .day-chip-label-input`);
+      if (newChip) { newChip.focus(); newChip.select(); }
+    }, 50);
+  }
+
+  let dragSrcId = null;
+
+  function moveDivider(id, dropIdx) {
+    const srcIdx = state.items.findIndex(i => i.id === id);
+    if (srcIdx === -1) return;
+    const [moved] = state.items.splice(srcIdx, 1);
+    const adjusted = dropIdx > srcIdx ? dropIdx - 1 : dropIdx;
+    state.items.splice(adjusted, 0, moved);
+    render();
+  }
+
+  document.querySelectorAll('.switcher-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.switcher-btn').forEach(b => b.classList.toggle('active', b === btn));
+      state.activeOpt = Number(btn.dataset.opt);
+      render();
+    });
+  });
+
+  render();
+</script>
+
+</body>
+</html>
