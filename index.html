@@ -162,6 +162,8 @@
     .preview-hub.journal::after   { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(54,107,165,.14) 0%, transparent 70%); }
     .preview-hub.route::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0 49%, rgba(196,91,40,.5) 49% 51%, transparent 51% 100%), radial-gradient(circle at 20% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px), radial-gradient(circle at 80% 50%, rgba(28,43,31,.15) 0 8px, transparent 9px); }
     .preview-hub.messages::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0 30%, rgba(28,43,31,.08) 30% 33%, transparent 33% 55%, rgba(28,43,31,.08) 55% 58%, transparent 58% 80%, rgba(196,91,40,.18) 80% 83%, transparent 83% 100%); }
+    .preview-messages-variants    { background: linear-gradient(90deg, #FAF8F4 0 33%, #1C2B1F 33% 66%, #3D6B4F 66% 100%); color: #F2F0EA; border-bottom: 1px solid #243428; text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+    .preview-messages-variants::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0 38%, rgba(196,91,40,.35) 38% 41%, transparent 41% 60%, rgba(255,255,255,.12) 60% 63%, transparent 63% 100%); }
     .preview-hub.forums::after    { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 22px, rgba(28,43,31,.08) 22px 23px), linear-gradient(135deg, rgba(196,91,40,.12) 0%, transparent 55%); }
     .preview-hub.garage           { background: #1C2B1F; color: #F4F5F0; border-bottom: 1px solid #2a3a2d; }
     .preview-hub.garage::after    { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(196,91,40,.22) 0%, transparent 55%), radial-gradient(circle at 75% 35%, rgba(184,150,12,.12) 0%, transparent 55%); }
@@ -372,6 +374,22 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">Inbox</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="messages-design.html">
+        <div class="card-preview preview-messages-variants">
+          <span>Messages · Variants</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Messages — Theme Variants</div>
+          <div class="card-desc">Side-by-side messaging UI explorations — light, forest dark, and sage hybrids with shared structure.</div>
+          <div class="card-tags">
+            <span class="tag">Mixed</span>
+            <span class="tag accent">Bebas Neue</span>
+            <span class="tag rust">Variants</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>
