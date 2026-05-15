@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gear Checklists — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-on-light:#3D6B4F;--sage-on-dark:#78A68E;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+.mobile-menu-btn{display:none;width:36px;height:36px;border-radius:8px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mobile-menu-btn svg{width:18px;height:18px;stroke:var(--forest);fill:none;stroke-width:2}
+
+/* MOBILE DRAWER */
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(15,26,19,.5);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.sidebar-overlay.open{display:block;opacity:1}
+.sidebar-drawer{position:fixed;top:0;left:-280px;bottom:0;width:280px;z-index:160;background:var(--white);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(15,26,19,.15);padding:20px 0;overflow-y:auto}
+.sidebar-drawer.open{transform:translateX(280px)}
+.drawer-close{padding:10px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+.drawer-close span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.drawer-close button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.drawer-close button svg{width:16px;height:16px;stroke:var(--forest);fill:none;stroke-width:2}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;border-left:3px solid transparent}
+.drawer-link.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.drawer-link svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;opacity:.5}
+.drawer-link.active svg{opacity:1}
+.drawer-div{height:1px;background:var(--bdr);margin:12px 20px}
+
+/* LAYOUT */
+.page-shell{padding-top:64px;min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+
+/* SIDEBAR */
+.sidebar{background:var(--white);border-right:1px solid var(--bdr);padding:24px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar-head{padding:0 20px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;transition:all .12s;border-left:3px solid transparent}
+.sidebar a:hover{background:var(--sand);color:var(--forest)}
+.sidebar a.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.sidebar a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.5}
+.sidebar a.active svg{opacity:1}
+.sidebar-div{height:1px;background:var(--bdr);margin:12px 20px}
+
+/* CONTENT */
+.content{padding:clamp(20px,3vw,32px) clamp(16px,4vw,48px);max-width:960px}
+
+/* SHARED */
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}.btn-outline:hover{border-color:var(--sage);color:var(--sage)}
+.btn-sm{padding:7px 14px;font-size:11px}
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ════════════════════════════════
+   VIEW TOGGLE
+   ════════════════════════════════ */
+.view-toggle{position:sticky;top:64px;z-index:80;background:var(--white);border-bottom:1px solid var(--bdr);padding:8px 0;display:flex;align-items:center;gap:8px;margin:-24px -24px 24px;padding:8px 24px}
+.vt-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--bdr2);background:var(--white);color:var(--body);cursor:pointer}
+.vt-btn.active{background:var(--forest);border-color:var(--forest);color:var(--text)}
+
+/* ════════════════════════════════
+   TEMPLATES LIST VIEW
+   ════════════════════════════════ */
+.pg-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.pg-head h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:1px;color:var(--forest);line-height:1}
+.pg-head h1 em{font-style:normal;color:var(--rust-on-light)}
+.pg-head p{font-size:14px;color:var(--body);margin-top:4px;max-width:480px}
+
+/* Stats */
+.cl-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.cl-stat{padding:16px;background:var(--white);border:1px solid var(--bdr);border-radius:10px;text-align:center}
+.cl-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.cl-stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--body);margin-top:4px}
+
+/* Starter templates */
+.starters{margin-bottom:28px}
+.starters-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.starter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.starter-card{padding:18px;background:var(--white);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.starter-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04);transform:translateY(-2px)}
+.starter-card-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.starter-icon{font-size:24px;margin-bottom:10px}
+.starter-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:4px}
+.starter-desc{font-size:12px;color:var(--body);line-height:1.5;margin-bottom:8px}
+.starter-meta{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;gap:10px}
+.starter-meta strong{color:var(--forest);font-weight:500}
+.starter-use{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-top:8px;display:flex;align-items:center;gap:4px}
+
+/* Saved templates */
+.saved-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.saved-list{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.saved-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .1s}
+.saved-row:last-child{border-bottom:none}
+.saved-row:hover{background:var(--sand)}
+.saved-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.saved-info{flex:1}
+.saved-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.saved-desc{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:1px}
+.saved-meta{display:flex;gap:8px;flex-shrink:0}
+.saved-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;border-radius:3px}
+.saved-badge.default{background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.saved-badge.items{background:var(--sand);color:var(--body)}
+.saved-attached{font-family:var(--mono);font-size:9px;color:var(--sage-on-light);display:flex;align-items:center;gap:3px}
+.saved-actions{display:flex;gap:4px;flex-shrink:0}
+.saved-action{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);border:1px solid var(--bdr);transition:all .15s}
+.saved-action:hover{background:var(--sand);color:var(--forest);border-color:var(--bdr2)}
+.saved-action.delete:hover{background:rgba(196,91,40,.06);color:var(--rust-on-light);border-color:rgba(196,91,40,.15)}
+.saved-action svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Empty */
+.empty{padding:40px;text-align:center;background:var(--white);border:1px dashed var(--bdr2);border-radius:12px;margin-top:12px}
+.empty p{font-size:14px;color:var(--body);margin-bottom:12px}
+
+/* ════════════════════════════════
+   TEMPLATE EDITOR VIEW
+   ════════════════════════════════ */
+.editor{display:none}
+.editor.active{display:block}
+.list-view.active{display:block}
+
+.editor-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.editor-back{font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none;display:flex;align-items:center;gap:4px;cursor:pointer}
+.editor-back:hover{text-decoration:underline}
+.editor-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.editor-meta{font-family:var(--mono);font-size:11px;color:var(--body)}
+.editor-meta strong{color:var(--rust-on-light);font-weight:500}
+
+/* Form fields */
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--body);margin-bottom:5px}
+.field input,.field textarea{width:100%;padding:10px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow',sans-serif;font-size:14px;color:var(--forest);transition:border-color .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--sage)}
+.field textarea{resize:vertical;min-height:60px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--body);margin-bottom:16px;cursor:pointer}
+.field-check input{width:16px;height:16px;accent-color:var(--sage)}
+
+/* Group */
+.group{background:var(--white);border:1px solid var(--bdr);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.group-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .1s;user-select:none}
+.group-header:hover{background:var(--sand)}
+.group-icon{font-size:16px;flex-shrink:0}
+.group-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--forest);flex:1}
+.group-count{font-family:var(--mono);font-size:10px;color:var(--body);display:flex;align-items:center;gap:2px}
+.group-count strong{color:var(--sage-on-light);font-weight:500}
+.group-chevron{width:18px;height:18px;stroke:var(--text3);fill:none;stroke-width:2;transition:transform .2s;flex-shrink:0}
+.group.open .group-chevron{transform:rotate(180deg)}
+.group-body{display:none;border-top:1px solid var(--bdr)}
+.group.open .group-body{display:block}
+
+/* Item row */
+.item-row{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--bdr);transition:background .1s}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:rgba(61,107,79,.015)}
+.item-drag{width:16px;height:16px;cursor:grab;color:var(--sand2);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.item-drag svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.item-name{font-size:13px;font-weight:500;color:var(--forest);width:160px;flex-shrink:0}
+.item-field{flex:1;padding:6px 10px;border-radius:4px;border:1px solid transparent;background:transparent;font-family:var(--mono);font-size:11px;color:var(--body);transition:all .15s}
+.item-field:focus{border-color:var(--bdr2);background:var(--white);outline:none}
+.item-field::placeholder{color:var(--sand2)}
+.item-shop{flex:1;padding:6px 10px;border-radius:4px;border:1px solid transparent;background:transparent;font-family:var(--mono);font-size:11px;color:var(--sage-on-light);transition:all .15s}
+.item-shop:focus{border-color:var(--bdr2);background:var(--white);outline:none}
+.item-shop::placeholder{color:var(--sand2)}
+.item-del{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sand2);border:none;background:none;transition:all .15s;flex-shrink:0}
+.item-del:hover{color:var(--rust-on-light);background:rgba(196,91,40,.06)}
+.item-del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Add item */
+.add-item{padding:8px 16px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--sage-on-light);cursor:pointer;display:flex;align-items:center;gap:4px;transition:background .1s}
+.add-item:hover{background:rgba(61,107,79,.03)}
+.add-item svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Add group */
+.add-group{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.add-group-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:6px;background:rgba(61,107,79,.06);border:1px solid rgba(61,107,79,.12);color:var(--sage-on-light);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.add-group-btn:hover{background:rgba(61,107,79,.1)}
+.add-group-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.add-group-hint{font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* QUICK ADD LIBRARY */
+.library{background:var(--white);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-top:20px}
+.library-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:4px}
+.library-sub{font-size:12px;color:var(--body);margin-bottom:14px}
+.library-cat{margin-bottom:12px}
+.library-cat-name{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+.library-chips{display:flex;flex-wrap:wrap;gap:4px}
+.library-chip{padding:4px 10px;border-radius:50px;border:1px solid var(--bdr2);background:var(--white);font-family:var(--mono);font-size:10px;color:var(--body);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:3px}
+.library-chip:hover{border-color:var(--sage);color:var(--sage);background:rgba(61,107,79,.03)}
+.library-chip.added{background:var(--sand);color:var(--text3);border-color:var(--bdr);opacity:.5;cursor:default}
+.library-chip svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
+
+@media(max-width:900px){
+  .nav-links{display:none}.page-shell{grid-template-columns:1fr}.sidebar{display:none}.mobile-menu-btn{display:flex}
+  .starter-grid{grid-template-columns:1fr}.cl-stats{grid-template-columns:repeat(3,1fr)}
+  .item-name{width:120px}.field-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .pg-head{flex-direction:column;align-items:flex-start}
+  .item-field,.item-shop{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-links"><a href="#">Classifieds</a><a href="#">Gear</a><a href="#">Trips</a><a href="#">Community</a><a href="#">Garage</a></div>
+  <div class="nav-right"><button class="mobile-menu-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button><div class="nav-ava">MR</div></div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeDrawer()"></div>
+<div class="sidebar-drawer" id="sidebarDrawer">
+  <div class="drawer-close"><span>Account</span><button onclick="closeDrawer()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+  <a href="#" class="drawer-link active"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+  <div class="drawer-div"></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+</div>
+
+<div class="page-shell">
+  <div class="sidebar">
+    <div class="sidebar-head">Account</div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    <a href="#"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+    <a href="#"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+    <a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</a>
+  </div>
+
+  <div class="content">
+
+    <!-- VIEW TOGGLE -->
+    <div class="view-toggle">
+      <button class="vt-btn active" onclick="showView('list')">My templates</button>
+      <button class="vt-btn" onclick="showView('editor')">Edit template</button>
+    </div>
+
+    <!-- ════════ LIST VIEW ════════ -->
+    <div id="listView" class="list-view active">
+
+      <div class="pg-head fade-up">
+        <div><h1>GEAR <em>CHECKLISTS</em></h1><p>Save reusable packing lists, attach them to any expedition. Never forget recovery boards again.</p></div>
+        <a href="#" class="btn btn-rust" onclick="showView('editor');return false">+ New Template</a>
+      </div>
+
+      <div class="cl-stats fade-up">
+        <div class="cl-stat"><div class="cl-stat-val" style="color:var(--sage-on-light)">3</div><div class="cl-stat-lbl">Templates</div></div>
+        <div class="cl-stat"><div class="cl-stat-val" style="color:var(--rust-on-light)">42</div><div class="cl-stat-lbl">Total items</div></div>
+        <div class="cl-stat"><div class="cl-stat-val" style="color:var(--gold-on-light)">2</div><div class="cl-stat-lbl">Attached to trips</div></div>
+      </div>
+
+      <!-- STARTER TEMPLATES -->
+      <div class="starters fade-up">
+        <div class="starters-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage-on-light)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Start from a template</div>
+        <div class="starter-grid">
+          <div class="starter-card" onclick="showView('editor')">
+            <div class="starter-card-accent" style="background:var(--sage)"></div>
+            <div class="starter-icon">🏕️</div>
+            <div class="starter-name">Weekend Trip</div>
+            <div class="starter-desc">2–3 day trip essentials. Camp gear, recovery basics, food and water for the group.</div>
+            <div class="starter-meta"><strong>24</strong> items · <strong>6</strong> groups</div>
+            <div class="starter-use"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Use this template</div>
+          </div>
+          <div class="starter-card" onclick="showView('editor')">
+            <div class="starter-card-accent" style="background:var(--rust)"></div>
+            <div class="starter-icon">🗺️</div>
+            <div class="starter-name">Week-Long Expedition</div>
+            <div class="starter-desc">Full expedition kit. Extended food, tools, extra fuel, communications, and backup gear.</div>
+            <div class="starter-meta"><strong>48</strong> items · <strong>10</strong> groups</div>
+            <div class="starter-use"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Use this template</div>
+          </div>
+          <div class="starter-card" onclick="showView('editor')">
+            <div class="starter-card-accent" style="background:var(--gold)"></div>
+            <div class="starter-icon">🚙</div>
+            <div class="starter-name">Day Trip</div>
+            <div class="starter-desc">Quick day run essentials. Recovery gear, water, snacks, first aid, and comms.</div>
+            <div class="starter-meta"><strong>14</strong> items · <strong>4</strong> groups</div>
+            <div class="starter-use"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Use this template</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED TEMPLATES -->
+      <div class="fade-up">
+        <div class="saved-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Your saved templates <span style="font-family:var(--mono);font-size:10px;color:var(--body);font-weight:400;margin-left:4px">3</span></div>
+        <div class="saved-list">
+          <div class="saved-row" onclick="showView('editor')">
+            <div class="saved-icon" style="background:rgba(61,107,79,.06)">📋</div>
+            <div class="saved-info">
+              <div class="saved-name">Basics</div>
+              <div class="saved-desc">Basic list of items to bring · Last edited 2 days ago</div>
+            </div>
+            <span class="saved-badge default">✓ Default</span>
+            <span class="saved-badge items">11 items</span>
+            <span class="saved-attached"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Mojave Road</span>
+            <div class="saved-actions">
+              <div class="saved-action"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+              <div class="saved-action"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
+              <div class="saved-action delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+            </div>
+          </div>
+          <div class="saved-row" onclick="showView('editor')">
+            <div class="saved-icon" style="background:rgba(196,91,40,.06)">🗺️</div>
+            <div class="saved-info">
+              <div class="saved-name">Multi-Day Full Kit</div>
+              <div class="saved-desc">Complete 4+ day expedition kit · Last edited 1 week ago</div>
+            </div>
+            <span class="saved-badge items">38 items</span>
+            <span class="saved-attached"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Rubicon Trail</span>
+            <div class="saved-actions">
+              <div class="saved-action"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+              <div class="saved-action"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
+              <div class="saved-action delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+            </div>
+          </div>
+          <div class="saved-row" onclick="showView('editor')">
+            <div class="saved-icon" style="background:rgba(154,123,16,.06)">🚙</div>
+            <div class="saved-info">
+              <div class="saved-name">Quick Day Run</div>
+              <div class="saved-desc">Minimal day trip kit · Created 3 weeks ago</div>
+            </div>
+            <span class="saved-badge items">14 items</span>
+            <div class="saved-actions">
+              <div class="saved-action"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+              <div class="saved-action"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
+              <div class="saved-action delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════════ EDITOR VIEW ════════ -->
+    <div id="editorView" class="editor">
+
+      <div class="editor-head">
+        <div class="editor-back" onclick="showView('list')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to templates</div>
+        <div class="editor-meta"><strong>11</strong> items · <strong>3</strong> groups</div>
+        <a href="#" class="btn btn-rust btn-sm">Save template</a>
+      </div>
+
+      <div class="field-row">
+        <div class="field"><label>Template name</label><input type="text" value="Basics"></div>
+        <div class="field"><label>Description (optional)</label><input type="text" value="Basic list of items to bring"></div>
+      </div>
+      <label class="field-check"><input type="checkbox" checked> Set as my default template</label>
+
+      <div class="add-group">
+        <button class="add-group-btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add group</button>
+        <span class="add-group-hint">Use custom groups for big categories instead of lumping them under Other.</span>
+      </div>
+
+      <!-- RECOVERY GROUP (empty) -->
+      <div class="group">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="group-icon">🪢</span>
+          <span class="group-name">Recovery</span>
+          <span class="group-count"><strong>0</strong>/0</span>
+          <svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="group-body">
+          <div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item to Recovery</div>
+        </div>
+      </div>
+
+      <!-- CAMP GROUP (open, with items) -->
+      <div class="group open">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="group-icon">⛺</span>
+          <span class="group-name">Camp</span>
+          <span class="group-count"><strong>0</strong>/5</span>
+          <svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="group-body">
+          <div class="item-row"><div class="item-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div><span class="item-name">Tent</span><input class="item-field" placeholder="Notes" type="text"><input class="item-shop" placeholder="Shop URL" type="text"><button class="item-del"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>
+          <div class="item-row"><div class="item-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div><span class="item-name">Sleeping bag</span><input class="item-field" placeholder="Notes" type="text"><input class="item-shop" placeholder="Shop URL" type="text"><button class="item-del"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>
+          <div class="item-row"><div class="item-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div><span class="item-name">Sleeping pad</span><input class="item-field" placeholder="Notes" type="text"><input class="item-shop" placeholder="Shop URL" type="text"><button class="item-del"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>
+          <div class="item-row"><div class="item-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div><span class="item-name">Camp chair</span><input class="item-field" placeholder="Notes" type="text"><input class="item-shop" placeholder="Shop URL" type="text"><button class="item-del"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>
+          <div class="item-row"><div class="item-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div><span class="item-name">Headlamp</span><input class="item-field" placeholder="Notes" value="Bring extra batteries" type="text"><input class="item-shop" placeholder="Shop URL" type="text"><button class="item-del"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>
+          <div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item to Camp</div>
+        </div>
+      </div>
+
+      <!-- WATER & FOOD (collapsed) -->
+      <div class="group">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')"><span class="group-icon">🍳</span><span class="group-name">Water &amp; Food</span><span class="group-count"><strong>0</strong>/1</span><svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="group-body"><div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item</div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')"><span class="group-icon">📡</span><span class="group-name">Nav &amp; Comms</span><span class="group-count"><strong>0</strong>/0</span><svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="group-body"><div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item</div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')"><span class="group-icon">🔧</span><span class="group-name">Tools</span><span class="group-count"><strong>0</strong>/0</span><svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="group-body"><div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item</div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-header" onclick="this.parentElement.classList.toggle('open')"><span class="group-icon">📦</span><span class="group-name">Other</span><span class="group-count"><strong>0</strong>/5</span><svg class="group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="group-body"><div class="add-item"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add item</div></div>
+      </div>
+
+      <!-- QUICK ADD LIBRARY -->
+      <div class="library">
+        <div class="library-title">Quick add from starter library</div>
+        <div class="library-sub">Tap any item to add it to your template. You can edit names, notes, and shop links after.</div>
+
+        <div class="library-cat">
+          <div class="library-cat-name">Recovery</div>
+          <div class="library-chips">
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Recovery boards</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Snatch strap</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>D-shackles</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Air compressor</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Tire deflators</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Hi-lift jack</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Shovel</span>
+          </div>
+        </div>
+
+        <div class="library-cat">
+          <div class="library-cat-name">Camp</div>
+          <div class="library-chips">
+            <span class="library-chip added">Tent</span>
+            <span class="library-chip added">Sleeping bag</span>
+            <span class="library-chip added">Sleeping pad</span>
+            <span class="library-chip added">Camp chair</span>
+            <span class="library-chip added">Headlamp</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Camp table</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Lantern</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Fire starter</span>
+          </div>
+        </div>
+
+        <div class="library-cat">
+          <div class="library-cat-name">Water &amp; Food</div>
+          <div class="library-chips">
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Water filter</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Cooler</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Cookset</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Stove + fuel</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Coffee kit</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Trash bags</span>
+          </div>
+        </div>
+
+        <div class="library-cat">
+          <div class="library-cat-name">Nav &amp; Comms</div>
+          <div class="library-chips">
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Paper maps</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>GPS</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>GMRS / CB radio</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Satellite messenger</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Power bank</span>
+          </div>
+        </div>
+
+        <div class="library-cat">
+          <div class="library-cat-name">Tools</div>
+          <div class="library-chips">
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Multi-tool</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Socket set</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Tow strap</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Jumper cables</span>
+            <span class="library-chip"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Spare fuses</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),obs.unobserve(e.target))})},{threshold:.08});
+document.querySelectorAll('.fade-up').forEach(e=>obs.observe(e));
+function openDrawer(){document.getElementById('sidebarOverlay').classList.add('open');document.getElementById('sidebarDrawer').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('sidebarOverlay').classList.remove('open');document.getElementById('sidebarDrawer').classList.remove('open');document.body.style.overflow=''}
+function showView(v){
+  document.getElementById('listView').style.display=v==='list'?'block':'none';
+  document.getElementById('editorView').style.display=v==='editor'?'block':'none';
+  document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

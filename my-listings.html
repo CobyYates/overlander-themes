@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Listings — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;
+  --sage:#3D6B4F;--sage-light:#4A7D5E;--sage-on-light:#3D6B4F;
+  --rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;
+  --gold:#9A7B10;--gold-on-light:#7A640B;
+  --cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;
+  --text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;
+  --bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo svg{width:26px;height:26px}
+.nav-logo .accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:rgba(255,255,255,.6)}
+.nav-links a.active{color:var(--text)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-icon{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;color:rgba(255,255,255,.35)}
+.nav-icon:hover{border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
+.nav-icon .badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:var(--rust);border:2px solid var(--dark);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+
+/* PAGE */
+.page{padding:88px clamp(16px,4vw,48px) 60px;max-width:1200px;margin:0 auto}
+
+/* HEADER ROW */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:1px;color:var(--forest);line-height:1}
+.header h1 em{font-style:normal;color:var(--rust-on-light)}
+.header-meta{font-family:var(--mono);font-size:11px;color:var(--body);margin-top:4px}
+.header-actions{display:flex;gap:8px}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover);transform:translateY(-1px)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}.btn-outline:hover{border-color:var(--sage);color:var(--sage)}
+
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
+.stat{padding:16px;background:var(--white);border:1px solid var(--bdr);border-radius:10px;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
+.stat:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(28,43,31,.04);border-color:var(--bdr2)}
+.stat-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.stat-label{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--body);margin-bottom:6px}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.stat-sub{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:4px}
+
+/* FILTER ROW */
+.filters{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.filter-pills{display:flex;gap:6px}
+.pill{padding:6px 14px;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--bdr);background:var(--white);color:var(--body);transition:all .15s}
+.pill:hover{border-color:var(--bdr2);color:var(--forest)}
+.pill.active{background:var(--forest);border-color:var(--forest);color:var(--text)}
+.filter-search{margin-left:auto;padding:8px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow',sans-serif;font-size:13px;color:var(--forest);width:220px}
+.filter-search::placeholder{color:var(--text3)}
+.filter-sort{padding:8px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--body);cursor:pointer;display:flex;align-items:center;gap:4px}
+
+/* SECTION LABELS */
+.sec-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;margin-top:28px}
+.sec-label-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sec-label-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase}
+.sec-label-count{font-family:var(--mono);font-size:10px;color:var(--body)}
+.sec-label-line{flex:1;height:1px;background:var(--bdr)}
+
+/* VEHICLE CARDS */
+.v-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.v-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:all .25s;cursor:pointer;position:relative}
+.v-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(28,43,31,.06);border-color:var(--bdr2)}
+.v-card-img{height:180px;background:var(--sand2);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.v-card-img img{width:100%;height:100%;object-fit:cover}
+.v-card-img .placeholder{font-size:40px;color:var(--text3);opacity:.4}
+.v-card-badge{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;padding:3px 10px;border-radius:4px;color:#fff}
+.v-card-badge.active{background:rgba(61,107,79,.88)}
+.v-card-badge.pending{background:rgba(154,123,16,.88)}
+.v-card-badge.sold{background:rgba(90,90,86,.88)}
+.v-card-badge.draft{background:rgba(28,43,31,.6)}
+.v-card-type{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.8)}
+.v-card-body{padding:14px 16px}
+.v-card-brand{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--sage-on-light);margin-bottom:2px}
+.v-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:4px}
+.v-card-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--rust-on-light);line-height:1;margin-bottom:8px}
+.v-card-meta{font-family:var(--mono);font-size:10px;color:var(--body);line-height:1.7}
+.v-card-stats{display:flex;gap:12px;padding-top:10px;margin-top:10px;border-top:1px solid var(--bdr);font-family:var(--mono);font-size:10px;color:var(--body)}
+.v-card-stats strong{color:var(--forest);font-weight:500}
+.v-card-offer{margin-top:10px;padding:8px 10px;background:rgba(154,123,16,.04);border:1px solid rgba(154,123,16,.1);border-radius:6px;font-family:var(--mono);font-size:10px;color:var(--gold-on-light);display:flex;align-items:center;gap:6px}
+.v-card-offer strong{font-weight:500}
+.v-card.sold{opacity:.5}
+.v-card.sold .v-card-price{color:var(--body);text-decoration:line-through}
+.v-card-sold-note{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-top:4px}
+
+/* GEAR ROWS */
+.g-list{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.g-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--bdr);transition:background .1s;cursor:pointer}
+.g-row:last-child{border-bottom:none}
+.g-row:hover{background:var(--sand)}
+.g-row-img{width:56px;height:42px;border-radius:6px;background:var(--sand2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.g-row-img img{width:100%;height:100%;object-fit:cover}
+.g-row-img .placeholder{font-size:18px;color:var(--text3);opacity:.4}
+.g-row-info{flex:1;min-width:0}
+.g-row-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:1px}
+.g-row-meta{font-family:var(--mono);font-size:10px;color:var(--body)}
+.g-row-cat{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;background:rgba(154,123,16,.06);color:var(--gold-on-light)}
+.g-row-status{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+.g-row-status.active{background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.g-row-status.pending{background:rgba(154,123,16,.06);color:var(--gold-on-light)}
+.g-row-status.sold{background:rgba(28,43,31,.04);color:var(--body)}
+.g-row-status.draft{background:rgba(28,43,31,.04);color:var(--text3)}
+.g-row-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--rust-on-light);min-width:70px;text-align:right}
+.g-row-views{font-family:var(--mono);font-size:10px;color:var(--body);min-width:60px;text-align:right}
+.g-row-actions{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);transition:all .15s;flex-shrink:0}
+.g-row-actions:hover{background:var(--sand2);color:var(--forest)}
+.g-row.sold-row{opacity:.5}
+.g-row.sold-row .g-row-price{color:var(--body);text-decoration:line-through}
+
+/* EMPTY STATE */
+.empty{padding:40px;text-align:center;background:var(--white);border:1px dashed var(--bdr2);border-radius:12px;margin-top:12px}
+.empty p{font-size:14px;color:var(--body);margin-bottom:12px}
+
+/* FOOTER */
+.ft{padding:20px clamp(16px,4vw,48px);border-top:1px solid var(--bdr);margin-top:48px;display:flex;justify-content:center}
+.ft span{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--text3)}
+
+/* FADE */
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:1024px){
+  .nav-links{display:none}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .v-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .v-grid{grid-template-columns:1fr}
+  .g-row-cat,.g-row-views{display:none}
+  .header{flex-direction:column;align-items:flex-start;gap:12px}
+  .filter-search{width:100%;margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-links">
+    <a href="#">Classifieds</a>
+    <a href="#">Gear</a>
+    <a href="#">Trips</a>
+    <a href="#" class="active">My Listings</a>
+    <a href="#">Messages</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+    <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge">3</span></div>
+    <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg><span class="badge">12</span></div>
+    <div class="nav-ava">MR</div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header fade-up">
+    <div>
+      <h1>MY <em>LISTINGS</em></h1>
+      <div class="header-meta">3 vehicles · 5 gear items · Last updated 2 hours ago</div>
+    </div>
+    <div class="header-actions">
+      <a href="#" class="btn btn-outline">Export CSV</a>
+      <a href="#" class="btn btn-rust">+ New Listing</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats fade-up">
+    <div class="stat">
+      <div class="stat-accent" style="background:var(--sage)"></div>
+      <div class="stat-label">Active</div>
+      <div class="stat-value" style="color:var(--sage-on-light)">5</div>
+      <div class="stat-sub">2 vehicles · 3 gear</div>
+    </div>
+    <div class="stat">
+      <div class="stat-accent" style="background:var(--gold)"></div>
+      <div class="stat-label">Pending Offers</div>
+      <div class="stat-value" style="color:var(--gold-on-light)">2</div>
+      <div class="stat-sub">$49K · $39K</div>
+    </div>
+    <div class="stat">
+      <div class="stat-accent" style="background:var(--rust)"></div>
+      <div class="stat-label">Total Views</div>
+      <div class="stat-value" style="color:var(--rust-on-light)">1,247</div>
+      <div class="stat-sub">+18% this week</div>
+    </div>
+    <div class="stat">
+      <div class="stat-accent" style="background:var(--forest)"></div>
+      <div class="stat-label">Messages</div>
+      <div class="stat-value" style="color:var(--forest)">12</div>
+      <div class="stat-sub">4 unread</div>
+    </div>
+    <div class="stat">
+      <div class="stat-accent" style="background:var(--text3)"></div>
+      <div class="stat-label">Sold</div>
+      <div class="stat-value" style="color:var(--body)">1</div>
+      <div class="stat-sub">$38,000 · Mar 20</div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters fade-up">
+    <div class="filter-pills">
+      <div class="pill active">All (8)</div>
+      <div class="pill">Active (5)</div>
+      <div class="pill">Pending (2)</div>
+      <div class="pill">Drafts (0)</div>
+      <div class="pill">Sold (1)</div>
+    </div>
+    <input class="filter-search" placeholder="Search your listings..." type="text">
+    <div class="filter-sort">Newest first <span style="font-size:10px">▾</span></div>
+  </div>
+
+  <!-- VEHICLES -->
+  <div class="sec-label fade-up">
+    <div class="sec-label-icon" style="background:rgba(196,91,40,.06);color:var(--rust-on-light)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </div>
+    <div class="sec-label-text" style="color:var(--rust-on-light)">Vehicles</div>
+    <div class="sec-label-count">3 listings</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="v-grid">
+    <div class="v-card fade-up">
+      <div class="v-card-img">
+        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=75" alt="4Runner TRD Pro">
+        <span class="v-card-badge active">ACTIVE</span>
+        <span class="v-card-type">VEHICLE</span>
+      </div>
+      <div class="v-card-body">
+        <div class="v-card-brand">TOYOTA</div>
+        <div class="v-card-title">2021 4Runner TRD Pro</div>
+        <div class="v-card-price">$52,500</div>
+        <div class="v-card-meta">78K mi · Magnetic Gray · 24 mods</div>
+        <div class="v-card-stats">
+          <span><strong>847</strong> views</span>
+          <span><strong>3</strong> watchers</span>
+          <span><strong>5</strong> messages</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="v-card fade-up">
+      <div class="v-card-img">
+        <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600&q=75" alt="Gladiator Rubicon">
+        <span class="v-card-badge pending">PENDING OFFER</span>
+        <span class="v-card-type">VEHICLE</span>
+      </div>
+      <div class="v-card-body">
+        <div class="v-card-brand">JEEP</div>
+        <div class="v-card-title">2019 Gladiator Rubicon</div>
+        <div class="v-card-price">$41,900</div>
+        <div class="v-card-meta">52K mi · Sarge Green · 18 mods</div>
+        <div class="v-card-offer">
+          <strong>💰 Offer:</strong> $39,000 from Marin D. · 4h ago
+        </div>
+        <div class="v-card-stats">
+          <span><strong>312</strong> views</span>
+          <span><strong>1</strong> watcher</span>
+          <span><strong>3</strong> messages</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="v-card sold fade-up">
+      <div class="v-card-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75" alt="Tacoma TRD Off-Road">
+        <span class="v-card-badge sold">SOLD</span>
+        <span class="v-card-type">VEHICLE</span>
+      </div>
+      <div class="v-card-body">
+        <div class="v-card-brand">TOYOTA</div>
+        <div class="v-card-title">2018 Tacoma TRD Off-Road</div>
+        <div class="v-card-price">$38,000</div>
+        <div class="v-card-meta">92K mi · Cement Gray · 12 mods</div>
+        <div class="v-card-sold-note">Sold to Brad H. · March 20, 2026</div>
+        <div class="v-card-stats">
+          <span><strong>1,420</strong> total views</span>
+          <span><strong>48</strong> days listed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEAR -->
+  <div class="sec-label fade-up">
+    <div class="sec-label-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <div class="sec-label-text" style="color:var(--gold-on-light)">Gear</div>
+    <div class="sec-label-count">5 listings</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="g-list fade-up">
+    <div class="g-row">
+      <div class="g-row-img"><img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200&q=60" alt="Skycamp" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="g-row-info">
+        <div class="g-row-title">iKamper Skycamp 3.0</div>
+        <div class="g-row-meta">Like new · Hardshell · King size</div>
+      </div>
+      <span class="g-row-cat">ROOF TENT</span>
+      <span class="g-row-status active">ACTIVE</span>
+      <div class="g-row-views"><strong style="color:var(--forest)">42</strong> views</div>
+      <div class="g-row-price">$3,200</div>
+      <div class="g-row-actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+    </div>
+    <div class="g-row">
+      <div class="g-row-img"><div class="placeholder">🪢</div></div>
+      <div class="g-row-info">
+        <div class="g-row-title">Warn VR EVO 10-S Winch</div>
+        <div class="g-row-meta">Used — excellent · Synthetic rope · 10K lb</div>
+      </div>
+      <span class="g-row-cat">WINCH</span>
+      <span class="g-row-status active">ACTIVE</span>
+      <div class="g-row-views"><strong style="color:var(--forest)">18</strong> views</div>
+      <div class="g-row-price">$850</div>
+      <div class="g-row-actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+    </div>
+    <div class="g-row">
+      <div class="g-row-img"><div class="placeholder">💡</div></div>
+      <div class="g-row-info">
+        <div class="g-row-title">Rigid E-Series 40" Light Bar</div>
+        <div class="g-row-meta">Used — good · Combo beam · Wiring included</div>
+      </div>
+      <span class="g-row-cat">LIGHTING</span>
+      <span class="g-row-status active">ACTIVE</span>
+      <div class="g-row-views"><strong style="color:var(--forest)">9</strong> views</div>
+      <div class="g-row-price">$420</div>
+      <div class="g-row-actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+    </div>
+    <div class="g-row">
+      <div class="g-row-img"><div class="placeholder">🔧</div></div>
+      <div class="g-row-info">
+        <div class="g-row-title">Old Man Emu BP-51 Lift Kit</div>
+        <div class="g-row-meta">New in box · 3.5" lift · Fits 4Runner 5th gen</div>
+      </div>
+      <span class="g-row-cat">SUSPENSION</span>
+      <span class="g-row-status pending">OFFER PENDING</span>
+      <div class="g-row-views"><strong style="color:var(--forest)">67</strong> views</div>
+      <div class="g-row-price">$2,800</div>
+      <div class="g-row-actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+    </div>
+    <div class="g-row sold-row">
+      <div class="g-row-img"><div class="placeholder">📦</div></div>
+      <div class="g-row-info">
+        <div class="g-row-title">Goose Gear Plate System</div>
+        <div class="g-row-meta">Used — good · Fits 4Runner · Full kitchen slide</div>
+      </div>
+      <span class="g-row-cat">STORAGE</span>
+      <span class="g-row-status sold">SOLD</span>
+      <div class="g-row-views"><strong style="color:var(--body)">134</strong> views</div>
+      <div class="g-row-price">$1,200</div>
+      <div class="g-row-actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="ft"><span>© 2026 OVERLANDER CLASSIFIEDS · AFFILIATE LINKS DISCLOSED</span></div>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),o.unobserve(e.target))})},{threshold:.08});
+document.querySelectorAll('.fade-up').forEach(e=>o.observe(e));
+document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}));
+document.querySelectorAll('.list-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.list-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active')}));
+</script>
+
+</body>
+</html>

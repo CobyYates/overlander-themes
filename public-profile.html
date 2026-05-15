@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shawn Yates — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-on-light:#3D6B4F;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+
+.page{padding-top:64px;max-width:1100px;margin:0 auto;padding-left:clamp(16px,4vw,48px);padding-right:clamp(16px,4vw,48px)}
+
+/* COVER */
+.cover{height:180px;background:linear-gradient(135deg,#1C2B1F 0%,#2E4233 40%,#4A7D5E 70%,#C45B28 100%);border-radius:0 0 16px 16px;position:relative}
+
+/* PROFILE HEADER */
+.p-header{display:flex;gap:20px;align-items:flex-end;margin-top:-44px;padding:0 24px;position:relative;z-index:10}
+.p-ava{width:96px;height:96px;border-radius:16px;border:4px solid var(--cream);overflow:hidden;background:var(--sand2);flex-shrink:0;box-shadow:0 4px 12px rgba(15,26,19,.15)}
+.p-ava img{width:100%;height:100%;object-fit:cover}
+.p-info{flex:1;padding-bottom:4px}
+.p-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,36px);letter-spacing:1px;color:var(--forest);line-height:1;display:flex;align-items:center;gap:10px}
+.p-name .auth-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 10px;border-radius:50px;background:var(--sage);color:var(--white)}
+.p-location{font-family:var(--mono);font-size:12px;color:var(--body);margin-top:2px;display:flex;align-items:center;gap:4px}
+.p-location svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.p-social{display:flex;gap:10px;margin-top:6px}
+.p-social-link{font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none;display:flex;align-items:center;gap:3px}
+.p-actions{display:flex;gap:8px;padding-bottom:4px;flex-shrink:0}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}
+.btn-forest{background:var(--forest);color:var(--text)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}
+
+/* FOLLOW/STATS ROW */
+.p-meta{display:flex;align-items:center;gap:20px;padding:14px 24px;font-family:var(--mono);font-size:12px;color:var(--body);flex-wrap:wrap}
+.p-meta strong{color:var(--forest);font-weight:500}
+.p-meta-right{margin-left:auto;font-size:11px;color:var(--text3)}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin:16px 0}
+.stat-item{padding:16px;text-align:center;border-right:1px solid var(--bdr)}
+.stat-item:last-child{border-right:none}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--rust-on-light)}
+.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--body);margin-top:4px}
+
+/* TABS + CONTENT */
+.tab-row{display:flex;gap:0;border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;margin-bottom:0}
+.tab-row::-webkit-scrollbar{display:none}
+.tab{padding:12px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--body);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:all .15s}
+.tab:hover{color:var(--forest)}
+.tab.active{color:var(--sage-on-light);border-color:var(--sage)}
+.tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+.layout{display:grid;grid-template-columns:1fr 280px;gap:20px;padding:20px 0 40px}
+.tab-content{min-height:300px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* RIGHT SIDEBAR — ACTIVITY */
+.activity{background:var(--white);border:1px solid var(--bdr);border-radius:12px;position:sticky;top:84px;padding:16px}
+.activity-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:12px}
+.act-item{display:flex;gap:8px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.act-item:last-child{border-bottom:none}
+.act-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+.act-text{font-size:12px;color:var(--forest);line-height:1.4}
+.act-text strong{font-weight:600}
+.act-time{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ═══ GARAGE TAB ═══ */
+.garage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rig-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:all .2s}
+.rig-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04)}
+.rig-img{height:140px;background:var(--sand2);position:relative;display:flex;align-items:center;justify-content:center}
+.rig-img img{width:100%;height:100%;object-fit:cover}
+.rig-badge{position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 10px;border-radius:4px;color:#fff}
+.rig-badge.sale{background:rgba(196,91,40,.88)}
+.rig-badge.active{background:rgba(61,107,79,.88)}
+.rig-badge.sold{background:rgba(90,90,86,.88)}
+.rig-body{padding:14px 16px}
+.rig-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.rig-meta{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:2px}
+.rig-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:8px}
+.rig-tag{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.rig-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+.rig-stat{text-align:center}
+.rig-stat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--forest)}
+.rig-stat-lbl{font-family:var(--mono);font-size:8px;color:var(--body);letter-spacing:1px;text-transform:uppercase}
+.rig-actions{display:flex;gap:6px;margin-top:10px}
+.rig-action{flex:1;padding:7px;text-align:center;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.rig-action.primary{background:var(--rust);color:#fff}
+.rig-action.secondary{background:var(--sand);color:var(--body)}
+
+.upcoming-section{margin-top:20px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:10px}
+.upcoming-card{display:flex;gap:12px;padding:12px;background:var(--white);border:1px solid var(--bdr);border-radius:10px;align-items:center}
+.upcoming-date{text-align:center;flex-shrink:0;width:50px}
+.upcoming-month{font-family:var(--mono);font-size:10px;color:var(--rust-on-light);font-weight:500}
+.upcoming-day{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--forest)}
+.upcoming-info{flex:1}
+.upcoming-name{font-weight:600;font-size:14px;color:var(--forest)}
+.upcoming-group{font-family:var(--mono);font-size:10px;color:var(--body)}
+
+/* ═══ SKILLS TAB ═══ */
+.skills-list{display:flex;flex-direction:column;gap:8px}
+.skill-row{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--white);border:1px solid var(--bdr);border-radius:10px;transition:all .15s}
+.skill-row:hover{border-color:var(--bdr2)}
+.skill-icon-box{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.skill-info{flex:1}
+.skill-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.skill-vouch-info{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:1px}
+.skill-stars{display:flex;gap:2px;flex-shrink:0}
+.skill-stars svg{width:18px;height:18px}
+.star-on{fill:var(--rust);stroke:var(--rust);stroke-width:1}
+.star-off{fill:none;stroke:var(--sand2);stroke-width:1.5}
+.vouch-btn{padding:5px 14px;border-radius:6px;border:1px solid rgba(61,107,79,.15);background:rgba(61,107,79,.04);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sage-on-light);cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:4px}
+.vouch-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.vouch-avatars{display:flex;flex-shrink:0;margin-right:4px}
+.vouch-ava-sm{width:20px;height:20px;border-radius:5px;border:2px solid var(--white);margin-left:-4px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff}
+.vouch-ava-sm:first-child{margin-left:0}
+
+/* ═══ EXPERIENCE TAB ═══ */
+.exp-list{display:flex;flex-direction:column;gap:8px}
+.exp-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--white);border:1px solid var(--bdr);border-radius:10px}
+.exp-trip{flex:1;font-weight:600;font-size:14px;color:var(--forest)}
+.exp-role{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 10px;border-radius:50px}
+.exp-role.lead{background:rgba(196,91,40,.06);color:var(--rust-on-light);border:1px solid rgba(196,91,40,.12)}
+.exp-role.sweep{background:rgba(154,123,16,.06);color:var(--gold-on-light);border:1px solid rgba(154,123,16,.12)}
+.exp-role.medical{background:rgba(61,107,79,.06);color:var(--sage-on-light);border:1px solid rgba(61,107,79,.12)}
+.exp-role.attendee{background:var(--sand);color:var(--body)}
+.exp-date{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0}
+.exp-vouches{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);flex-shrink:0}
+.exp-empty{padding:40px;text-align:center;background:var(--white);border:1px dashed var(--bdr2);border-radius:12px}
+.exp-empty p{font-size:14px;color:var(--body)}
+
+/* ═══ TRIPS TAB ═══ */
+.trips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.trip-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:all .2s;cursor:pointer}
+.trip-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04);transform:translateY(-2px)}
+.trip-img{height:140px;background:var(--sand2);position:relative;overflow:hidden}
+.trip-img img{width:100%;height:100%;object-fit:cover}
+.trip-diff{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 10px;border-radius:4px;color:#fff}
+.trip-diff.extreme{background:rgba(196,91,40,.88)}
+.trip-diff.moderate{background:rgba(154,123,16,.88)}
+.trip-diff.easy{background:rgba(61,107,79,.88)}
+.trip-body{padding:12px 14px}
+.trip-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:4px}
+.trip-meta{font-family:var(--mono);font-size:10px;color:var(--body);line-height:1.6}
+.trip-route{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-top:4px;display:flex;align-items:center;gap:4px}
+.trip-route svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ═══ GROUPS TAB ═══ */
+.groups-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.group-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:all .2s;cursor:pointer}
+.group-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04)}
+.group-cover{height:80px;background:var(--forest);position:relative;display:flex;align-items:flex-end;padding:0 14px}
+.group-icon{width:40px;height:40px;border-radius:10px;background:var(--rust);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;border:3px solid var(--white);margin-bottom:-16px;position:relative;z-index:1}
+.group-body{padding:22px 14px 14px}
+.group-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.group-loc{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:2px}
+.group-desc{font-size:13px;color:var(--body);line-height:1.5;margin-top:6px}
+.group-members{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);display:flex;align-items:center;gap:4px}
+
+/* ═══ TRAIL MAP TAB ═══ */
+.map-wrap{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.map-head{padding:14px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
+.map-head svg{width:16px;height:16px;stroke:var(--sage-on-light);fill:none;stroke-width:2}
+.map-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--forest)}
+.map-head-count{font-family:var(--mono);font-size:10px;color:var(--body);margin-left:auto}
+.map-placeholder{height:400px;background:var(--sand);display:flex;align-items:center;justify-content:center;color:var(--text3);font-family:var(--mono);font-size:12px;flex-direction:column;gap:8px}
+.map-placeholder svg{width:40px;height:40px;stroke:var(--sand2);fill:none;stroke-width:1.5}
+.map-trails{padding:14px 16px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:6px}
+.map-trail{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--forest)}
+.map-trail-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.map-trail-meta{font-family:var(--mono);font-size:10px;color:var(--body);margin-left:auto}
+
+@media(max-width:900px){.nav-links{display:none}.layout{grid-template-columns:1fr}.activity{display:none}.garage-grid{grid-template-columns:1fr}.trips-grid{grid-template-columns:1fr 1fr}.groups-grid{grid-template-columns:1fr}.p-header{flex-wrap:wrap}.p-actions{width:100%}}
+@media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}.trips-grid{grid-template-columns:1fr}.p-ava{width:72px;height:72px}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a><div class="nav-links"><a href="#">Classifieds</a><a href="#">Gear</a><a href="#">Trips</a><a href="#">Community</a><a href="#">Garage</a></div><div class="nav-right"><div class="nav-ava">SY</div></div></nav>
+
+<div class="page">
+<div class="cover"></div>
+
+<div class="p-header">
+  <div class="p-ava"><img src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=200&q=80" alt="Shawn Yates"></div>
+  <div class="p-info">
+    <div class="p-name">SHAWN YATES <span class="auth-badge">google</span></div>
+    <div class="p-location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Herriman, Utah</div>
+    <div class="p-social">
+      <a href="#" class="p-social-link">📸 @shawnyates</a>
+      <a href="#" class="p-social-link">🎥 YouTube</a>
+    </div>
+  </div>
+  <div class="p-actions">
+    <a href="#" class="btn btn-rust">Message</a>
+    <a href="#" class="btn btn-forest">Follow</a>
+  </div>
+</div>
+
+<div class="p-meta">
+  <span><strong>1</strong> follower</span>
+  <span><strong>0</strong> following</span>
+  <span><strong>8</strong> trip reports</span>
+  <span class="p-meta-right">Member since Mar 2026</span>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-val">8</div><div class="stat-label">Trails logged</div></div>
+  <div class="stat-item"><div class="stat-val">518.6</div><div class="stat-label">Trail miles</div></div>
+  <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">Forum posts</div></div>
+  <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Followers</div></div>
+</div>
+
+<div class="tab-row">
+  <div class="tab active" data-tab="garage"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</div>
+  <div class="tab" data-tab="skills"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Skills</div>
+  <div class="tab" data-tab="experience"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Experience</div>
+  <div class="tab" data-tab="trips"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Trips</div>
+  <div class="tab" data-tab="groups"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Groups</div>
+  <div class="tab" data-tab="map"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Trail Map</div>
+</div>
+
+<div class="layout">
+<div class="tab-content">
+
+<!-- GARAGE -->
+<div class="tab-panel active" id="tab-garage">
+  <div class="garage-grid">
+    <div class="rig-card">
+      <div class="rig-img"><div style="width:100%;height:100%;background:var(--sand2);display:flex;align-items:center;justify-content:center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B5AD" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><span class="rig-badge sale">FOR SALE</span></div>
+      <div class="rig-body">
+        <div class="rig-name">2021 Ford F-150 F-Series</div>
+        <div class="rig-meta">Herriman, UT · Listed 3/27/2026</div>
+        <div class="rig-tags"><span class="rig-tag">TV</span><span class="rig-tag">GENERATOR</span><span class="rig-tag">SOLAR</span><span class="rig-tag">BIKE STORAGE</span><span style="font-family:var(--mono);font-size:9px;color:var(--body)">+8</span></div>
+        <div class="rig-stats">
+          <div class="rig-stat"><div class="rig-stat-val">65,000</div><div class="rig-stat-lbl">Miles</div></div>
+          <div class="rig-stat"><div class="rig-stat-val">12</div><div class="rig-stat-lbl">Mods</div></div>
+          <div class="rig-stat"><div class="rig-stat-val">0</div><div class="rig-stat-lbl">Trips</div></div>
+        </div>
+        <div class="rig-actions"><a href="#" class="rig-action primary">View listing</a><a href="#" class="rig-action secondary">Full build →</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="upcoming-section">
+    <div class="sec-title">Upcoming trips</div>
+    <div class="upcoming-card">
+      <div class="upcoming-date"><div class="upcoming-month">MAY</div><div class="upcoming-day">15</div></div>
+      <div class="upcoming-info"><div class="upcoming-name">May Trail Run</div><div class="upcoming-group">Yates Crew</div></div>
+      <a href="#" class="btn btn-outline" style="padding:6px 14px;font-size:11px">View trip</a>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="tab-panel" id="tab-skills">
+  <div class="skills-list">
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(61,107,79,.06)">🪢</div><div class="skill-info"><div class="skill-name">Recovery</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(61,107,79,.06)">🏥</div><div class="skill-info"><div class="skill-name">Medical</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(61,107,79,.06)">📡</div><div class="skill-info"><div class="skill-name">Communications</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(61,107,79,.06)">🧭</div><div class="skill-info"><div class="skill-name">Navigation</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(61,107,79,.06)">🔧</div><div class="skill-info"><div class="skill-name">Mechanical</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(154,123,16,.06)">🍳</div><div class="skill-info"><div class="skill-name">Cooking</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-off" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+    <div class="skill-row"><div class="skill-icon-box" style="background:rgba(154,123,16,.06)">📷</div><div class="skill-info"><div class="skill-name">Photography</div><div class="skill-vouch-info">No vouches yet</div></div><div class="skill-stars"><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon class="star-on" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><button class="vouch-btn"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vouch</button></div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="tab-panel" id="tab-experience">
+  <div class="sec-title">Completed trip assignments</div>
+  <div class="exp-list">
+    <div class="exp-row"><div style="text-align:center;flex-shrink:0;width:50px"><div style="font-family:var(--mono);font-size:9px;color:var(--rust-on-light)">APR</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--forest)">18</div></div><div class="exp-trip">Rubicon Trail</div><span class="exp-role lead">Trail lead</span><span class="exp-vouches">2 vouches</span><span class="exp-date">3 days</span></div>
+    <div class="exp-row"><div style="text-align:center;flex-shrink:0;width:50px"><div style="font-family:var(--mono);font-size:9px;color:var(--rust-on-light)">MAR</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--forest)">28</div></div><div class="exp-trip">Engineer Pass &amp; Imogene</div><span class="exp-role sweep">Sweep</span><span class="exp-vouches">1 vouch</span><span class="exp-date">3 days</span></div>
+    <div class="exp-row"><div style="text-align:center;flex-shrink:0;width:50px"><div style="font-family:var(--mono);font-size:9px;color:var(--rust-on-light)">FEB</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--forest)">14</div></div><div class="exp-trip">White Rim Road</div><span class="exp-role medical">Medical</span><span class="exp-date">3 days</span></div>
+    <div class="exp-row"><div style="text-align:center;flex-shrink:0;width:50px"><div style="font-family:var(--mono);font-size:9px;color:var(--rust-on-light)">JAN</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--forest)">10</div></div><div class="exp-trip">Death Valley Crossing</div><span class="exp-role attendee">Attendee</span><span class="exp-vouches">3 vouches</span><span class="exp-date">5 days</span></div>
+  </div>
+</div>
+
+<!-- TRIPS -->
+<div class="tab-panel" id="tab-trips">
+  <div class="trips-grid">
+    <div class="trip-card"><div class="trip-img"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400&q=70" alt=""><span class="trip-diff extreme">Extreme</span></div><div class="trip-body"><div class="trip-title">Fun Trip w/ Coby</div><div class="trip-meta">May 1, 2026 · 1 day</div><div class="trip-route"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Shawn Yates</div></div></div>
+    <div class="trip-card"><div class="trip-img"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70" alt=""><span class="trip-diff moderate">Moderate</span></div><div class="trip-body"><div class="trip-title">Forest Lake</div><div class="trip-meta">Apr 30, 2026 · 1 day</div><div class="trip-route"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Shawn Yates</div></div></div>
+    <div class="trip-card"><div class="trip-img"><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=70" alt=""><span class="trip-diff easy">Easy</span></div><div class="trip-body"><div class="trip-title">Test trip — Provo Canyon</div><div class="trip-meta">Apr 28, 2026 · 1 day</div><div class="trip-route"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Provo Canyon to Spanish Fork — Provo, UT</div></div></div>
+  </div>
+</div>
+
+<!-- GROUPS -->
+<div class="tab-panel" id="tab-groups">
+  <div class="groups-grid">
+    <div class="group-card">
+      <div class="group-cover"><div class="group-icon">👥</div></div>
+      <div class="group-body">
+        <div class="group-name">Yates Crew</div>
+        <div class="group-loc">📍 Utah</div>
+        <div class="group-desc">This is a group for just the Yates Family</div>
+        <div class="group-members"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>1 member</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRAIL MAP -->
+<div class="tab-panel" id="tab-map">
+  <div class="map-wrap">
+    <div class="map-head"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg><div class="map-head-title">Trail experience</div><div class="map-head-count">3 logged locations</div></div>
+    <div class="map-placeholder"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Map would render here (Google Maps / Mapbox)</div>
+    <div class="map-trails">
+      <div class="map-trail"><div class="map-trail-dot" style="background:var(--rust)"></div>Provo Canyon to Spanish Fork<span class="map-trail-meta">Apr 28 · Easy</span></div>
+      <div class="map-trail"><div class="map-trail-dot" style="background:var(--sage)"></div>Forest Lake<span class="map-trail-meta">Apr 30 · Moderate</span></div>
+      <div class="map-trail"><div class="map-trail-dot" style="background:var(--gold)"></div>Fun Trip w/ Coby<span class="map-trail-meta">May 1 · Extreme</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- RECENT ACTIVITY SIDEBAR -->
+<div class="activity">
+  <div class="activity-title">Recent activity</div>
+  <div class="act-item"><div class="act-icon" style="background:rgba(196,91,40,.06)">📖</div><div><div class="act-text">Published <strong>"Fun Trip w/ Coby"</strong></div><div class="act-time">12d ago</div></div></div>
+  <div class="act-item"><div class="act-icon" style="background:rgba(196,91,40,.06)">📖</div><div><div class="act-text">Published <strong>"Forest Lake"</strong></div><div class="act-time">12d ago</div></div></div>
+  <div class="act-item"><div class="act-icon" style="background:rgba(61,107,79,.06)">📋</div><div><div class="act-text">RSVP'd to <strong>"May Trail Run"</strong></div><div class="act-time">14d ago</div></div></div>
+  <div class="act-item"><div class="act-icon" style="background:rgba(196,91,40,.06)">📖</div><div><div class="act-text">Published <strong>"Test trip — Provo Canyon weekend"</strong></div><div class="act-time">15d ago</div></div></div>
+  <div class="act-item"><div class="act-icon" style="background:rgba(154,123,16,.06)">🏷️</div><div><div class="act-text">Listed <strong>2021 FORD F-150</strong></div><div class="act-time">3/27/2026</div></div></div>
+</div>
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

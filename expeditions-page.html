@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expeditions — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-light:#4A7D5E;--sage-on-light:#3D6B4F;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--text2:#B8B5AD;--text3:#8A877F;--text4:#9A9893;--body:#6E6B65;--muted:#5E5C56;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+
+/* LAYOUT */
+.page-shell{padding-top:64px;min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+
+/* SIDEBAR */
+.sidebar{background:var(--white);border-right:1px solid var(--bdr);padding:24px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar-head{padding:0 20px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;transition:all .12s;border-left:3px solid transparent}
+.sidebar a:hover{background:var(--sand);color:var(--forest)}
+.sidebar a.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.sidebar a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.5}
+.sidebar a.active svg{opacity:1}
+.sidebar-div{height:1px;background:var(--bdr);margin:12px 20px}
+
+/* MOBILE MENU */
+.mobile-menu-btn{display:none;width:36px;height:36px;border-radius:8px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mobile-menu-btn svg{width:18px;height:18px;stroke:var(--forest);fill:none;stroke-width:2}
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(15,26,19,.5);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.sidebar-overlay.open{display:block;opacity:1}
+.sidebar-drawer{position:fixed;top:0;left:-280px;bottom:0;width:280px;z-index:160;background:var(--white);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(15,26,19,.15);padding:20px 0;overflow-y:auto}
+.sidebar-drawer.open{transform:translateX(280px)}
+.sidebar-drawer .drawer-close{padding:10px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+.sidebar-drawer .drawer-close span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.sidebar-drawer .drawer-close button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sidebar-drawer .drawer-close button svg{width:16px;height:16px;stroke:var(--forest);fill:none;stroke-width:2}
+
+/* CONTENT */
+.content{padding:clamp(20px,3vw,32px) clamp(16px,4vw,48px);max-width:960px}
+
+/* HEADER */
+.pg-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.pg-head h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:1px;color:var(--forest);line-height:1}
+.pg-head h1 em{font-style:normal;color:var(--rust-on-light)}
+.pg-head p{font-size:14px;color:var(--body);margin-top:4px}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}.btn-outline:hover{border-color:var(--sage);color:var(--sage)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
+.stat{padding:16px;background:var(--white);border:1px solid var(--bdr);border-radius:10px;text-align:center;position:relative;overflow:hidden}
+.stat-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--body);margin-top:4px}
+
+/* FILTERS */
+.filters{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.pill{padding:6px 14px;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--bdr2);background:var(--white);color:var(--body);transition:all .15s}
+.pill:hover{border-color:var(--sage);color:var(--sage)}
+.pill.active{background:var(--forest);border-color:var(--forest);color:var(--text)}
+.filter-right{margin-left:auto;display:flex;gap:6px}
+
+/* SECTION LABEL */
+.sec-label{display:flex;align-items:center;gap:8px;margin:28px 0 14px}
+.sec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sec-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase}
+.sec-count{font-family:var(--mono);font-size:10px;color:var(--body)}
+.sec-line{flex:1;height:1px;background:var(--bdr)}
+
+/* UPCOMING TRIP CARD */
+.up-card{background:var(--white);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:12px;transition:all .2s;cursor:pointer}
+.up-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04)}
+.up-card-inner{display:flex}
+.up-card-date{width:80px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid var(--bdr);flex-shrink:0}
+.up-card-date-month{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--rust-on-light)}
+.up-card-date-day{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:var(--forest)}
+.up-card-date-year{font-family:var(--mono);font-size:9px;color:var(--body)}
+.up-card-body{flex:1;padding:16px 20px;display:flex;flex-direction:column}
+.up-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.up-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.up-card-sub{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:2px}
+.up-badge{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:50px;flex-shrink:0;white-space:nowrap}
+.up-badge.upcoming{background:rgba(61,107,79,.06);color:var(--sage-on-light);border:1px solid rgba(61,107,79,.12)}
+.up-badge.lead{background:rgba(196,91,40,.06);color:var(--rust-on-light);border:1px solid rgba(196,91,40,.12)}
+.up-card-details{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.up-detail{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--body)}
+.up-detail strong{color:var(--forest);font-weight:500}
+.up-detail svg{width:13px;height:13px;stroke:var(--sage);fill:none;stroke-width:2;flex-shrink:0}
+.up-card-footer{display:flex;align-items:center;gap:12px;padding-top:10px;border-top:1px solid var(--bdr)}
+.up-avas{display:flex}
+.up-ava{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--white);margin-left:-4px;border:2px solid var(--white);flex-shrink:0}
+.up-ava:first-child{margin-left:0}
+.up-ava-more{font-family:var(--mono);font-size:10px;color:var(--body);margin-left:4px}
+.up-club{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-left:auto;display:flex;align-items:center;gap:4px}
+
+/* COMPLETED TRIP CARD */
+.trip-card{background:var(--white);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:12px;transition:all .2s;cursor:pointer}
+.trip-card:hover{border-color:var(--bdr2);box-shadow:0 4px 16px rgba(28,43,31,.04)}
+.trip-card-inner{display:flex}
+.trip-card-map{width:160px;background:var(--sand2);flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.trip-card-map img{width:100%;height:100%;object-fit:cover}
+.trip-card-map .map-placeholder{font-size:32px;opacity:.3}
+.trip-card-map .trip-photo-count{position:absolute;bottom:8px;right:8px;font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(0,0,0,.5);border-radius:4px;color:rgba(255,255,255,.8)}
+.trip-card-body{flex:1;padding:16px 20px;display:flex;flex-direction:column}
+.trip-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.trip-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.trip-card-dates{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:2px}
+.trip-role{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:50px;flex-shrink:0;white-space:nowrap}
+.trip-role.lead{background:rgba(196,91,40,.06);color:var(--rust-on-light);border:1px solid rgba(196,91,40,.12)}
+.trip-role.sweep{background:rgba(154,123,16,.06);color:var(--gold-on-light);border:1px solid rgba(154,123,16,.12)}
+.trip-role.medical{background:rgba(61,107,79,.06);color:var(--sage-on-light);border:1px solid rgba(61,107,79,.12)}
+.trip-role.attendee{background:var(--sand);color:var(--body);border:1px solid var(--bdr)}
+.trip-card-meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;font-family:var(--mono);font-size:10px;color:var(--body)}
+.trip-card-meta strong{color:var(--forest);font-weight:500}
+.trip-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.trip-tag{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 8px;border-radius:3px;background:var(--sand);color:var(--body)}
+.trip-card-footer{display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--bdr);margin-top:auto}
+.trip-avas{display:flex}
+.trip-avas .up-ava{width:22px;height:22px;font-size:7px}
+.trip-journal{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-left:auto;text-decoration:none;display:flex;align-items:center;gap:4px}
+.trip-journal:hover{text-decoration:underline}
+.trip-vouches{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);display:flex;align-items:center;gap:4px}
+
+/* DIFFICULTY */
+.diff{display:inline-flex;gap:2px}
+.diff-dot{width:6px;height:6px;border-radius:50%}
+.diff-dot.on{background:var(--rust)}.diff-dot.off{background:var(--sand2)}
+
+/* EMPTY STATE */
+.empty{padding:40px;text-align:center;background:var(--white);border:1px dashed var(--bdr2);border-radius:14px}
+.empty p{font-size:14px;color:var(--body);margin-bottom:12px}
+
+/* FADE */
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .page-shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .mobile-menu-btn{display:flex}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .up-card-inner{flex-direction:column}
+  .up-card-date{width:100%;flex-direction:row;gap:8px;padding:10px 16px;border-right:none;border-bottom:1px solid var(--bdr)}
+  .up-card-date-day{font-size:24px}
+  .trip-card-inner{flex-direction:column}
+  .trip-card-map{width:100%;height:140px}
+}
+@media(max-width:600px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .pg-head{flex-direction:column;align-items:flex-start}
+  .filter-right{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-links"><a href="#">Classifieds</a><a href="#">Gear</a><a href="#">Trips</a><a href="#">Community</a><a href="#">Garage</a></div>
+  <div class="nav-right">
+    <button class="mobile-menu-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="nav-ava">MR</div>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeDrawer()"></div>
+<div class="sidebar-drawer" id="sidebarDrawer">
+  <div class="drawer-close"><span>Account</span><button onclick="closeDrawer()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+  <a href="#"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+  <a href="#"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+  <div style="height:1px;background:var(--bdr);margin:12px 20px"></div>
+  <a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+  <div style="height:1px;background:var(--bdr);margin:12px 20px"></div>
+  <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9"/></svg>Settings</a>
+</div>
+
+<div class="page-shell">
+
+  <!-- SIDEBAR (desktop) -->
+  <div class="sidebar">
+    <div class="sidebar-head">Account</div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    <a href="#"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+    <a href="#"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+    <div class="sidebar-div"></div>
+    <a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9"/></svg>Settings</a>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="pg-head fade-up">
+      <div>
+        <h1>MY <em>EXPEDITIONS</em></h1>
+        <p>Every trip you've joined, led, or completed — your overlanding trail history.</p>
+      </div>
+      <a href="#" class="btn btn-rust">+ Plan a Trip</a>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats fade-up">
+      <div class="stat"><div class="stat-accent" style="background:var(--sage)"></div><div class="stat-val" style="color:var(--sage-on-light)">8</div><div class="stat-lbl">Trips total</div></div>
+      <div class="stat"><div class="stat-accent" style="background:var(--rust)"></div><div class="stat-val" style="color:var(--rust-on-light)">2</div><div class="stat-lbl">As trip lead</div></div>
+      <div class="stat"><div class="stat-accent" style="background:var(--gold)"></div><div class="stat-val" style="color:var(--gold-on-light)">2,840</div><div class="stat-lbl">Trail miles</div></div>
+      <div class="stat"><div class="stat-accent" style="background:var(--forest)"></div><div class="stat-val" style="color:var(--forest)">24</div><div class="stat-lbl">Days on trail</div></div>
+      <div class="stat"><div class="stat-accent" style="background:var(--text3)"></div><div class="stat-val" style="color:var(--body)">5</div><div class="stat-lbl">States visited</div></div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters fade-up">
+      <div class="pill active">All (8)</div>
+      <div class="pill">Upcoming (2)</div>
+      <div class="pill">Completed (5)</div>
+      <div class="pill">Cancelled (1)</div>
+      <div class="filter-right">
+        <div class="pill" style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filter</div>
+      </div>
+    </div>
+
+    <!-- UPCOMING -->
+    <div class="sec-label fade-up">
+      <div class="sec-dot" style="background:var(--sage)"></div>
+      <div class="sec-text" style="color:var(--sage-on-light)">Upcoming</div>
+      <div class="sec-count">2 trips</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="up-card fade-up">
+      <div class="up-card-inner">
+        <div class="up-card-date">
+          <div class="up-card-date-month">MAY</div>
+          <div class="up-card-date-day">20</div>
+          <div class="up-card-date-year">2026</div>
+        </div>
+        <div class="up-card-body">
+          <div class="up-card-top">
+            <div><div class="up-card-title">Mojave Road Run</div><div class="up-card-sub">Kane Creek to Lockhart Basin · 4 days</div></div>
+            <div style="display:flex;gap:6px"><span class="up-badge upcoming">In 6 days</span><span class="up-badge lead">Trail lead</span></div>
+          </div>
+          <div class="up-card-details">
+            <div class="up-detail"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Moab, UT</div>
+            <div class="up-detail"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><strong>14</strong> going · <strong>3</strong> waitlist</div>
+            <div class="up-detail"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/></svg>Difficulty: <span class="diff"><span class="diff-dot on"></span><span class="diff-dot on"></span><span class="diff-dot on"></span><span class="diff-dot on"></span><span class="diff-dot off"></span></span></div>
+          </div>
+          <div class="up-card-footer">
+            <div class="up-avas">
+              <div class="up-ava" style="background:var(--sage)">JK</div>
+              <div class="up-ava" style="background:var(--rust)">MK</div>
+              <div class="up-ava" style="background:#8B7355">SR</div>
+              <div class="up-ava" style="background:var(--forest3)">DW</div>
+            </div>
+            <span class="up-ava-more">+10</span>
+            <span class="up-club"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Wasatch Crawlers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="up-card fade-up">
+      <div class="up-card-inner">
+        <div class="up-card-date">
+          <div class="up-card-date-month">JUN</div>
+          <div class="up-card-date-day">6</div>
+          <div class="up-card-date-year">2026</div>
+        </div>
+        <div class="up-card-body">
+          <div class="up-card-top">
+            <div><div class="up-card-title">Holy Cross City Trail</div><div class="up-card-sub">Day trip · Minturn, CO</div></div>
+            <span class="up-badge upcoming">In 23 days</span>
+          </div>
+          <div class="up-card-details">
+            <div class="up-detail"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Minturn, CO</div>
+            <div class="up-detail"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><strong>4</strong>/6 spots filled</div>
+            <div class="up-detail">Difficulty: <span class="diff"><span class="diff-dot on"></span><span class="diff-dot on"></span><span class="diff-dot on"></span><span class="diff-dot off"></span><span class="diff-dot off"></span></span></div>
+          </div>
+          <div class="up-card-footer">
+            <div class="up-avas">
+              <div class="up-ava" style="background:var(--sage)">RP</div>
+              <div class="up-ava" style="background:var(--rust)">LM</div>
+              <div class="up-ava" style="background:var(--forest3)">CT</div>
+            </div>
+            <span class="up-ava-more">+1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLETED -->
+    <div class="sec-label fade-up">
+      <div class="sec-dot" style="background:var(--body)"></div>
+      <div class="sec-text" style="color:var(--body)">Completed</div>
+      <div class="sec-count">5 trips</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="trip-card fade-up">
+      <div class="trip-card-inner">
+        <div class="trip-card-map"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400&q=70" alt="Rubicon Trail"><span class="trip-photo-count">48 photos</span></div>
+        <div class="trip-card-body">
+          <div class="trip-card-top">
+            <div><div class="trip-card-title">Rubicon Trail</div><div class="trip-card-dates">Apr 18–20 · 3 days · Lake Tahoe, CA</div></div>
+            <span class="trip-role lead">Trail lead</span>
+          </div>
+          <div class="trip-card-meta"><strong>8</strong> attendees · <strong>42</strong> trail miles · <strong>12</strong> waypoints</div>
+          <div class="trip-tags"><span class="trip-tag">HARD</span><span class="trip-tag">ROCK CRAWL</span><span class="trip-tag">4Runner</span></div>
+          <div class="trip-card-footer">
+            <div class="trip-avas up-avas">
+              <div class="up-ava" style="background:var(--sage)">JK</div><div class="up-ava" style="background:var(--rust)">MK</div><div class="up-ava" style="background:#8B7355">SR</div>
+            </div>
+            <span class="up-ava-more">+5</span>
+            <span class="trip-vouches"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>2 vouches earned</span>
+            <a href="#" class="trip-journal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>View journal</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trip-card fade-up">
+      <div class="trip-card-inner">
+        <div class="trip-card-map"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70" alt="Ouray"><span class="trip-photo-count">32 photos</span></div>
+        <div class="trip-card-body">
+          <div class="trip-card-top">
+            <div><div class="trip-card-title">Engineer Pass &amp; Imogene</div><div class="trip-card-dates">Mar 28–30 · 3 days · Ouray, CO</div></div>
+            <span class="trip-role sweep">Sweep</span>
+          </div>
+          <div class="trip-card-meta"><strong>12</strong> attendees · <strong>68</strong> trail miles · <strong>8</strong> waypoints</div>
+          <div class="trip-tags"><span class="trip-tag">MODERATE</span><span class="trip-tag">ALPINE</span><span class="trip-tag">SCENIC</span></div>
+          <div class="trip-card-footer">
+            <div class="trip-avas up-avas">
+              <div class="up-ava" style="background:var(--forest3)">DW</div><div class="up-ava" style="background:var(--sage)">RP</div>
+            </div>
+            <span class="up-ava-more">+10</span>
+            <span class="trip-vouches"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>1 vouch earned</span>
+            <a href="#" class="trip-journal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>View journal</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trip-card fade-up">
+      <div class="trip-card-inner">
+        <div class="trip-card-map"><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=70" alt="White Rim"><span class="trip-photo-count">24 photos</span></div>
+        <div class="trip-card-body">
+          <div class="trip-card-top">
+            <div><div class="trip-card-title">White Rim Road</div><div class="trip-card-dates">Feb 14–16 · 3 days · Moab, UT</div></div>
+            <span class="trip-role medical">Medical</span>
+          </div>
+          <div class="trip-card-meta"><strong>10</strong> attendees · <strong>100</strong> trail miles · <strong>6</strong> waypoints</div>
+          <div class="trip-tags"><span class="trip-tag">MODERATE</span><span class="trip-tag">DESERT</span><span class="trip-tag">SCENIC</span></div>
+          <div class="trip-card-footer">
+            <div class="trip-avas up-avas">
+              <div class="up-ava" style="background:var(--sage)">JK</div><div class="up-ava" style="background:#8B7355">SR</div>
+            </div>
+            <span class="up-ava-more">+8</span>
+            <a href="#" class="trip-journal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>View journal</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trip-card fade-up">
+      <div class="trip-card-inner">
+        <div class="trip-card-map"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Death Valley"><span class="trip-photo-count">18 photos</span></div>
+        <div class="trip-card-body">
+          <div class="trip-card-top">
+            <div><div class="trip-card-title">Death Valley Crossing</div><div class="trip-card-dates">Jan 10–14 · 5 days · Death Valley, CA</div></div>
+            <span class="trip-role attendee">Attendee</span>
+          </div>
+          <div class="trip-card-meta"><strong>6</strong> attendees · <strong>220</strong> trail miles · <strong>18</strong> waypoints</div>
+          <div class="trip-tags"><span class="trip-tag">HARD</span><span class="trip-tag">DESERT</span><span class="trip-tag">REMOTE</span></div>
+          <div class="trip-card-footer">
+            <div class="trip-avas up-avas">
+              <div class="up-ava" style="background:var(--rust)">MK</div><div class="up-ava" style="background:var(--forest3)">DW</div>
+            </div>
+            <span class="up-ava-more">+4</span>
+            <span class="trip-vouches"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>3 vouches earned</span>
+            <a href="#" class="trip-journal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>View journal</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trip-card fade-up" style="opacity:.5">
+      <div class="trip-card-inner">
+        <div class="trip-card-map" style="background:var(--sand)"><div class="map-placeholder">✕</div></div>
+        <div class="trip-card-body">
+          <div class="trip-card-top">
+            <div><div class="trip-card-title" style="color:var(--body)">Copper Canyon Expedition</div><div class="trip-card-dates">Dec 8–12 · Cancelled by organizer</div></div>
+            <span class="trip-role attendee" style="background:rgba(196,91,40,.06);color:var(--rust-on-light);border-color:rgba(196,91,40,.12)">Cancelled</span>
+          </div>
+          <div class="trip-card-meta"><span style="color:var(--text3)">This trip was cancelled due to weather conditions.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),obs.unobserve(e.target))})},{threshold:.08});
+document.querySelectorAll('.fade-up').forEach(e=>obs.observe(e));
+document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}));
+function openDrawer(){document.getElementById('sidebarOverlay').classList.add('open');document.getElementById('sidebarDrawer').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('sidebarOverlay').classList.remove('open');document.getElementById('sidebarDrawer').classList.remove('open');document.body.style.overflow=''}
+</script>
+</body>
+</html>

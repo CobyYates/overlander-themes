@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Settings — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-on-light:#3D6B4F;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+.mobile-menu-btn{display:none;width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mobile-menu-btn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2}
+
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(15,26,19,.5);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.sidebar-overlay.open{display:block;opacity:1}
+.sidebar-drawer{position:fixed;top:0;left:-280px;bottom:0;width:280px;z-index:160;background:var(--white);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(15,26,19,.15);padding:20px 0;overflow-y:auto}
+.sidebar-drawer.open{transform:translateX(280px)}
+.drawer-close{padding:10px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+.drawer-close span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.drawer-close button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.drawer-close button svg{width:16px;height:16px;stroke:var(--forest);fill:none;stroke-width:2}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;border-left:3px solid transparent}
+.drawer-link.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.drawer-link svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;opacity:.5}
+.drawer-link.active svg{opacity:1}
+
+.page-shell{padding-top:64px;min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+.sidebar{background:var(--white);border-right:1px solid var(--bdr);padding:24px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar-head{padding:0 20px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;transition:all .12s;border-left:3px solid transparent}
+.sidebar a:hover{background:var(--sand);color:var(--forest)}
+.sidebar a.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.sidebar a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.5}
+.sidebar a.active svg{opacity:1}
+.sidebar-div{height:1px;background:var(--bdr);margin:12px 20px}
+
+.content{padding:clamp(20px,3vw,32px) clamp(16px,4vw,48px);max-width:780px}
+
+/* SHARED */
+.pg-head{margin-bottom:28px}
+.pg-head h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:1px;color:var(--forest);line-height:1}
+.pg-head h1 em{font-style:normal;color:var(--rust-on-light)}
+.pg-head p{font-size:14px;color:var(--body);margin-top:4px}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}.btn-outline:hover{border-color:var(--sage);color:var(--sage)}
+.btn-sm{padding:7px 14px;font-size:11px}
+
+/* SETTINGS CARDS */
+.s-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.s-card-head{padding:14px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.s-card-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-card-icon svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.s-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest)}
+.s-card-action{margin-left:auto}
+.s-card-body{padding:20px}
+
+/* PROFILE BANNER */
+.profile-banner{position:relative;border-radius:12px;overflow:hidden;margin-bottom:16px;background:var(--white);border:1px solid var(--bdr)}
+.profile-cover{height:140px;background:linear-gradient(135deg,var(--forest) 0%,var(--forest3) 50%,var(--sage) 100%);position:relative}
+.profile-cover-edit{position:absolute;bottom:10px;right:10px;padding:5px 12px;border-radius:6px;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.8);cursor:pointer;border:none;display:flex;align-items:center;gap:4px}
+.profile-cover-edit svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.profile-lower{padding:0 24px 20px;display:flex;align-items:flex-end;gap:16px;margin-top:-36px;position:relative}
+.profile-ava-wrap{position:relative;flex-shrink:0}
+.profile-ava{width:80px;height:80px;border-radius:14px;border:3px solid var(--white);box-shadow:0 2px 8px rgba(28,43,31,.1);overflow:hidden;background:var(--sand2)}
+.profile-ava img{width:100%;height:100%;object-fit:cover}
+.profile-ava-edit{position:absolute;bottom:-2px;right:-2px;width:26px;height:26px;border-radius:6px;background:var(--rust);border:2px solid var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.profile-ava-edit svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2}
+.profile-info{flex:1;padding-top:40px}
+.profile-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.profile-handle{font-family:var(--mono);font-size:11px;color:var(--body)}
+.profile-view{margin-left:auto;padding-top:40px}
+
+/* FIELD ROWS */
+.f-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--bdr)}
+.f-row:last-child{border-bottom:none}
+.f-label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.5px;color:var(--body);width:140px;flex-shrink:0}
+.f-value{flex:1;font-size:14px;color:var(--forest);font-weight:500}
+.f-value.empty{color:var(--text3);font-weight:400;font-style:italic}
+.f-value.mono{font-family:var(--mono);font-size:12px}
+.f-edit{padding:5px 12px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--body);cursor:pointer;flex-shrink:0;transition:all .15s}
+.f-edit:hover{border-color:var(--sage);color:var(--sage)}
+.f-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 8px;border-radius:3px;flex-shrink:0}
+.f-badge.verified{background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.f-badge.unverified{background:rgba(196,91,40,.06);color:var(--rust-on-light)}
+
+/* FORM FIELDS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field{display:flex;flex-direction:column;gap:4px}
+.form-field.full{grid-column:1/-1}
+.form-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--body)}
+.form-input{padding:10px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow',sans-serif;font-size:14px;color:var(--forest);transition:border-color .15s}
+.form-input:focus{outline:none;border-color:var(--sage)}
+.form-input::placeholder{color:var(--text3)}
+textarea.form-input{resize:vertical;min-height:80px;font-family:'Barlow',sans-serif}
+.form-hint{font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* SOCIAL LINKS */
+.social-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.social-row:last-child{border-bottom:none}
+.social-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.social-name{font-size:13px;font-weight:600;color:var(--forest);width:100px;flex-shrink:0}
+.social-input{flex:1;padding:7px 12px;border-radius:6px;border:1px solid var(--bdr2);background:var(--sand);font-family:var(--mono);font-size:11px;color:var(--forest)}
+.social-input:focus{outline:none;border-color:var(--sage);background:var(--white)}
+.social-input::placeholder{color:var(--text3)}
+
+/* MEMBER SINCE / READ-ONLY */
+.ro-row{display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--bdr)}
+.ro-row:last-child{border-bottom:none}
+.ro-label{font-family:var(--mono);font-size:11px;color:var(--body);width:140px;flex-shrink:0}
+.ro-value{font-family:var(--mono);font-size:12px;color:var(--forest)}
+
+/* NOTIFICATION TOGGLES */
+.toggle-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--bdr)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1}
+.toggle-title{font-size:14px;font-weight:600;color:var(--forest)}
+.toggle-desc{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:1px}
+.toggle{width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--sage)}
+.toggle.off{background:var(--sand2)}
+.toggle-knob{position:absolute;top:2px;width:18px;height:18px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.15);transition:left .2s}
+.toggle.on .toggle-knob{left:20px}
+.toggle.off .toggle-knob{left:2px}
+
+/* DANGER ZONE */
+.danger{background:var(--white);border:1px solid rgba(196,91,40,.12);border-radius:12px;margin-top:24px;overflow:hidden}
+.danger-head{padding:14px 20px;border-bottom:1px solid rgba(196,91,40,.08);display:flex;align-items:center;gap:8px}
+.danger-head svg{width:16px;height:16px;stroke:var(--rust-on-light);fill:none;stroke-width:2}
+.danger-head span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rust-on-light)}
+.danger-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--bdr)}
+.danger-row:last-child{border-bottom:none}
+.danger-info{flex:1}
+.danger-title{font-size:14px;font-weight:600;color:var(--forest)}
+.danger-desc{font-family:var(--mono);font-size:10px;color:var(--body);margin-top:1px}
+.danger-btn{padding:7px 14px;border-radius:6px;border:1px solid rgba(196,91,40,.2);background:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--rust-on-light);cursor:pointer;flex-shrink:0;transition:all .15s}
+.danger-btn:hover{background:rgba(196,91,40,.06)}
+
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}.fade-up.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){.nav-links{display:none}.page-shell{grid-template-columns:1fr}.sidebar{display:none}.mobile-menu-btn{display:flex}.form-grid{grid-template-columns:1fr}.f-label{width:100px}.profile-lower{padding:0 16px 16px}}
+@media(max-width:600px){.f-row{flex-wrap:wrap}.f-label{width:100%}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-links"><a href="#">Classifieds</a><a href="#">Gear</a><a href="#">Trips</a><a href="#">Community</a><a href="#">Garage</a></div>
+  <div class="nav-right"><button class="mobile-menu-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button><div class="nav-ava">CY</div></div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeDrawer()"></div>
+<div class="sidebar-drawer" id="sidebarDrawer">
+  <div class="drawer-close"><span>Account</span><button onclick="closeDrawer()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <a href="#" class="drawer-link active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+  <div style="height:1px;background:var(--bdr);margin:12px 20px"></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+  <div style="height:1px;background:var(--bdr);margin:12px 20px"></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</a>
+</div>
+
+<div class="page-shell">
+  <div class="sidebar">
+    <div class="sidebar-head">Account</div>
+    <a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    <a href="#"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+    <a href="#"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</a>
+  </div>
+
+  <div class="content">
+
+    <div class="pg-head fade-up">
+      <h1>ACCOUNT <em>SETTINGS</em></h1>
+      <p>Manage your profile, contact info, notifications, and privacy.</p>
+    </div>
+
+    <!-- PROFILE BANNER -->
+    <div class="profile-banner fade-up">
+      <div class="profile-cover">
+        <button class="profile-cover-edit"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Edit cover</button>
+      </div>
+      <div class="profile-lower">
+        <div class="profile-ava-wrap">
+          <div class="profile-ava"><img src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=200&q=80" alt="Profile"></div>
+          <div class="profile-ava-edit"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">Coby Yates</div>
+          <div class="profile-handle">@cobyadmin · Grantsville, UT</div>
+        </div>
+        <div class="profile-view"><a href="#" class="btn btn-outline btn-sm">View public profile</a></div>
+      </div>
+    </div>
+
+    <!-- PERSONAL INFO -->
+    <div class="s-card fade-up">
+      <div class="s-card-head">
+        <div class="s-card-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="s-card-title">Personal information</div>
+      </div>
+      <div class="f-row"><span class="f-label">Name</span><span class="f-value">Coby</span><button class="f-edit">Edit</button></div>
+      <div class="f-row"><span class="f-label">Screen name</span><span class="f-value">Coby Admin</span><button class="f-edit">Edit</button></div>
+      <div class="f-row"><span class="f-label">Email</span><span class="f-value mono">cobylyates@gmail.com</span><span class="f-badge verified">✓ Verified</span><button class="f-edit">Edit</button></div>
+      <div class="f-row"><span class="f-label">Location</span><span class="f-value">Grantsville, UT 84029</span><button class="f-edit">Edit</button></div>
+    </div>
+
+    <!-- BIO & SOCIAL -->
+    <div class="s-card fade-up">
+      <div class="s-card-head">
+        <div class="s-card-icon" style="background:rgba(196,91,40,.06);color:var(--rust-on-light)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+        <div class="s-card-title">Bio &amp; social links</div>
+      </div>
+      <div class="s-card-body">
+        <div class="form-field full" style="margin-bottom:16px">
+          <span class="form-label">Bio</span>
+          <textarea class="form-input" placeholder="Tell the community about yourself — what you drive, where you wheel, what you're building..."></textarea>
+          <span class="form-hint">Visible on your public profile. 300 characters max.</span>
+        </div>
+        <span class="form-label" style="display:block;margin-bottom:10px">Social links</span>
+        <div class="social-row"><div class="social-icon" style="background:var(--sand)">📸</div><span class="social-name">Instagram</span><input class="social-input" placeholder="@username" type="text"></div>
+        <div class="social-row"><div class="social-icon" style="background:var(--sand)">🎥</div><span class="social-name">YouTube</span><input class="social-input" placeholder="Channel URL" type="text"></div>
+        <div class="social-row"><div class="social-icon" style="background:var(--sand)">📘</div><span class="social-name">Facebook</span><input class="social-input" placeholder="Profile URL" type="text"></div>
+        <div class="social-row"><div class="social-icon" style="background:var(--sand)">🌐</div><span class="social-name">Website</span><input class="social-input" placeholder="https://" type="text"></div>
+        <div style="margin-top:14px;display:flex;justify-content:flex-end"><button class="btn btn-rust btn-sm">Save changes</button></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT INFO (read-only) -->
+    <div class="s-card fade-up">
+      <div class="s-card-head">
+        <div class="s-card-icon" style="background:var(--sand);color:var(--body)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="s-card-title">Account info</div>
+      </div>
+      <div class="ro-row"><span class="ro-label">Member since</span><span class="ro-value">March 6, 2026</span></div>
+      <div class="ro-row"><span class="ro-label">Last login</span><span class="ro-value">May 14, 2026</span></div>
+      <div class="ro-row"><span class="ro-label">Account type</span><span class="ro-value">Free</span><span class="f-badge" style="background:rgba(196,91,40,.06);color:var(--rust-on-light);margin-left:8px">Upgrade to Pro</span></div>
+      <div class="ro-row"><span class="ro-label">Account ID</span><span class="ro-value" style="font-size:10px;color:var(--text3)">1eae7b36-b230-428a-bdf7-d4c74a2a6f26</span></div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="s-card fade-up">
+      <div class="s-card-head">
+        <div class="s-card-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+        <div class="s-card-title">Notifications</div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Messages</div><div class="toggle-desc">New messages from buyers/sellers</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Offers &amp; negotiations</div><div class="toggle-desc">New offers, counter-offers, accepted/declined</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Price drop alerts</div><div class="toggle-desc">When a favorited listing drops in price</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Trip updates</div><div class="toggle-desc">Expedition changes, new RSVPs, roster updates</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Vouches received</div><div class="toggle-desc">When someone vouches for your skills</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Newsletter</div><div class="toggle-desc">Weekly digest of new listings and community updates</div></div>
+        <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Marketing &amp; promotions</div><div class="toggle-desc">Partner offers, deals, and platform announcements</div></div>
+        <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="s-card fade-up">
+      <div class="s-card-head">
+        <div class="s-card-icon" style="background:var(--sand);color:var(--body)"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="s-card-title">Privacy</div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Show location on profile</div><div class="toggle-desc">Display your city/state on your public profile</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Show garage publicly</div><div class="toggle-desc">Let other users see your rig builds and mods</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Show trip history</div><div class="toggle-desc">Display completed expeditions on your profile</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="toggle-title">Allow contact from non-buyers</div><div class="toggle-desc">Receive messages from users who haven't made an offer</div></div>
+        <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+      </div>
+      <div style="padding:12px 20px;border-top:1px solid var(--bdr);display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#" style="font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none">Your Privacy Rights</a>
+        <a href="#" style="font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none">Cookie Preferences</a>
+        <a href="#" style="font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none">Do Not Sell My Info</a>
+        <a href="#" style="font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none">Export My Data</a>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="danger fade-up">
+      <div class="danger-head"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Danger zone</span></div>
+      <div class="danger-row">
+        <div class="danger-info"><div class="danger-title">Change password</div><div class="danger-desc">Update your password. You'll be logged out of other sessions.</div></div>
+        <button class="danger-btn">Change password</button>
+      </div>
+      <div class="danger-row">
+        <div class="danger-info"><div class="danger-title">Deactivate account</div><div class="danger-desc">Temporarily hide your profile and listings. You can reactivate anytime.</div></div>
+        <button class="danger-btn">Deactivate</button>
+      </div>
+      <div class="danger-row">
+        <div class="danger-info"><div class="danger-title">Delete account</div><div class="danger-desc">Permanently delete your account and all data. This cannot be undone.</div></div>
+        <button class="danger-btn">Delete account</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),obs.unobserve(e.target))})},{threshold:.08});
+document.querySelectorAll('.fade-up').forEach(e=>obs.observe(e));
+function openDrawer(){document.getElementById('sidebarOverlay').classList.add('open');document.getElementById('sidebarDrawer').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('sidebarOverlay').classList.remove('open');document.getElementById('sidebarDrawer').classList.remove('open');document.body.style.overflow=''}
+</script>
+</body>
+</html>

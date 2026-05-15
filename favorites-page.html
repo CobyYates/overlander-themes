@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Favorites — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-on-light:#3D6B4F;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-links{display:flex;gap:24px;margin-left:48px}.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer}
+.mobile-menu-btn{display:none;width:36px;height:36px;border-radius:8px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mobile-menu-btn svg{width:18px;height:18px;stroke:var(--forest);fill:none;stroke-width:2}
+
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(15,26,19,.5);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.sidebar-overlay.open{display:block;opacity:1}
+.sidebar-drawer{position:fixed;top:0;left:-280px;bottom:0;width:280px;z-index:160;background:var(--white);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(15,26,19,.15);padding:20px 0;overflow-y:auto}
+.sidebar-drawer.open{transform:translateX(280px)}
+.drawer-close{padding:10px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+.drawer-close span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.drawer-close button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.drawer-close button svg{width:16px;height:16px;stroke:var(--forest);fill:none;stroke-width:2}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;border-left:3px solid transparent}
+.drawer-link.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.drawer-link svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;opacity:.5}
+.drawer-link.active svg{opacity:1}
+
+.page-shell{padding-top:64px;min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+.sidebar{background:var(--white);border-right:1px solid var(--bdr);padding:24px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar-head{padding:0 20px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage-on-light)}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--body);text-decoration:none;transition:all .12s;border-left:3px solid transparent}
+.sidebar a:hover{background:var(--sand);color:var(--forest)}
+.sidebar a.active{background:rgba(61,107,79,.04);color:var(--sage-on-light);border-color:var(--sage);font-weight:700}
+.sidebar a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.5}
+.sidebar a.active svg{opacity:1}
+.sidebar-div{height:1px;background:var(--bdr);margin:12px 20px}
+
+.content{padding:clamp(20px,3vw,32px) clamp(16px,4vw,48px);max-width:960px}
+
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}.btn-outline:hover{border-color:var(--sage);color:var(--sage)}
+
+/* PAGE HEADER */
+.pg-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.pg-head h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:1px;color:var(--forest);line-height:1}
+.pg-head h1 em{font-style:normal;color:var(--rust-on-light)}
+.pg-head p{font-size:14px;color:var(--body);margin-top:4px}
+
+/* FILTERS */
+.filters{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.pill{padding:6px 14px;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--bdr2);background:var(--white);color:var(--body);transition:all .15s}
+.pill:hover{border-color:var(--sage);color:var(--sage)}
+.pill.active{background:var(--forest);border-color:var(--forest);color:var(--text)}
+.filter-search{margin-left:auto;padding:8px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow',sans-serif;font-size:13px;color:var(--forest);width:220px}
+.filter-search::placeholder{color:var(--text3)}
+
+/* SECTION LABEL */
+.sec-label{display:flex;align-items:center;gap:8px;margin:28px 0 14px}
+.sec-label:first-of-type{margin-top:0}
+.sec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sec-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase}
+.sec-count{font-family:var(--mono);font-size:10px;color:var(--body)}
+.sec-line{flex:1;height:1px;background:var(--bdr)}
+
+/* VEHICLE CARDS */
+.v-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.v-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:all .25s;cursor:pointer;position:relative}
+.v-card:hover{border-color:var(--bdr2);box-shadow:0 6px 24px rgba(28,43,31,.06);transform:translateY(-2px)}
+.v-card-img{height:160px;background:var(--sand2);position:relative;overflow:hidden}
+.v-card-img img{width:100%;height:100%;object-fit:cover}
+.v-card-badge{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;padding:3px 10px;border-radius:4px;color:#fff}
+.v-card-badge.active{background:rgba(61,107,79,.88)}
+.v-card-badge.pending{background:rgba(154,123,16,.88)}
+.v-card-badge.sold{background:rgba(90,90,86,.88)}
+.v-card-heart{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.v-card-heart:hover{background:rgba(196,91,40,.8)}
+.v-card-heart svg{width:16px;height:16px;fill:#fff;stroke:#fff;stroke-width:1}
+.v-card-body{padding:14px 16px}
+.v-card-brand{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--sage-on-light);margin-bottom:2px}
+.v-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest);margin-bottom:4px}
+.v-card-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--rust-on-light);line-height:1;margin-bottom:6px}
+.v-card-meta{font-family:var(--mono);font-size:10px;color:var(--body);line-height:1.6}
+.v-card-tags{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.v-card-tag{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.v-card-seller{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+.v-card-seller-ava{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--white);flex-shrink:0}
+.v-card-seller-info{flex:1;font-family:var(--mono);font-size:10px;color:var(--body)}
+.v-card-seller-info strong{color:var(--forest);font-weight:500}
+.v-card-saved{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.v-card.sold{opacity:.55}
+.v-card.sold .v-card-price{color:var(--body);text-decoration:line-through}
+.v-card-gone{font-family:var(--mono);font-size:10px;color:var(--rust-on-light);margin-top:4px}
+
+/* GEAR ROWS */
+.g-list{background:var(--white);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.g-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--bdr);transition:background .1s;cursor:pointer}
+.g-row:last-child{border-bottom:none}
+.g-row:hover{background:var(--sand)}
+.g-row-img{width:56px;height:42px;border-radius:6px;background:var(--sand2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.g-row-img img{width:100%;height:100%;object-fit:cover}
+.g-row-img .ph{font-size:18px;opacity:.3}
+.g-row-info{flex:1;min-width:0}
+.g-row-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.5px;text-transform:uppercase;color:var(--forest)}
+.g-row-meta{font-family:var(--mono);font-size:10px;color:var(--body)}
+.g-row-cat{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;background:rgba(154,123,16,.06);color:var(--gold-on-light);flex-shrink:0}
+.g-row-status{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;flex-shrink:0}
+.g-row-status.active{background:rgba(61,107,79,.06);color:var(--sage-on-light)}
+.g-row-status.sold{background:rgba(28,43,31,.04);color:var(--body)}
+.g-row-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--rust-on-light);min-width:70px;text-align:right;flex-shrink:0}
+.g-row-heart{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;color:var(--rust)}
+.g-row-heart:hover{background:rgba(196,91,40,.06)}
+.g-row-heart svg{width:16px;height:16px;fill:var(--rust);stroke:var(--rust);stroke-width:1}
+.g-row.sold-row{opacity:.55}
+.g-row.sold-row .g-row-price{color:var(--body);text-decoration:line-through}
+.g-row-seller{font-family:var(--mono);font-size:10px;color:var(--body);display:flex;align-items:center;gap:4px;flex-shrink:0}
+.g-row-seller-ava{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:var(--white)}
+
+/* PRICE ALERT */
+.price-drop{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--sage-on-light);background:rgba(61,107,79,.06);padding:2px 7px;border-radius:3px;margin-left:6px}
+
+/* EMPTY */
+.empty{padding:40px;text-align:center;background:var(--white);border:1px dashed var(--bdr2);border-radius:12px;margin-top:12px}
+.empty p{font-size:14px;color:var(--body);margin-bottom:12px}
+
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}.fade-up.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){.nav-links{display:none}.page-shell{grid-template-columns:1fr}.sidebar{display:none}.mobile-menu-btn{display:flex}.v-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.pg-head{flex-direction:column;align-items:flex-start}.filter-search{width:100%;margin-left:0}.g-row-cat,.g-row-seller{display:none}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-links"><a href="#">Classifieds</a><a href="#">Gear</a><a href="#">Trips</a><a href="#">Community</a><a href="#">Garage</a></div>
+  <div class="nav-right"><button class="mobile-menu-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button><div class="nav-ava">MR</div></div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeDrawer()"></div>
+<div class="sidebar-drawer" id="sidebarDrawer">
+  <div class="drawer-close"><span>Account</span><button onclick="closeDrawer()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+  <div style="height:1px;background:var(--bdr);margin:12px 20px"></div>
+  <a href="#" class="drawer-link"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+  <a href="#" class="drawer-link active"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+</div>
+
+<div class="page-shell">
+  <div class="sidebar">
+    <div class="sidebar-head">Account</div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    <a href="#"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Garage</a>
+    <a href="#"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Skills &amp; Vouches</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Gear Checklists</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z"/></svg>Expeditions</a>
+    <a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favorites</a>
+    <div class="sidebar-div"></div>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</a>
+  </div>
+
+  <div class="content">
+
+    <div class="pg-head fade-up">
+      <div><h1>MY <em>FAVORITES</em></h1><p>Vehicles and gear you've saved. You'll get notified if a price drops or a listing is about to expire.</p></div>
+      <a href="#" class="btn btn-outline">Browse classifieds</a>
+    </div>
+
+    <div class="filters fade-up">
+      <div class="pill active">All (9)</div>
+      <div class="pill">Vehicles (4)</div>
+      <div class="pill">Gear (5)</div>
+      <div class="pill">Price drops (1)</div>
+      <div class="pill">Sold (2)</div>
+      <input class="filter-search" placeholder="Search favorites..." type="text">
+    </div>
+
+    <!-- VEHICLES -->
+    <div class="sec-label fade-up">
+      <div class="sec-dot" style="background:var(--rust)"></div>
+      <div class="sec-text" style="color:var(--rust-on-light)">Saved vehicles</div>
+      <div class="sec-count">4 listings</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="v-grid">
+      <div class="v-card fade-up">
+        <div class="v-card-img">
+          <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&q=75" alt="Bronco">
+          <span class="v-card-badge active">ACTIVE</span>
+          <div class="v-card-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-brand">FORD</div>
+          <div class="v-card-title">2022 Bronco Badlands</div>
+          <div class="v-card-price">$39,750 <span class="price-drop">↓ $2,000 drop</span></div>
+          <div class="v-card-meta">34K mi · Cactus Gray · 12 mods</div>
+          <div class="v-card-tags"><span class="v-card-tag">35" KO2s</span><span class="v-card-tag">WARN WINCH</span><span class="v-card-tag">FRONT RUNNER RACK</span></div>
+          <div class="v-card-seller">
+            <div class="v-card-seller-ava" style="background:var(--sage)">SC</div>
+            <div class="v-card-seller-info"><strong>Scott C.</strong> · Moab, UT · ★ 4.8</div>
+            <span class="v-card-saved">Saved 3d ago</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="v-card fade-up">
+        <div class="v-card-img">
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=75" alt="4Runner">
+          <span class="v-card-badge active">ACTIVE</span>
+          <div class="v-card-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-brand">TOYOTA</div>
+          <div class="v-card-title">2020 4Runner TRD Off-Road</div>
+          <div class="v-card-price">$44,800</div>
+          <div class="v-card-meta">56K mi · Army Green · 18 mods · 2 trip journals</div>
+          <div class="v-card-tags"><span class="v-card-tag">ICON STAGE 2</span><span class="v-card-tag">C4 SLIDERS</span></div>
+          <div class="v-card-seller">
+            <div class="v-card-seller-ava" style="background:var(--rust)">RP</div>
+            <div class="v-card-seller-info"><strong>Ryan P.</strong> · Denver, CO · ★ 4.9</div>
+            <span class="v-card-saved">Saved 1w ago</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="v-card fade-up">
+        <div class="v-card-img">
+          <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600&q=75" alt="Gladiator">
+          <span class="v-card-badge pending">PENDING OFFER</span>
+          <div class="v-card-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-brand">JEEP</div>
+          <div class="v-card-title">2021 Gladiator Mojave</div>
+          <div class="v-card-price">$46,200</div>
+          <div class="v-card-meta">38K mi · Hydro Blue · 22 mods</div>
+          <div class="v-card-tags"><span class="v-card-tag">FOX SHOCKS</span><span class="v-card-tag">37" NITTOS</span></div>
+          <div class="v-card-seller">
+            <div class="v-card-seller-ava" style="background:#8B7355">LM</div>
+            <div class="v-card-seller-info"><strong>Lena M.</strong> · Flagstaff, AZ · ★ 5.0</div>
+            <span class="v-card-saved">Saved 2w ago</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="v-card sold fade-up">
+        <div class="v-card-img">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75" alt="Tacoma">
+          <span class="v-card-badge sold">SOLD</span>
+          <div class="v-card-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-brand">TOYOTA</div>
+          <div class="v-card-title">2019 Tacoma TRD Pro</div>
+          <div class="v-card-price">$42,000</div>
+          <div class="v-card-meta">64K mi · Cement Gray · 16 mods</div>
+          <div class="v-card-gone">This listing has been sold</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GEAR -->
+    <div class="sec-label fade-up">
+      <div class="sec-dot" style="background:var(--gold)"></div>
+      <div class="sec-text" style="color:var(--gold-on-light)">Saved gear</div>
+      <div class="sec-count">5 items</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="g-list fade-up">
+      <div class="g-row">
+        <div class="g-row-img"><img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200&q=60" alt="RTT" style="width:100%;height:100%;object-fit:cover"></div>
+        <div class="g-row-info"><div class="g-row-title">23ZERO Walkabout 87</div><div class="g-row-meta">Like new · Annex included · Dual ladder</div></div>
+        <span class="g-row-cat">ROOF TENT</span>
+        <span class="g-row-status active">ACTIVE</span>
+        <div class="g-row-seller"><div class="g-row-seller-ava" style="background:var(--sage)">CT</div>Chris T.</div>
+        <div class="g-row-price">$2,800</div>
+        <div class="g-row-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      </div>
+      <div class="g-row">
+        <div class="g-row-img"><div class="ph">🪢</div></div>
+        <div class="g-row-info"><div class="g-row-title">Factor 55 FlatLink E</div><div class="g-row-meta">New in box · Pair · Gray</div></div>
+        <span class="g-row-cat">RECOVERY</span>
+        <span class="g-row-status active">ACTIVE</span>
+        <div class="g-row-seller"><div class="g-row-seller-ava" style="background:var(--rust)">DW</div>Dana W.</div>
+        <div class="g-row-price">$120</div>
+        <div class="g-row-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      </div>
+      <div class="g-row">
+        <div class="g-row-img"><div class="ph">🔧</div></div>
+        <div class="g-row-info"><div class="g-row-title">Old Man Emu BP-51 Bypass Shocks</div><div class="g-row-meta">New · 4Runner 5th gen · Full set</div></div>
+        <span class="g-row-cat">SUSPENSION</span>
+        <span class="g-row-status active">ACTIVE</span>
+        <div class="g-row-seller"><div class="g-row-seller-ava" style="background:var(--forest3)">JK</div>Jake K.</div>
+        <div class="g-row-price">$3,400 <span class="price-drop">↓ $400</span></div>
+        <div class="g-row-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      </div>
+      <div class="g-row">
+        <div class="g-row-img"><div class="ph">💡</div></div>
+        <div class="g-row-info"><div class="g-row-title">Baja Designs Squadron Pro Pair</div><div class="g-row-meta">Used — excellent · Driving/combo · Brackets included</div></div>
+        <span class="g-row-cat">LIGHTING</span>
+        <span class="g-row-status active">ACTIVE</span>
+        <div class="g-row-seller"><div class="g-row-seller-ava" style="background:#8B7355">SR</div>Sam R.</div>
+        <div class="g-row-price">$380</div>
+        <div class="g-row-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      </div>
+      <div class="g-row sold-row">
+        <div class="g-row-img"><div class="ph">📦</div></div>
+        <div class="g-row-info"><div class="g-row-title">Goose Gear CampKitchen 2.0</div><div class="g-row-meta">Used — good · 4Runner platform · Slide-out</div></div>
+        <span class="g-row-cat">STORAGE</span>
+        <span class="g-row-status sold">SOLD</span>
+        <div class="g-row-seller"><div class="g-row-seller-ava" style="background:var(--sage)">EN</div>Elena N.</div>
+        <div class="g-row-price">$1,600</div>
+        <div class="g-row-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach((e,i)=>{e.isIntersecting&&(setTimeout(()=>e.target.classList.add('visible'),i*50),obs.unobserve(e.target))})},{threshold:.08});
+document.querySelectorAll('.fade-up').forEach(e=>obs.observe(e));
+document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}));
+function openDrawer(){document.getElementById('sidebarOverlay').classList.add('open');document.getElementById('sidebarDrawer').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('sidebarOverlay').classList.remove('open');document.getElementById('sidebarDrawer').classList.remove('open');document.body.style.overflow=''}
+</script>
+</body>
+</html>
