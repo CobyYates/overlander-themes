@@ -156,6 +156,9 @@
     .preview-hub.event::after     { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,91,40,.18) 0%, transparent 60%); }
     .preview-hub.event-alt        { background: #1C2B1F; color: #F4F5F0; border-bottom: 1px solid #2a3a2d; }
     .preview-hub.event-alt::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,91,40,.25) 0%, transparent 65%); }
+    .preview-hub.create-event     { background: #FAF8F4; color: #1C2B1F; border-bottom: 1px solid #E9EBE4; }
+    .preview-hub.create-event::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,91,40,.12) 0%, transparent 55%), repeating-linear-gradient(0deg, transparent 0 30px, rgba(28,43,31,.06) 30px 31px); }
+    .preview-hub.create-event::before { content: '+'; position: absolute; top: 14px; right: 18px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2.2rem; line-height: 1; color: #C45B28; z-index: 1; }
     .preview-hub.mod              { background: #1C2B1F; color: #B8960C; border-bottom: 1px solid #2a3a2d; }
     .preview-hub.mod::after       { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 14px, rgba(184,150,12,.05) 14px 15px); }
     .preview-hub.rig::after       { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 60%, rgba(61,107,79,.18) 0%, transparent 70%); }
@@ -299,6 +302,21 @@
           <div class="card-tags">
             <span class="tag">Light</span>
             <span class="tag rust">OverlandHub</span>
+          </div>
+          <div class="card-arrow">View Page →</div>
+        </div>
+      </a>
+
+      <a class="card" href="create-event.html">
+        <div class="card-preview preview-hub create-event">
+          <span>Create Event</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Create Event</div>
+          <div class="card-desc">Multi-step event builder — route, schedule, gear list, and RSVP setup for organizers.</div>
+          <div class="card-tags">
+            <span class="tag">Light</span>
+            <span class="tag rust">Builder</span>
           </div>
           <div class="card-arrow">View Page →</div>
         </div>
