@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Event — Overlander Classifieds</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0F1A13;--forest:#1C2B1F;--forest2:#243428;--forest3:#2E4233;--sage:#3D6B4F;--sage-on-light:#3D6B4F;--rust:#C45B28;--rust-hover:#D4682F;--rust-on-light:#A04B1C;--gold:#9A7B10;--gold-on-light:#7A640B;--cream:#FAF8F4;--sand:#F4F1EB;--sand2:#E8E4DC;--white:#FFFFFF;--text:#F2F0EA;--body:#6E6B65;--muted:#5E5C56;--text3:#8A877F;--bdr:rgba(28,43,31,.06);--bdr2:rgba(28,43,31,.12);--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,26,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}.nav-logo svg{width:26px;height:26px}.accent{color:#E0854E}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-ava{width:32px;height:32px;border-radius:8px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+
+/* MOBILE STEP BAR */
+.mobile-steps{display:none;position:fixed;top:64px;left:0;right:0;z-index:150;background:var(--white);border-bottom:1px solid var(--bdr);padding:0;overflow-x:auto;scrollbar-width:none}
+.mobile-steps::-webkit-scrollbar{display:none}
+.mobile-steps-inner{display:flex;gap:0;padding:0 12px;min-width:max-content}
+.ms-item{padding:10px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--body);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .15s}
+.ms-item.active{color:var(--sage-on-light);border-color:var(--sage)}
+.ms-item.done{color:var(--forest)}
+.ms-item .ms-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:500}
+.ms-item.done .ms-num{background:rgba(61,107,79,.08);color:var(--sage-on-light)}
+.ms-item.active .ms-num{background:var(--rust);color:#fff}
+.ms-item.todo .ms-num{background:var(--sand);color:var(--body)}
+
+/* MOBILE ROUTE TOGGLE */
+.mobile-route-toggle{display:none;position:fixed;bottom:76px;right:16px;z-index:140;width:48px;height:48px;border-radius:12px;background:var(--forest);color:var(--text);border:none;cursor:pointer;box-shadow:0 4px 16px rgba(15,26,19,.25);font-size:20px;align-items:center;justify-content:center}
+.mobile-route-drawer{display:none;position:fixed;bottom:0;left:0;right:0;z-index:145;background:var(--white);border-top:1px solid var(--bdr);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(15,26,19,.1);max-height:60vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.mobile-route-drawer.open{transform:translateY(0)}
+.mobile-route-handle{width:40px;height:4px;border-radius:2px;background:var(--sand2);margin:10px auto 6px}
+.mobile-route-head{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.mobile-route-head span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--forest)}
+.mobile-route-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--body)}
+.mobile-route-body{padding:12px 16px}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:130;background:var(--white);border-top:1px solid var(--bdr);padding:10px 16px;box-shadow:0 -2px 10px rgba(15,26,19,.04)}
+.mobile-nav-inner{display:flex;gap:8px}
+.mobile-nav-prev{flex:1;padding:12px;border-radius:8px;background:var(--sand);color:var(--body);border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-align:center}
+.mobile-nav-next{flex:2;padding:12px;border-radius:8px;background:var(--rust);color:#fff;border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-align:center}
+.mobile-nav-pub{flex:1;padding:12px;border-radius:8px;background:var(--forest);color:var(--text);border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-align:center}
+
+/* LAYOUT */
+.page{padding:80px clamp(16px,4vw,48px) 40px;display:grid;grid-template-columns:1fr 360px;gap:0;max-width:1300px;margin:0 auto;min-height:100vh}
+
+/* HEADER */
+.pg-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.pg-head-left{display:flex;align-items:center;gap:12px}
+.pg-back{font-family:var(--mono);font-size:11px;color:var(--sage-on-light);text-decoration:none;display:flex;align-items:center;gap:4px}
+.pg-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,3vw,32px);letter-spacing:1px;color:var(--forest)}
+.pg-title em{font-style:normal;color:var(--rust-on-light)}
+.pg-badge{font-family:var(--mono);font-size:9px;padding:3px 10px;border-radius:50px;background:var(--sand);color:var(--body)}
+.pg-actions{display:flex;gap:8px}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-decoration:none;transition:all .15s}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-hover)}
+.btn-outline{background:var(--white);border:1px solid var(--bdr2);color:var(--body)}
+.btn-sm{padding:7px 14px;font-size:11px}
+
+/* STEPS SIDEBAR (desktop) */
+.steps-col{border-left:1px solid var(--bdr);padding-left:24px;position:sticky;top:84px;height:fit-content}
+.steps-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);margin-bottom:14px}
+.step-list{display:flex;flex-direction:column;gap:2px;margin-bottom:20px}
+.step-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .12s}
+.step-item:hover{background:var(--sand)}
+.step-item.active{background:rgba(61,107,79,.04);border-left:3px solid var(--sage)}
+.step-num{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:500;flex-shrink:0}
+.step-item.done .step-num{background:rgba(61,107,79,.08);color:var(--sage-on-light)}
+.step-item.active .step-num{background:var(--rust);color:#fff}
+.step-item.todo .step-num{background:var(--sand);color:var(--body)}
+.step-name{font-size:13px;font-weight:500;color:var(--forest)}
+.step-item.todo .step-name{color:var(--body)}
+.step-meta{font-family:var(--mono);font-size:9px;color:var(--body);margin-left:auto}
+
+/* ROUTE PREVIEW (sidebar) */
+.route-preview{background:var(--white);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.route-preview-head{padding:10px 12px;background:var(--sand);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px}
+.route-preview-head span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--forest)}
+.route-map-mini{height:140px;background:var(--sand2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px}
+.route-stats{padding:10px 12px;display:flex;gap:10px;font-family:var(--mono);font-size:10px;color:var(--body)}
+.route-stats strong{color:var(--forest);font-weight:500}
+.route-wps{padding:0 12px 12px}
+.route-wp{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--bdr);font-size:11px;color:var(--forest)}
+.route-wp:last-child{border-bottom:none}
+.route-wp-num{width:18px;height:18px;border-radius:50%;background:var(--rust);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:500;flex-shrink:0}
+.route-wp-meta{font-family:var(--mono);font-size:9px;color:var(--body);margin-left:auto}
+
+/* FORM AREA */
+.form-col{padding-right:24px}
+.form-panel{display:none}
+.form-panel.active{display:block}
+
+/* SECTION CARD */
+.sec{background:var(--white);border:1px solid var(--bdr);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
+.sec-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest)}
+.sec-hint{font-family:var(--mono);font-size:10px;color:var(--body);margin-left:auto}
+
+/* FORM FIELDS */
+.field{margin-bottom:16px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--body);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:10px 14px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-family:'Barlow',sans-serif;font-size:14px;color:var(--forest);transition:border-color .15s}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--sage)}
+.field textarea{resize:vertical;min-height:80px}
+.field-hint{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:4px}
+.field-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--body);cursor:pointer;padding:8px 0}
+.field-check input{width:16px;height:16px;accent-color:var(--sage)}
+.toggle-wrap{display:flex;align-items:center;gap:12px;padding:10px 0}
+.toggle{width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--sage)}.toggle.off{background:var(--sand2)}
+.toggle-knob{position:absolute;top:2px;width:18px;height:18px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.15);transition:left .2s}
+.toggle.on .toggle-knob{left:20px}.toggle.off .toggle-knob{left:2px}
+
+/* LINKED ROUTE CARD */
+.linked-route{padding:12px 14px;background:rgba(61,107,79,.04);border:1px solid rgba(61,107,79,.12);border-radius:8px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.linked-route-icon{width:32px;height:32px;border-radius:6px;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.linked-route-info{flex:1}
+.linked-route-name{font-size:13px;font-weight:600;color:var(--forest)}
+.linked-route-meta{font-family:var(--mono);font-size:10px;color:var(--body)}
+.linked-route-remove{font-family:var(--mono);font-size:10px;color:var(--rust-on-light);cursor:pointer;flex-shrink:0}
+
+/* MEETUP MAP */
+.map-inline{border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.map-area{height:200px;background:var(--sand2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:12px;position:relative}
+.map-search{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:6px}
+.map-search input{flex:1;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-size:12px;color:var(--forest);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.map-search button{padding:8px 14px;border-radius:6px;background:var(--rust);color:#fff;border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.map-coords{padding:8px 12px;background:var(--sand);border-top:1px solid var(--bdr);font-family:var(--mono);font-size:10px;color:var(--body);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+
+/* DAY CARD */
+.day-card{background:var(--white);border:1px solid var(--bdr);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.day-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--sand);border-bottom:1px solid var(--bdr)}
+.day-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--rust-on-light);line-height:1;flex-shrink:0}
+.day-header-inputs{flex:1;display:flex;gap:8px}
+.day-header-inputs input{padding:6px 10px;border-radius:4px;border:1px solid var(--bdr2);background:var(--white);font-size:13px;color:var(--forest);flex:1;min-width:0}
+.day-remove{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);border:1px solid var(--bdr);background:var(--white);flex-shrink:0}
+.day-body{padding:14px 16px}
+
+/* WAYPOINT ROW */
+.wp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.wp-row:last-child{border-bottom:none}
+.wp-marker{width:22px;height:22px;border-radius:50%;background:var(--rust);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:500;flex-shrink:0}
+.wp-name{font-size:13px;font-weight:500;color:var(--forest);flex:1}
+.wp-type{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;background:var(--sand);color:var(--body)}
+.wp-dist{font-family:var(--mono);font-size:10px;color:var(--body);flex-shrink:0}
+
+/* COMMS */
+.channel-row{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.channel-row:last-child{border-bottom:none}
+.channel-row select,.channel-row input{padding:8px 10px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-size:13px;color:var(--forest)}
+.channel-row select{width:100px}
+.channel-row input{flex:1;min-width:0}
+.channel-remove{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sand2);border:none;background:none;flex-shrink:0}
+
+/* CHECK-IN */
+.checkin-card{background:var(--sand);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:10px;margin-left:16px;position:relative}
+.checkin-num{position:absolute;top:12px;left:-12px;width:24px;height:24px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:500}
+.checkin-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.checkin-fields input,.checkin-fields textarea{padding:8px 10px;border-radius:6px;border:1px solid var(--bdr2);background:var(--white);font-size:12px;color:var(--forest)}
+.checkin-fields textarea{grid-column:1/-1;resize:none;min-height:50px}
+
+/* RICH TEXT */
+.rich-editor{border:1px solid var(--bdr2);border-radius:8px;overflow:hidden}
+.rich-toolbar{display:flex;gap:2px;padding:8px;background:var(--sand);border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.rich-btn{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--body);border:none;background:none;font-size:13px;font-weight:600}
+.rich-body{min-height:140px;padding:14px;font-size:14px;color:var(--forest);line-height:1.6}
+
+/* REVIEW */
+.review-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.review-row:last-child{border-bottom:none}
+.review-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--body);width:120px;flex-shrink:0;padding-top:2px}
+.review-value{font-size:14px;color:var(--forest);flex:1}
+.review-edit{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);cursor:pointer;flex-shrink:0}
+
+/* ADD BTN */
+.add-btn{display:flex;align-items:center;gap:6px;padding:10px 0;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--sage-on-light);cursor:pointer}
+
+/* WP PILLS */
+.wp-pills{margin-left:16px;margin-top:8px;padding:10px 14px;background:rgba(61,107,79,.04);border:1px dashed rgba(61,107,79,.12);border-radius:8px}
+.wp-pills-label{font-family:var(--mono);font-size:10px;color:var(--sage-on-light);margin-bottom:6px}
+.wp-pills-list{display:flex;flex-wrap:wrap;gap:4px}
+.wp-pill{padding:4px 10px;border-radius:50px;font-family:var(--mono);font-size:10px;border:1px solid rgba(61,107,79,.15);background:var(--white);color:var(--sage-on-light);cursor:pointer}
+
+/* DESKTOP NAV */
+.form-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;margin-top:8px;border-top:1px solid var(--bdr)}
+.form-nav-prev{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--body);cursor:pointer;display:flex;align-items:center;gap:4px}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .page{grid-template-columns:1fr;padding-top:116px;padding-bottom:80px}
+  .steps-col{display:none}
+  .form-col{padding-right:0}
+  .form-nav{display:none}
+  .pg-actions{display:none}
+  .mobile-steps{display:block}
+  .mobile-nav{display:block}
+  .mobile-route-toggle{display:flex}
+  .field-row,.field-row-3{grid-template-columns:1fr}
+  .sec{padding:16px}
+  .sec-head{flex-wrap:wrap}
+  .sec-hint{width:100%;margin-left:0;margin-top:4px}
+  .map-area{height:180px}
+  .day-header{flex-wrap:wrap;gap:8px}
+  .day-header-inputs{width:100%;order:3}
+  .day-header-inputs input{flex:1}
+  .channel-row{flex-wrap:wrap}
+  .channel-row select{width:100%}
+  .checkin-card{margin-left:0}
+  .checkin-num{display:none}
+  .checkin-fields{grid-template-columns:1fr}
+  .pg-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .wp-type{display:none}
+  .linked-route{flex-wrap:wrap}
+  .review-row{flex-wrap:wrap}
+  .review-label{width:100%}
+}
+@media(max-width:400px){
+  .sec{padding:12px;border-radius:8px}
+  .map-area{height:160px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2L28 10v12L16 30 4 22V10L16 2z" stroke="#3D6B4F" stroke-width="2"/><path d="M10 18l4-6 4 3 4-5" stroke="#C45B28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>OVERLANDER <span class="accent">CLASSIFIEDS</span></a>
+  <div class="nav-right"><div class="nav-ava">CY</div></div>
+</nav>
+
+<!-- MOBILE STEP BAR -->
+<div class="mobile-steps" id="mobileSteps">
+  <div class="mobile-steps-inner">
+    <div class="ms-item active" onclick="goStep(0)"><span class="ms-num">1</span>Basics</div>
+    <div class="ms-item todo" onclick="goStep(1)"><span class="ms-num">2</span>Itinerary</div>
+    <div class="ms-item todo" onclick="goStep(2)"><span class="ms-num">3</span>Requirements</div>
+    <div class="ms-item todo" onclick="goStep(3)"><span class="ms-num">4</span>Comms</div>
+    <div class="ms-item todo" onclick="goStep(4)"><span class="ms-num">5</span>Briefing</div>
+    <div class="ms-item todo" onclick="goStep(5)"><span class="ms-num">6</span>Review</div>
+  </div>
+</div>
+
+<!-- MOBILE ROUTE FAB -->
+<button class="mobile-route-toggle" onclick="toggleRouteDrawer()">🗺️</button>
+
+<!-- MOBILE ROUTE DRAWER -->
+<div class="mobile-route-drawer" id="routeDrawer">
+  <div class="mobile-route-handle"></div>
+  <div class="mobile-route-head"><span>🗺️ Linked route</span><div class="mobile-route-close" onclick="toggleRouteDrawer()">✕</div></div>
+  <div class="mobile-route-body">
+    <div style="height:120px;background:var(--sand2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;margin-bottom:10px">Route map preview</div>
+    <div style="display:flex;gap:10px;font-family:var(--mono);font-size:10px;color:var(--body);margin-bottom:10px"><span><strong style="color:var(--forest)">3.58</strong> mi</span><span><strong style="color:var(--forest)">5</strong> waypoints</span><span><strong style="color:var(--forest)">+266</strong> m</span></div>
+    <div class="route-wps" style="padding:0">
+      <div class="route-wp"><div class="route-wp-num">S</div>Start<span class="route-wp-meta">—</span></div>
+      <div class="route-wp"><div class="route-wp-num">2</div>Waypoint 2<span class="route-wp-meta">2.5 mi</span></div>
+      <div class="route-wp"><div class="route-wp-num">3</div>Waypoint 3<span class="route-wp-meta">0.8 mi</span></div>
+      <div class="route-wp"><div class="route-wp-num">4</div>Waypoint 4<span class="route-wp-meta">0.5 mi</span></div>
+      <div class="route-wp"><div class="route-wp-num">5</div>Waypoint 5<span class="route-wp-meta">0.8 mi</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-prev" id="mPrev" onclick="goStep(currentStep-1)" style="display:none">← Back</button>
+    <button class="mobile-nav-next" id="mNext" onclick="goStep(currentStep+1)">Next →</button>
+    <button class="mobile-nav-pub" id="mSave" style="display:none">Save</button>
+  </div>
+</div>
+
+<div class="page">
+  <div class="pg-head">
+    <div class="pg-head-left"><a href="#" class="pg-back">← Back</a><div class="pg-title">CREATE <em>EVENT</em></div><span class="pg-badge">Draft</span></div>
+    <div class="pg-actions"><a href="#" class="btn btn-outline btn-sm">Save draft</a><a href="#" class="btn btn-rust btn-sm">Publish</a></div>
+  </div>
+
+  <!-- FORM COL -->
+  <div class="form-col">
+
+    <!-- STEP 1 -->
+    <div class="form-panel active" id="step-basics">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)">📋</div><div class="sec-title">Event basics</div></div>
+        <div class="field"><label>Event title</label><input type="text" value="Bronco Meetup - 2026"></div>
+        <div class="field"><label>Description</label><textarea>This is the description</textarea></div>
+        <div class="field-row"><div class="field"><label>Start date & time</label><input type="text" value="05/22/2026, 04:15 AM"></div><div class="field"><label>End date & time</label><input type="text" placeholder="Optional"></div></div>
+        <div class="toggle-wrap"><div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div><div><div style="font-size:13px;font-weight:500;color:var(--forest)">Multi-day event</div><div style="font-family:var(--mono);font-size:10px;color:var(--body)">Toggle for trips spanning multiple days</div></div></div>
+      </div>
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(196,91,40,.06);color:var(--rust-on-light)">📍</div><div class="sec-title">Meetup location</div></div>
+        <div class="field"><label>Address</label><input type="text" value="48, Eastmoor Drive, Grantsville, UT 84029"></div>
+        <div class="map-inline"><div class="map-area"><div class="map-search"><input type="text" placeholder="Search or click map..."><button>Pin</button></div>Map — click to pin</div><div class="map-coords"><span>Lat: 40.5987</span><span>Lng: -112.4312</span><span style="color:var(--sage-on-light)">Open in Maps ↗</span></div></div>
+      </div>
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)">🗺️</div><div class="sec-title">Linked route</div><span class="sec-hint">Optional</span></div>
+        <div class="field-hint" style="margin-bottom:12px">Link a saved expedition to show waypoints and route data throughout the form.</div>
+        <div class="linked-route"><div class="linked-route-icon">🗺️</div><div class="linked-route-info"><div class="linked-route-name">Coby Trip Test</div><div class="linked-route-meta">3.58 mi · 5 waypoints · Yours</div></div><span class="linked-route-remove">✕ Remove</span></div>
+        <div class="field"><label>Or search routes</label><input type="text" placeholder="Search your routes or public routes..."></div>
+      </div>
+      <div class="form-nav"><span></span><a class="btn btn-rust btn-sm" onclick="goStep(1)">Next: Itinerary →</a></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="form-panel" id="step-itinerary">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)">📅</div><div class="sec-title">Itinerary</div></div>
+        <div class="field-hint" style="margin-bottom:16px">Waypoints from your linked route are shown for reference below each day.</div>
+        <div class="day-card">
+          <div class="day-header"><div class="day-num">DAY 1</div><div class="day-header-inputs"><input type="text" value="Day 1 — Waypoint 2"></div><div class="day-remove">✕</div></div>
+          <div class="day-body">
+            <div class="field"><label>Description</label><input type="text" value="Waypoint 1 → Waypoint 2"></div>
+            <div class="field-row-3"><div class="field"><label>Start time</label><input type="text" value="04:17 AM"></div><div class="field"><label>End time</label><input type="text" value="09:17 AM"></div><div class="field"><label>Distance (mi)</label><input type="text" value="50"></div></div>
+            <div class="field"><label>Notes</label><input type="text" value="This needs to be updated"></div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)">
+              <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--sage-on-light);margin-bottom:8px">Route waypoints</div>
+              <div class="wp-row"><div class="wp-marker">S</div><div class="wp-name">Start</div><span class="wp-type">Start</span><span class="wp-dist">—</span></div>
+              <div class="wp-row"><div class="wp-marker">2</div><div class="wp-name">Waypoint 2</div><span class="wp-type">Sightseeing</span><span class="wp-dist">2.5 mi</span></div>
+              <div class="wp-row"><div class="wp-marker">3</div><div class="wp-name">Waypoint 3</div><span class="wp-type">Sightseeing</span><span class="wp-dist">0.8 mi</span></div>
+              <div class="wp-row"><div class="wp-marker">4</div><div class="wp-name">Waypoint 4</div><span class="wp-type">Sightseeing</span><span class="wp-dist">0.5 mi</span></div>
+              <div class="wp-row"><div class="wp-marker">5</div><div class="wp-name">Waypoint 5</div><span class="wp-type">Sightseeing</span><span class="wp-dist">0.8 mi</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="add-btn">+ Add day</div>
+      </div>
+      <div class="form-nav"><span class="form-nav-prev" onclick="goStep(0)">← Previous</span><a class="btn btn-rust btn-sm" onclick="goStep(2)">Next: Requirements →</a></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="form-panel" id="step-requirements">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(196,91,40,.06);color:var(--rust-on-light)">🚙</div><div class="sec-title">Vehicle requirements</div></div>
+        <div class="field-row"><div class="field"><label>Min clearance (in)</label><input type="number" value="18"></div><div class="field"><label>Experience level</label><select><option>Any</option><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div></div>
+        <div class="field-check"><input type="checkbox" checked> Differential locker required</div>
+        <div class="field-check"><input type="checkbox" checked> Recovery gear required</div>
+      </div>
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)">👥</div><div class="sec-title">Capacity</div></div>
+        <div class="field-row"><div class="field"><label>Max attendees</label><input type="number" value="10"></div><div style="display:flex;align-items:center;padding-top:18px"><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div><span style="font-size:13px;color:var(--forest);margin-left:10px">Waitlist on</span></div></div>
+      </div>
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)">🎒</div><div class="sec-title">Provisions</div></div>
+        <div class="field"><label>What to bring</label><textarea>Bring sufficient water + meals. Pack out trash.</textarea></div>
+      </div>
+      <div class="form-nav"><span class="form-nav-prev" onclick="goStep(1)">← Previous</span><a class="btn btn-rust btn-sm" onclick="goStep(3)">Next: Comms →</a></div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="form-panel" id="step-comms">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)">📡</div><div class="sec-title">Radio plan</div></div>
+        <div class="channel-row"><select><option>HAM</option><option>GMRS</option><option>CB</option></select><input type="text" value="5.8" placeholder="Freq"><input type="text" value="Our default" placeholder="Notes" style="flex:2"><div class="channel-remove">✕</div></div>
+        <div class="add-btn">+ Add channel</div>
+      </div>
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)">📋</div><div class="sec-title">Check-in schedule</div></div>
+        <div class="field-hint" style="margin-bottom:14px">Click a route waypoint below to auto-fill location and coordinates.</div>
+        <div class="checkin-card"><div class="checkin-num">1</div><div class="checkin-fields"><input type="text" value="04:21 AM" placeholder="Time"><input type="text" value="Tooele, UT" placeholder="Location"><input type="text" placeholder="Lat (auto)" style="background:var(--sand)"><input type="text" placeholder="Lng (auto)" style="background:var(--sand)"><textarea placeholder="Notes"></textarea></div></div>
+        <div class="wp-pills"><div class="wp-pills-label">Add from route waypoints</div><div class="wp-pills-list"><span class="wp-pill">+ Start</span><span class="wp-pill">+ Waypoint 2</span><span class="wp-pill">+ Waypoint 3</span><span class="wp-pill">+ Waypoint 4</span><span class="wp-pill">+ Waypoint 5</span></div></div>
+        <div class="add-btn" style="margin-left:16px;margin-top:8px">+ Add check-in manually</div>
+      </div>
+      <div class="form-nav"><span class="form-nav-prev" onclick="goStep(2)">← Previous</span><a class="btn btn-rust btn-sm" onclick="goStep(4)">Next: Briefing →</a></div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="form-panel" id="step-briefing">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(154,123,16,.06);color:var(--gold-on-light)">🛡️</div><div class="sec-title">Safety briefing</div></div>
+        <div class="field-hint" style="margin-bottom:14px">Required reading. Attendees must acknowledge before the trip.</div>
+        <div class="rich-editor"><div class="rich-toolbar"><span class="rich-btn">B</span><span class="rich-btn" style="font-style:italic">I</span><span class="rich-btn" style="text-decoration:underline">U</span><span class="rich-btn" style="font-size:11px">H1</span><span class="rich-btn" style="font-size:11px">H2</span><span class="rich-btn">—</span><span class="rich-btn">•</span><span class="rich-btn" style="font-size:11px">🔗</span></div><div class="rich-body" contenteditable="true">This is the safety briefing. Please read thoroughly.</div></div>
+      </div>
+      <div class="form-nav"><span class="form-nav-prev" onclick="goStep(3)">← Previous</span><a class="btn btn-rust btn-sm" onclick="goStep(5)">Next: Review →</a></div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="form-panel" id="step-review">
+      <div class="sec"><div class="sec-head"><div class="sec-icon" style="background:rgba(61,107,79,.06);color:var(--sage-on-light)">✓</div><div class="sec-title">Review & publish</div></div>
+        <div class="field-hint" style="margin-bottom:16px">Publishing notifies group members per their notification settings.</div>
+        <div class="review-row"><span class="review-label">Title</span><span class="review-value">Bronco Meetup - 2026</span><span class="review-edit" onclick="goStep(0)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Dates</span><span class="review-value">May 22, 2026 · 04:15 AM</span><span class="review-edit" onclick="goStep(0)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Meetup</span><span class="review-value">48 Eastmoor Dr, Grantsville, UT</span><span class="review-edit" onclick="goStep(0)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Capacity</span><span class="review-value">10 spots · Waitlist on</span><span class="review-edit" onclick="goStep(2)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Route</span><span class="review-value">Coby Trip Test · 3.58 mi · 5 wp</span><span class="review-edit" onclick="goStep(0)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Itinerary</span><span class="review-value">1 day</span><span class="review-edit" onclick="goStep(1)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Radio</span><span class="review-value">HAM 5.8</span><span class="review-edit" onclick="goStep(3)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Check-ins</span><span class="review-value">1 stop</span><span class="review-edit" onclick="goStep(3)">Edit</span></div>
+        <div class="review-row"><span class="review-label">Briefing</span><span class="review-value">1 paragraph</span><span class="review-edit" onclick="goStep(4)">Edit</span></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;padding:20px 0"><a class="btn btn-outline">Save draft</a><a class="btn btn-rust" style="padding:14px 36px;font-size:15px">🚀 Publish event</a></div>
+      <div class="form-nav"><span class="form-nav-prev" onclick="goStep(4)">← Previous</span><span></span></div>
+    </div>
+
+  </div>
+
+  <!-- DESKTOP SIDEBAR -->
+  <div class="steps-col">
+    <div class="steps-title">Event steps</div>
+    <div class="step-list" id="stepList">
+      <div class="step-item active" onclick="goStep(0)"><div class="step-num">1</div><span class="step-name">Basics</span><span class="step-meta">✓</span></div>
+      <div class="step-item todo" onclick="goStep(1)"><div class="step-num">2</div><span class="step-name">Itinerary</span><span class="step-meta">1 day</span></div>
+      <div class="step-item todo" onclick="goStep(2)"><div class="step-num">3</div><span class="step-name">Requirements</span></div>
+      <div class="step-item todo" onclick="goStep(3)"><div class="step-num">4</div><span class="step-name">Comms</span><span class="step-meta">1 ch</span></div>
+      <div class="step-item todo" onclick="goStep(4)"><div class="step-num">5</div><span class="step-name">Briefing</span></div>
+      <div class="step-item todo" onclick="goStep(5)"><div class="step-num">6</div><span class="step-name">Review</span></div>
+    </div>
+    <div class="route-preview">
+      <div class="route-preview-head"><span>🗺️ Linked route</span></div>
+      <div class="route-map-mini">Mini map preview</div>
+      <div class="route-stats"><span><strong>3.58</strong> mi</span><span><strong>5</strong> wp</span><span><strong>+266</strong> m</span></div>
+      <div class="route-wps">
+        <div class="route-wp"><div class="route-wp-num">S</div>Start<span class="route-wp-meta">—</span></div>
+        <div class="route-wp"><div class="route-wp-num">2</div>Waypoint 2<span class="route-wp-meta">2.5 mi</span></div>
+        <div class="route-wp"><div class="route-wp-num">3</div>Waypoint 3<span class="route-wp-meta">0.8 mi</span></div>
+        <div class="route-wp"><div class="route-wp-num">4</div>Waypoint 4<span class="route-wp-meta">0.5 mi</span></div>
+        <div class="route-wp"><div class="route-wp-num">5</div>Waypoint 5<span class="route-wp-meta">0.8 mi</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentStep=0;
+const panels=['step-basics','step-itinerary','step-requirements','step-comms','step-briefing','step-review'];
+const stepNames=['Basics','Itinerary','Requirements','Comms','Briefing','Review'];
+const desktopItems=document.querySelectorAll('#stepList .step-item');
+const mobileItems=document.querySelectorAll('#mobileSteps .ms-item');
+const mPrev=document.getElementById('mPrev');
+const mNext=document.getElementById('mNext');
+const mSave=document.getElementById('mSave');
+
+function goStep(i){
+  if(i<0||i>=panels.length)return;
+  currentStep=i;
+  panels.forEach(p=>document.getElementById(p).classList.remove('active'));
+  document.getElementById(panels[i]).classList.add('active');
+
+  desktopItems.forEach((s,idx)=>{s.classList.remove('active','done','todo');if(idx<i)s.classList.add('done');else if(idx===i)s.classList.add('active');else s.classList.add('todo')});
+  mobileItems.forEach((s,idx)=>{s.classList.remove('active','done','todo');if(idx<i)s.classList.add('done');else if(idx===i)s.classList.add('active');else s.classList.add('todo')});
+
+  // Scroll active mobile step into view
+  const activeMs=document.querySelector('#mobileSteps .ms-item.active');
+  if(activeMs)activeMs.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+
+  // Update mobile nav
+  mPrev.style.display=i===0?'none':'block';
+  if(i===panels.length-1){mNext.style.display='none';mSave.style.display='block';mSave.textContent='🚀 Publish'}
+  else{mNext.style.display='block';mSave.style.display='none';mNext.textContent='Next: '+stepNames[i+1]+' →'}
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let drawerOpen=false;
+function toggleRouteDrawer(){
+  drawerOpen=!drawerOpen;
+  document.getElementById('routeDrawer').classList.toggle('open',drawerOpen);
+}
+</script>
+</body>
+</html>
