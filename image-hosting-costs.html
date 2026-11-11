@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Image Hosting Costs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column; controls beside the chart on wide screens, stacked on phones. */
+:root {
+  --bg: #F4F5F0;
+  --surface: #FFFFFF;
+  --fg: #1C2B1F;
+  --muted: #56645A;
+  --line: #DCE0D6;
+  --accent: #B4501F;
+  --s-images: #B4501F;
+  --s-resize: #B7861C;
+  --s-bunny: #4F74A0;
+  --s-presized: #2F6B48;
+  --s-b2: #7A4E9C;
+  --good-bg: #E3EFE6;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131A15; --surface: #1B241D; --fg: #E6EBE3; --muted: #A2AEA4; --line: #2E3A31;
+    --accent: #E58A5A; --s-images: #E58A5A; --s-resize: #E0B550; --s-bunny: #86A9D6; --s-presized: #6CC08E; --s-b2: #B996D6;
+    --good-bg: #1E3326; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131A15; --surface: #1B241D; --fg: #E6EBE3; --muted: #A2AEA4; --line: #2E3A31;
+  --accent: #E58A5A; --s-images: #E58A5A; --s-resize: #E0B550; --s-bunny: #86A9D6; --s-presized: #6CC08E; --s-b2: #B996D6;
+  --good-bg: #1E3326; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); letter-spacing: 0.01em; }
+h2 { font-size: 1.7rem; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.9rem; color: var(--accent); }
+.lede { color: var(--muted); font-size: 1.1rem; }
+header { display: flex; flex-direction: column; gap: 12px; }
+.num { font-variant-numeric: tabular-nums; }
+
+.verdict { background: var(--good-bg); border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+.verdict strong { font-family: var(--display); font-size: 1.3rem; font-weight: 600; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button {
+  font: 500 0.95rem var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 999px; padding: 8px 16px; min-height: 40px; cursor: pointer;
+}
+.presets button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.presets button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.grid { display: grid; grid-template-columns: 320px 1fr; gap: 32px; align-items: start; }
+.grid > * { min-width: 0; }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+.controls { display: flex; flex-direction: column; gap: 18px; }
+.controls fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.controls legend { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem; color: var(--muted); margin-bottom: 4px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field-top { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; }
+.field-top output { font-family: var(--mono); font-size: 0.9rem; color: var(--accent); white-space: nowrap; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.hint { font-size: 0.875rem; color: var(--muted); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.card .name { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.card .big { font-family: var(--display); font-size: 1.8rem; font-weight: 700; line-height: 1.1; }
+.card .sub { font-size: 0.875rem; color: var(--muted); }
+.card.best { border-color: var(--s-presized); box-shadow: inset 0 0 0 1px var(--s-presized); }
+.tag { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--s-presized); }
+
+.results { display: flex; flex-direction: column; gap: 20px; }
+.chart-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.chart-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.chart-head .hint { font-size: 0.875rem; }
+svg text { font-family: var(--body); font-size: 12px; fill: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; margin-top: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.9rem; color: var(--muted); }
+tbody tr:last-child td { border-bottom: 0; }
+td.low { color: var(--s-presized); font-weight: 600; }
+.vol td { color: var(--muted); font-size: 0.9rem; }
+
+.options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 760px) { .options { grid-template-columns: 1fr; } }
+.opt { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid var(--c); }
+.opt ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.opt .k { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+section { display: flex; flex-direction: column; gap: 16px; }
+.fine { font-size: 0.9rem; color: var(--muted); }
+code { font-family: var(--mono); font-size: 0.875em; }
+@media (prefers-reduced-motion: no-preference) { .line { transition: d 0.2s; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Rigs and Routes · photo storage</div>
+    <h1>Where should listing and post photos live?</h1>
+    <p class="lede">A cost model for five ways to store and serve every photo on the site: listings, gear, garage builds, posts, groups and expeditions. Move the inputs to match how you expect the site to grow.</p>
+  </header>
+
+  <div class="verdict">
+    <strong id="verdict-title">Recommendation: Cloudflare R2, with each photo saved in 2 or 3 sizes at upload</strong>
+    <p id="verdict-body"></p>
+  </div>
+
+  <section aria-labelledby="model-h">
+    <h2 id="model-h">Cost over time</h2>
+    <div class="presets" role="group" aria-label="Scenarios">
+      <button type="button" data-preset="launch">Launch (1k users)</button>
+      <button type="button" data-preset="base" aria-pressed="true">10k users, 100k photos</button>
+      <button type="button" data-preset="growth">Fast growth</button>
+      <button type="button" data-preset="big">Big year 3</button>
+      <button type="button" data-preset="tb1">1 TB stored, 5 TB served</button>
+      <button type="button" data-preset="tb10">10 TB stored, 50 TB served</button>
+    </div>
+
+    <div class="grid">
+      <form class="controls" id="controls" autocomplete="off">
+        <fieldset>
+          <legend>Users</legend>
+          <div class="field"><div class="field-top"><label for="users">Active users today</label><output for="users" id="users-o"></output></div>
+            <input type="range" id="users" min="500" max="500000" step="500"></div>
+          <div class="field"><div class="field-top"><label for="growth">Monthly user growth</label><output for="growth" id="growth-o"></output></div>
+            <input type="range" id="growth" min="0" max="15" step="0.5"></div>
+          <div class="field"><div class="field-top"><label for="pv">Page views per user per month</label><output for="pv" id="pv-o"></output></div>
+            <input type="range" id="pv" min="5" max="150" step="1"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Photos</legend>
+          <div class="field"><div class="field-top"><label for="photos">Photos stored today</label><output for="photos" id="photos-o"></output></div>
+            <input type="range" id="photos" min="0" max="30000000" step="10000"></div>
+          <div class="field"><div class="field-top"><label for="upr">New photos per user per month</label><output for="upr" id="upr-o"></output></div>
+            <input type="range" id="upr" min="0" max="3" step="0.1">
+            <span class="hint">Listings, posts, garage builds and trip photos together.</span></div>
+          <div class="field"><div class="field-top"><label for="seen">Photos seen in a month</label><output for="seen" id="seen-o"></output></div>
+            <input type="range" id="seen" min="5" max="80" step="1">
+            <span class="hint">Older posts and listings rarely get opened, so most photos sit unseen.</span></div>
+          <div class="field"><div class="field-top"><label for="kb">Average full-size photo</label><output for="kb" id="kb-o"></output></div>
+            <input type="range" id="kb" min="100" max="1500" step="50"></div>
+          <div class="field"><div class="field-top"><label for="loadkb">Average size per photo load</label><output for="loadkb" id="loadkb-o"></output></div>
+            <input type="range" id="loadkb" min="20" max="300" step="5">
+            <span class="hint">Mostly small thumbnails, so far below the full-size photo.</span></div>
+        </fieldset>
+        <fieldset>
+          <legend>Pages</legend>
+          <div class="field"><div class="field-top"><label for="detail">Views that are detail pages</label><output for="detail" id="detail-o"></output></div>
+            <input type="range" id="detail" min="10" max="90" step="5">
+            <span class="hint">The rest are browse pages and feeds.</span></div>
+          <div class="field"><div class="field-top"><label for="thumbs">Thumbnails per browse page</label><output for="thumbs" id="thumbs-o"></output></div>
+            <input type="range" id="thumbs" min="6" max="48" step="2"></div>
+          <div class="field"><div class="field-top"><label for="gallery">Photos loaded per detail page</label><output for="gallery" id="gallery-o"></output></div>
+            <input type="range" id="gallery" min="1" max="20" step="1"></div>
+          <div class="field"><div class="field-top"><label for="months">Time span</label><output for="months" id="months-o"></output></div>
+            <input type="range" id="months" min="12" max="60" step="12"></div>
+        </fieldset>
+      </form>
+
+      <div class="results">
+        <div>
+          <div class="chart-head"><h3 id="cards-h">Monthly cost today</h3></div>
+          <div class="cards" id="cards"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><h3>Monthly bill by month</h3><span class="hint" id="chart-note"></span></div>
+          <div style="overflow-x:auto"><svg id="chart" viewBox="0 0 720 320" role="img" aria-labelledby="chart-desc" style="width:100%;min-width:480px;height:auto;display:block"><desc id="chart-desc">Monthly cost of each option over the chosen time span.</desc></svg></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="t-head"></tr></thead>
+            <tbody id="t-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="fit-h">
+    <h2 id="fit-h">How each option fits this app</h2>
+    <p>The site's photo traffic has a clear shape. Browse pages and feeds load one small thumbnail per item, so thumbnails make up most of the loads. Full galleries only load when someone opens a listing, post or group. Older content builds up and is rarely opened. The cheapest option is the one that charges least for photos nobody is looking at.</p>
+    <div class="options">
+      <article class="opt" style="--c: var(--s-images)" aria-label="Cloudflare Images">
+        <h3>Cloudflare Images</h3>
+        <div class="k">Bills for</div><p>Every photo stored ($5 per 100k) and every photo load ($1 per 100k).</p>
+        <div class="k">Good</div><ul><li>Already built into the app: uploads, deletes, sizes, signed message photos.</li><li>Any size on the fly through flexible variants.</li></ul>
+        <div class="k">Watch</div><ul><li>The load charge grows with every page view.</li><li>Unseen old photos still count toward storage.</li></ul>
+      </article>
+      <article class="opt" style="--c: var(--s-resize)" aria-label="R2 with on-the-fly resizing">
+        <h3>R2 + on-the-fly resizing</h3>
+        <div class="k">Bills for</div><p>Each distinct photo and size resized in a month ($0.50 per 1,000, first 5,000 free). Storage at $0.015 per GB.</p>
+        <div class="k">Good</div><ul><li>Unseen photos cost almost nothing.</li><li>Any size on the fly.</li></ul>
+        <div class="k">Watch</div><ul><li>Cost climbs as more of the catalog gets browsed.</li><li>Needs a custom domain and new upload code.</li></ul>
+      </article>
+      <article class="opt" style="--c: var(--s-bunny)" aria-label="Bunny.net">
+        <h3>Bunny.net storage + optimizer</h3>
+        <div class="k">Bills for</div><p>Storage ($0.01 per GB), bandwidth (about $0.01 per GB in North America) and a flat $9.50 a month for resizing.</p>
+        <div class="k">Good</div><ul><li>Predictable, and any size on the fly.</li></ul>
+        <div class="k">Watch</div><ul><li>Another vendor and account to run.</li><li>Bandwidth grows with traffic.</li></ul>
+      </article>
+      <article class="opt" style="--c: var(--s-b2)" aria-label="Backblaze B2 with Cloudflare in front">
+        <h3>Backblaze B2 + Cloudflare, sizes at upload</h3>
+        <div class="k">Bills for</div><p>Storage ($6.95 per TB) and a small charge per read past a daily free amount. Serving through Cloudflare is free.</p>
+        <div class="k">Good</div><ul><li>The cheapest storage once the site holds terabytes.</li><li>Same S3-style API as R2, so moving later is straightforward.</li></ul>
+        <div class="k">Watch</div><ul><li>Two vendors and two bills.</li><li>At this app's current size the saving over R2 is cents.</li></ul>
+      </article>
+      <article class="opt" style="--c: var(--s-presized)" aria-label="R2 with sizes made at upload">
+        <h3>R2, sizes made at upload</h3>
+        <div class="k">Bills for</div><p>Storage only ($0.015 per GB after 10 GB free). Serving is free, and reads stay under the 10M free each month at most sizes.</p>
+        <div class="k">Good</div><ul><li>The cheapest by far, and flat as traffic grows.</li><li>The app already uses R2 for file attachments, and private photos can use the same access-checked route.</li><li>The browser already converts uploads to WebP.</li></ul>
+        <div class="k">Watch</div><ul><li>More build work than staying on Cloudflare Images.</li><li>A new size later means a script to make it for every existing photo.</li></ul>
+      </article>
+      <article class="opt" style="--c: var(--muted)" aria-label="Video">
+        <h3>If video gets added</h3>
+        <div class="k">Use a video service</div><p>Never serve raw uploads from storage. A video service converts each upload so it plays smoothly on any connection.</p>
+        <ul><li><strong>Cloudflare Stream:</strong> $5 per 1,000 minutes stored, $1 per 1,000 minutes watched. Simplest next to R2.</li><li><strong>Bunny Stream:</strong> about $0.01 per GB stored and $0.005 to $0.01 per GB watched. Cheaper at volume, one more vendor.</li></ul>
+        <div class="k">Set limits</div><p>Cap file size and video length from day one.</p>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="as-h">
+    <h2 id="as-h">How the numbers are worked out</h2>
+    <ul class="fine">
+      <li>Photo loads = browse views × thumbnails + detail views × gallery photos.</li>
+      <li>New photos are added each month from active users × photos per user, so storage keeps growing.</li>
+      <li>Resizing assumes 2 sizes per photo seen. Sizes made at upload add 35% to stored size (a 400px and a 1200px copy beside the full size).</li>
+      <li>Bunny transfer uses the average size per photo load. R2 and B2 assume 10% of loads miss the CDN cache and read from storage.</li>
+      <li>The two terabyte presets match an outside estimate (1 TB stored and 5 TB served a month at launch, 10 TB and 50 TB later). That's about 30 times this app's 10k-user scenario.</li>
+      <li>Not counted: the one-time work to switch, Cloudflare Pages and Supabase, and moving photos from the old Cloudflare account.</li>
+      <li>Prices are list prices as of late 2026 from what we know of each vendor. Check each vendor's pricing page before deciding.</li>
+    </ul>
+    <h3>Also looked at, and ruled out</h3>
+    <ul class="fine">
+      <li><strong>Amazon S3 alone:</strong> serving costs $0.09 per GB, about $470 a month at 5 TB served.</li>
+      <li><strong>S3 + CloudFront's $15 Pro plan:</strong> cheap at a glance, but storage is $0.023 per GB and the plan likely caps monthly requests far below what a photo site makes.</li>
+      <li><strong>Wasabi:</strong> $7.99 per TB, but it isn't meant for sites that serve far more than they store, and it bills each file for at least 90 days.</li>
+    </ul>
+    <h3>Worth doing whichever option wins</h3>
+    <ul class="fine">
+      <li>Keep compressing photos to WebP in the browser before upload. The app already does this.</li>
+      <li>Send uploads straight to storage with a signed upload link, instead of passing the photo through the server first as it does today.</li>
+      <li>Set file-size limits on uploads.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const OPTIONS = [
+  { id: 'images', name: 'Cloudflare Images', color: 'var(--s-images)' },
+  { id: 'resize', name: 'R2 + resizing', color: 'var(--s-resize)' },
+  { id: 'bunny', name: 'Bunny.net', color: 'var(--s-bunny)' },
+  { id: 'b2', name: 'B2 + Cloudflare', color: 'var(--s-b2)' },
+  { id: 'presized', name: 'R2, sizes at upload', color: 'var(--s-presized)' },
+];
+const PRESETS = {
+  launch: { users: 1000, growth: 8, pv: 20, photos: 10000, upr: 0.5, seen: 30, kb: 300, loadkb: 70, detail: 50, thumbs: 20, gallery: 6, months: 24 },
+  base:   { users: 10000, growth: 3, pv: 20, photos: 100000, upr: 0.3, seen: 22, kb: 300, loadkb: 70, detail: 50, thumbs: 20, gallery: 6, months: 36 },
+  growth: { users: 10000, growth: 8, pv: 25, photos: 100000, upr: 0.5, seen: 25, kb: 300, loadkb: 70, detail: 45, thumbs: 24, gallery: 8, months: 36 },
+  tb1:    { users: 100000, growth: 0, pv: 54, photos: 3000000, upr: 0, seen: 22, kb: 300, loadkb: 70, detail: 50, thumbs: 20, gallery: 6, months: 24 },
+  tb10:   { users: 500000, growth: 0, pv: 110, photos: 30000000, upr: 0, seen: 22, kb: 300, loadkb: 70, detail: 50, thumbs: 20, gallery: 6, months: 24 },
+  big:    { users: 50000, growth: 4, pv: 30, photos: 400000, upr: 0.4, seen: 20, kb: 350, loadkb: 70, detail: 45, thumbs: 24, gallery: 8, months: 36 },
+};
+const FIELDS = ['users', 'growth', 'pv', 'photos', 'upr', 'seen', 'kb', 'loadkb', 'detail', 'thumbs', 'gallery', 'months'];
+const FMT = {
+  users: v => v.toLocaleString(), growth: v => v + '%', pv: v => v, photos: v => v.toLocaleString(),
+  upr: v => v.toFixed(1), seen: v => v + '%', kb: v => v + ' KB', loadkb: v => v + ' KB', detail: v => v + '%',
+  thumbs: v => v, gallery: v => v, months: v => (v / 12) + ' years',
+};
+const $ = id => document.getElementById(id);
+const money = v => v >= 100 ? '$' + Math.round(v).toLocaleString() : '$' + v.toFixed(2);
+const short = v => v >= 1e9 ? (v / 1e9).toFixed(1) + 'B' : v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? Math.round(v / 1e3) + 'k' : Math.round(v).toString();
+
+function read() { const o = {}; FIELDS.forEach(f => o[f] = Number($(f).value)); return o; }
+
+// One month of usage and the bill for each option.
+function month(p, m) {
+  const users = p.users * Math.pow(1 + p.growth / 100, m);
+  let photos = p.photos;
+  for (let i = 0; i < m; i++) photos += p.users * Math.pow(1 + p.growth / 100, i) * p.upr;
+  const newPhotos = users * p.upr;
+  const views = users * p.pv;
+  const loads = views * (1 - p.detail / 100) * p.thumbs + views * (p.detail / 100) * p.gallery;
+  const seen = photos * p.seen / 100;
+  const gbOrig = photos * p.kb / 1e6;
+  const gbAll = gbOrig * 1.35;
+  const misses = loads * 0.1;
+  const classB = Math.max(0, misses - 10e6) / 1e6 * 0.36;
+
+  const images = (photos > 0 ? Math.ceil(photos / 100000) * 5 : 0) + loads / 100000;
+  const resize = Math.max(0, gbOrig - 10) * 0.015 + Math.max(0, seen * 2 - 5000) * 0.0005 + classB
+    + Math.max(0, newPhotos - 1e6) / 1e6 * 4.5;
+  const bunny = Math.max(1, gbOrig * 0.01 + loads * p.loadkb / 1e6 * 0.01) + 9.5;
+  const b2 = Math.max(0, gbAll - 10) * 0.00695 + Math.max(0, misses - 75000) / 10000 * 0.004;
+  const presized = Math.max(0, gbAll - 10) * 0.015 + classB + Math.max(0, newPhotos * 3 - 1e6) / 1e6 * 4.5;
+  return { m, users, photos, loads, seen, gbAll, cost: { images, resize, bunny, b2, presized } };
+}
+
+function render() {
+  const p = read();
+  FIELDS.forEach(f => $(f + '-o').textContent = FMT[f](p[f]));
+  const rows = []; for (let m = 0; m <= p.months; m++) rows.push(month(p, m));
+  const now = rows[0], last = rows[rows.length - 1];
+
+  const totals = {}; OPTIONS.forEach(o => totals[o.id] = rows.slice(1).reduce((s, r) => s + r.cost[o.id], 0));
+  const cheapest = OPTIONS.reduce((a, b) => now.cost[a.id] <= now.cost[b.id] ? a : b).id;
+
+  $('cards-h').textContent = 'Monthly cost today';
+  $('cards').innerHTML = OPTIONS.map(o => `
+    <div class="card ${o.id === cheapest ? 'best' : ''}">
+      <div class="name"><span class="swatch" style="background:${o.color}"></span>${o.name}</div>
+      <div class="big num">${money(now.cost[o.id])}</div>
+      <div class="sub num">${money(totals[o.id])} over ${FMT.months(p.months)}</div>
+      ${o.id === cheapest ? '<div class="tag">Lowest</div>' : ''}
+    </div>`).join('');
+
+  const imgTotal = totals.images, preTotal = totals.presized;
+  $('verdict-body').textContent =
+    `With these inputs, Cloudflare Images costs ${money(now.cost.images)} a month today and ${money(last.cost.images)} by month ${p.months}. ` +
+    `R2 with sizes made at upload costs ${money(now.cost.presized)} today and ${money(last.cost.presized)} by month ${p.months}, ` +
+    `about ${money(imgTotal - preTotal)} less over ${FMT.months(p.months)}. Cloudflare Images is the fastest to turn on since the app is built for it. ` +
+    `Switching to R2 is a one-time build, and it is cheapest to do before many photos pile up.` +
+    (last.cost.presized - last.cost.b2 >= 20 ? ` At this size Backblaze B2 would save about ${money(last.cost.presized - last.cost.b2)} a month over R2, which is worth revisiting once storage is the main cost.` : '');
+
+  drawChart(rows, p);
+
+  const marks = [0, 6, 12, 24, 36, 48, 60].filter(m => m <= p.months);
+  $('t-head').innerHTML = '<th scope="col">Per month</th>' + marks.map(m => `<th scope="col">${m === 0 ? 'Today' : 'Month ' + m}</th>`).join('');
+  const body = OPTIONS.map(o => {
+    const cells = marks.map(m => { const r = rows[m]; const low = Math.min(...OPTIONS.map(x => r.cost[x.id]));
+      return `<td class="num ${r.cost[o.id] === low ? 'low' : ''}">${money(r.cost[o.id])}</td>`; }).join('');
+    return `<tr><td><span class="swatch" style="display:inline-block;vertical-align:middle;margin-right:8px;background:${o.color}"></span>${o.name}</td>${cells}</tr>`;
+  });
+  const vol = [['Active users', r => short(r.users)], ['Photos stored', r => short(r.photos)], ['Photo loads', r => short(r.loads)], ['Storage (all sizes)', r => r.gbAll >= 1000 ? (r.gbAll / 1000).toFixed(1) + ' TB' : Math.round(r.gbAll) + ' GB'], ['Served', r => { const tb = r.loads * read().loadkb / 1e9; return tb >= 1 ? tb.toFixed(1) + ' TB' : Math.round(tb * 1000) + ' GB'; }]]
+    .map(([label, fn]) => `<tr class="vol"><td>${label}</td>${marks.map(m => `<td class="num">${fn(rows[m])}</td>`).join('')}</tr>`);
+  $('t-body').innerHTML = body.join('') + vol.join('');
+}
+
+function drawChart(rows, p) {
+  const W = 720, H = 320, L = 64, R = 130, T = 16, B = 36;
+  const max = Math.max(1, ...rows.flatMap(r => OPTIONS.map(o => r.cost[o.id])));
+  const step = niceStep(max / 4); const top = Math.ceil(max / step) * step;
+  const x = m => L + (m / p.months) * (W - L - R);
+  const y = v => T + (1 - v / top) * (H - T - B);
+  let s = `<desc id="chart-desc">Monthly cost of each option over ${p.months} months.</desc>`;
+  for (let v = 0; v <= top + 1e-9; v += step) {
+    s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`;
+    s += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${money(v).replace('.00', '')}</text>`;
+  }
+  const xs = p.months <= 24 ? 6 : 12;
+  for (let m = 0; m <= p.months; m += xs) s += `<text x="${x(m)}" y="${H - 12}" text-anchor="middle">${m === 0 ? 'Today' : 'Mo ' + m}</text>`;
+  const ends = OPTIONS.map(o => ({ o, v: rows[rows.length - 1].cost[o.id] })).sort((a, b) => b.v - a.v);
+  let prevY = -Infinity;
+  ends.forEach(e => { let ly = Math.max(y(e.v) + 4, prevY + 16); ly = Math.min(ly, H - B + 4); e.ly = ly; prevY = ly; });
+  OPTIONS.forEach(o => {
+    const d = rows.map((r, i) => (i ? 'L' : 'M') + x(r.m).toFixed(1) + ' ' + y(r.cost[o.id]).toFixed(1)).join(' ');
+    const lastR = rows[rows.length - 1];
+    s += `<path class="line" d="${d}" fill="none" stroke="${o.color}" stroke-width="${o.id === 'presized' ? 3 : 2.25}" stroke-linejoin="round"/>`;
+    s += `<circle cx="${x(lastR.m)}" cy="${y(lastR.cost[o.id])}" r="4" fill="${o.color}"/>`;
+    const e = ends.find(z => z.o.id === o.id);
+    s += `<text x="${x(lastR.m) + 10}" y="${e.ly}" style="fill:${o.color};font-weight:600">${money(lastR.cost[o.id])}</text>`;
+  });
+  $('chart').innerHTML = s;
+  $('chart-note').textContent = `${p.users.toLocaleString()} users growing ${p.growth}% a month`;
+  $('legend').innerHTML = OPTIONS.map(o => `<span><span class="swatch" style="background:${o.color}"></span>${o.name}</span>`).join('');
+}
+function niceStep(raw) { const pow = Math.pow(10, Math.floor(Math.log10(raw || 1))); const n = raw / pow; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * pow; }
+
+function applyPreset(name) {
+  const v = PRESETS[name]; FIELDS.forEach(f => $(f).value = v[f]);
+  document.querySelectorAll('[data-preset]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.preset === name)));
+  render();
+}
+document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.preset)));
+$('controls').addEventListener('input', () => { document.querySelectorAll('[data-preset]').forEach(b => b.setAttribute('aria-pressed', 'false')); render(); });
+$('controls').addEventListener('submit', e => e.preventDefault());
+applyPreset('base');
+</script>
+</body>
+</html>
