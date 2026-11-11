@@ -229,7 +229,7 @@ code { font-family: var(--mono); font-size: 0.875em; }
       </article>
       <article class="opt" style="--c: var(--s-b2)" aria-label="Backblaze B2 with Cloudflare in front">
         <h3>Backblaze B2 + Cloudflare, sizes at upload</h3>
-        <div class="k">Bills for</div><p>Storage ($6.95 per TB) and a small charge per read past a daily free amount. Serving through Cloudflare is free.</p>
+        <div class="k">Bills for</div><p>Storage only ($6.95 per TB, first 10 GB free). Reads and uploads are free, and serving through Cloudflare is free.</p>
         <div class="k">Good</div><ul><li>The cheapest storage once the site holds terabytes.</li><li>Same S3-style API as R2, so moving later is straightforward.</li></ul>
         <div class="k">Watch</div><ul><li>Two vendors and two bills.</li><li>At this app's current size the saving over R2 is cents.</li></ul>
       </article>
@@ -257,7 +257,7 @@ code { font-family: var(--mono); font-size: 0.875em; }
       <li>Bunny transfer uses the average size per photo load. R2 and B2 assume 10% of loads miss the CDN cache and read from storage.</li>
       <li>The two terabyte presets match an outside estimate (1 TB stored and 5 TB served a month at launch, 10 TB and 50 TB later). That's about 30 times this app's 10k-user scenario.</li>
       <li>Not counted: the one-time work to switch, Cloudflare Pages and Supabase, and moving photos from the old Cloudflare account.</li>
-      <li>Prices are list prices as of late 2026 from what we know of each vendor. Check each vendor's pricing page before deciding.</li>
+      <li>R2, B2 and Cloudflare Images prices were checked against each vendor's pricing page on November 11, 2026. Bunny prices were not rechecked.</li>
     </ul>
     <h3>Also looked at, and ruled out</h3>
     <ul class="fine">
@@ -320,7 +320,7 @@ function month(p, m) {
   const resize = Math.max(0, gbOrig - 10) * 0.015 + Math.max(0, seen * 2 - 5000) * 0.0005 + classB
     + Math.max(0, newPhotos - 1e6) / 1e6 * 4.5;
   const bunny = Math.max(1, gbOrig * 0.01 + loads * p.loadkb / 1e6 * 0.01) + 9.5;
-  const b2 = Math.max(0, gbAll - 10) * 0.00695 + Math.max(0, misses - 75000) / 10000 * 0.004;
+  const b2 = Math.max(0, gbAll - 10) * 0.00695;
   const presized = Math.max(0, gbAll - 10) * 0.015 + classB + Math.max(0, newPhotos * 3 - 1e6) / 1e6 * 4.5;
   return { m, users, photos, loads, seen, gbAll, cost: { images, resize, bunny, b2, presized } };
 }
