@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rigs &amp; Routes · theme kit explorer</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.6.0/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#B24E1F;--sink:#2D5A3F;--aink:#8A5A0F;--p:#C45B28;--s:#2D5A3F;--a:#E8A33C;--a1:#1A1916;--pt:#fff;--st:#fff;--at:#1A1916;--a1t:#fff;--ptint:#F6E6DA;--stint:#E7F0E2;--atint:#FAEEDA;--pdark:#9E4720;--bg:#F4F5F0;--t1:#1A1916;--t3:#555752;--t4:#6E706A;--bd:rgba(28,43,31,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:#EDEEE8;color:var(--t1);-webkit-font-smoothing:antialiased;font-size:14px}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid #1A1916;outline-offset:2px}
+.app{display:grid;grid-template-columns:340px 1fr;min-height:100vh}
+@media(max-width:960px){.app{grid-template-columns:1fr}}
+aside{background:#fff;border-right:1px solid rgba(0,0,0,.1);display:flex;flex-direction:column;max-height:100vh;position:sticky;top:0}
+@media(max-width:960px){aside{position:static;max-height:none}}
+.ah{padding:16px 16px 8px}
+.ah h1{font-family:'Bebas Neue';font-weight:400;font-size:28px;line-height:1}
+.ah p{color:var(--t4);font-size:12px;margin-top:4px;line-height:1.4}
+.ftabs{display:flex;gap:4px;padding:0 16px 6px;flex-wrap:wrap}
+.ftabs button{height:30px;padding:0 10px;border-radius:50px;border:1.5px solid rgba(0,0,0,.18);background:#fff;font-weight:700;font-size:12px}
+.ftabs button.on{background:#1A1916;border-color:#1A1916;color:#fff}
+.minr{display:flex;gap:4px;align-items:center;padding:0 16px 8px;font-size:12px;color:var(--t4);font-weight:600}
+.minr button{height:26px;padding:0 8px;border-radius:6px;border:1px solid rgba(0,0,0,.15);background:#fff;font-size:12px;font-weight:700}
+.minr button.on{background:#FFF4DC;border-color:#E8A33C;color:#7A5208}
+.list{overflow-y:auto;padding:4px 8px 16px}
+.grp{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t4);padding:10px 8px 4px}
+.optw{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:10px;border:2px solid transparent;cursor:pointer}
+.optw:hover{background:#F4F5F0}
+.optw.on{border-color:#1A1916;background:#F4F5F0}
+.optw .sw{display:flex;border-radius:6px;overflow:hidden;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.optw .sw i{width:12px;height:28px;display:block}.optw .sw i:first-child{width:22px}
+.optw .nm{flex:1;min-width:0}
+.optw b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.optw small{font-size:11px;color:var(--t4);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stars{display:inline-flex;gap:0}
+.stars button{border:none;background:none;padding:0 1px;font-size:15px;line-height:1;color:#C9CBC3}
+.stars button.on{color:#E8A33C}
+.stars.big button{font-size:22px;padding:0 2px}
+.stars button:hover{transform:scale(1.15)}
+.empty{padding:18px 10px;text-align:center;color:var(--t4);font-size:13px;line-height:1.5}
+main{padding:18px 22px 60px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.top h2{font-family:'Barlow Condensed';font-weight:700;font-size:24px;line-height:1.1}
+.top .sub{color:var(--t4);font-size:12px}
+.top .sp{flex:1}
+.tb{height:34px;padding:0 12px;border-radius:8px;border:1.5px solid #1A1916;background:#fff;font-weight:700;font-size:12px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+.tb:hover{background:#F4F5F0}
+.lab{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t4);margin-bottom:6px}
+.kit{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+@media(max-width:1200px){.kit{grid-template-columns:1fr}}
+.roles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:700px){.roles{grid-template-columns:1fr 1fr}}
+.role{border-radius:12px;overflow:visible;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative}
+.role .chip{height:72px;border-radius:12px 12px 0 0;border:none;width:100%;display:flex;align-items:flex-end;justify-content:space-between;padding:8px 10px;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:12px}
+.role .info{padding:8px 10px;display:flex;align-items:center;gap:6px}
+.role .info b{font-family:'Barlow Condensed';font-size:14px;letter-spacing:1px;text-transform:uppercase;flex:1}
+.role .info small{display:block;font-size:10px;color:var(--t4);font-weight:600}
+.role .sw2{width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,.15);background:#fff;font-size:14px;font-weight:700}
+.role .menu{position:absolute;right:6px;top:calc(100% - 4px);z-index:20;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:4px;width:170px}
+.role .menu .ml{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t4);padding:6px 8px 2px}
+.role .menu button{display:flex;gap:8px;align-items:center;width:100%;padding:7px 8px;border:none;background:none;border-radius:6px;font-size:13px;font-weight:600;text-align:left}
+.role .menu button:hover{background:#F4F5F0}
+.role .menu i{width:14px;height:14px;border-radius:4px;display:inline-block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.role .copied{position:absolute;left:10px;top:8px;font-size:10px;font-weight:700;background:#fff;color:#1A1916;border-radius:50px;padding:1px 7px;display:none}
+.role.ok .copied{display:block}
+.cr{font-size:10px;font-weight:700;opacity:.9}
+.shade{display:flex;height:10px;border-radius:0 0 0 0;overflow:hidden}
+.shade i{flex:1}
+.warn{font-size:12px;color:#7A5208;background:#FAEEDA;border-radius:8px;padding:6px 10px;margin-top:8px;display:none;line-height:1.4}
+.logos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lg{border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:center;height:62px}
+.lg svg{height:30px;width:auto;max-width:100%}
+.icons{display:flex;gap:6px;margin-top:8px}
+.icons div{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.icons svg{width:22px;height:auto}
+.toprated{display:flex;gap:6px;flex-wrap:wrap}
+.tr{display:flex;gap:6px;align-items:center;padding:4px 8px 4px 4px;border-radius:8px;border:1.5px solid rgba(0,0,0,.1);background:#fff;font-weight:700;font-size:12px}
+.tr.on{border-color:#1A1916}
+.tr .sw{display:flex;border-radius:4px;overflow:hidden}.tr .sw i{width:10px;height:20px;display:block}
+.tr em{font-style:normal;color:#C98A1E;font-size:11px}
+.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+@media(max-width:900px){.checks{grid-template-columns:1fr 1fr}}
+.ck{display:flex;align-items:center;gap:8px;background:#fff;border-radius:8px;padding:6px 8px;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.ck .sm{width:34px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0}
+.ck .t{flex:1;min-width:0;line-height:1.2}.ck .t small{display:block;color:var(--t4);font-size:10px}
+.ck .r{font-weight:700;font-size:11px;border-radius:50px;padding:1px 7px;white-space:nowrap}
+.ck .r.pass{background:#E7F0E2;color:#2D5A3F}.ck .r.ok{background:#FAEEDA;color:#7A5208}.ck .r.fail{background:#FBE9E6;color:#9B2C1F}
+.code{background:#1A1916;color:#E9EBE4;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;white-space:pre;overflow-x:auto}
+/* ---------- previews (flat, no gradients) ---------- */
+.prev{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:1100px){.prev{grid-template-columns:1fr}}
+.scr{background:var(--bg);border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column}
+.scr.wide{grid-column:1/-1}
+.scrh{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t4);padding:8px 12px;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
+.sbody{padding:16px}
+.x-nav{background:var(--a1);color:var(--a1t);display:flex;align-items:center;gap:16px;padding:0 16px;height:50px}
+.x-nav svg{height:22px;width:auto}
+.x-nav a{font-family:'Barlow Condensed';font-weight:600;font-size:15px;opacity:.85}
+.x-nav a.on{opacity:1;box-shadow:inset 0 -2px 0 var(--p);padding-bottom:3px}
+.x-nav .sp{flex:1}
+.x-nav .av{width:30px;height:30px;border-radius:50%;background:var(--a);color:var(--at);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.eye{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--pink)}
+.h{font-family:'Bebas Neue';font-weight:400;font-size:40px;line-height:1;color:var(--t1)}
+.h em{font-style:normal;color:var(--pink)}
+.ptext{font-size:14px;line-height:1.55;color:var(--t3)}
+.b{height:38px;padding:0 14px;border-radius:8px;border:1.5px solid transparent;font-family:'Barlow Condensed';font-weight:700;letter-spacing:1.2px;font-size:13px;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.b.p{background:var(--p);color:var(--pt)}.b.s{background:var(--s);color:var(--st)}.b.o{border-color:var(--sink);color:var(--sink);background:#fff}.b.a{background:var(--a);color:var(--at)}.b.d{background:var(--a1);color:var(--a1t)}.b.q{background:#fff;border-color:rgba(0,0,0,.18);color:var(--t1)}
+.b.sm{height:32px;font-size:12px;padding:0 10px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;align-items:center;padding:22px 18px}
+@media(max-width:700px){.hero{grid-template-columns:1fr}}
+.srch{display:flex;gap:6px;background:#fff;border-radius:10px;padding:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-top:14px;flex-wrap:wrap}
+.srch select,.srch input{height:36px;border:1px solid rgba(0,0,0,.15);border-radius:7px;padding:0 8px;background:#fff;flex:1;min-width:90px;font-size:13px}
+.img{border-radius:12px;overflow:hidden;display:block}
+.img svg{display:block;width:100%;height:100%}
+.img.ph{position:relative}
+.img.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.credit{font-size:11px;color:var(--t4);margin-top:8px}
+.credit a{color:var(--t3);text-decoration:underline}
+.chk{list-style:none;display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.chk li{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+.chk li span{width:18px;height:18px;border-radius:50%;background:var(--s);color:var(--st);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.gcard{background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.08);overflow:hidden}
+.gcard .ban{height:70px;background:var(--s);position:relative}
+.gcard .ban .img{position:absolute;inset:0;border-radius:0}
+.gcard .lt{position:absolute;left:12px;bottom:-18px;width:44px;height:44px;border-radius:10px;background:var(--a1);border:3px solid #fff;display:flex;align-items:center;justify-content:center}
+.gcard .lt svg{width:24px}
+.gcard .bd{padding:24px 12px 12px}
+.st3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.st3 div{background:var(--bg);border-radius:8px;padding:6px;text-align:center}
+.st3 b{display:block;font-family:'Bebas Neue';font-size:20px;line-height:1;color:var(--t1)}.st3 small{font-size:10px;color:var(--t4)}
+.ev{display:flex;gap:8px;align-items:center;margin-top:8px;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.08)}
+.date{width:38px;text-align:center;border-radius:6px;background:var(--a1);color:var(--a1t);padding:3px 0;font-size:9px;font-weight:700;line-height:1.1}
+.date b{display:block;font-size:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip2{height:30px;padding:0 12px;border-radius:50px;border:1.5px solid rgba(0,0,0,.16);background:#fff;font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+.chip2.on{background:var(--a1);border-color:var(--a1);color:var(--a1t)}
+.lc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media(max-width:700px){.lc{grid-template-columns:1fr}}
+.lcard{background:#fff;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);position:relative}
+.lcard .img{height:110px;border-radius:0}
+.lcard .bdg{position:absolute;left:8px;top:8px;font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;border-radius:50px;padding:2px 8px}
+.lcard .hrt{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--pink);font-size:15px}
+.lcard .bd{padding:10px}
+.lcard b{display:block;font-size:14px;line-height:1.25}
+.pr{font-family:'Bebas Neue';font-size:22px;line-height:1;color:var(--pink);margin-top:2px}
+.meta{font-size:12px;color:var(--t3)}
+.badge{display:inline-flex;gap:4px;align-items:center;font-size:11px;font-weight:700;border-radius:50px;padding:2px 8px}
+.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.sidebar{grid-template-columns:1fr}}
+.panel{background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.08);padding:12px}
+.seller{display:flex;gap:10px;align-items:center}
+.seller .av{width:38px;height:38px;border-radius:50%;background:var(--atint);color:var(--t1);display:flex;align-items:center;justify-content:center;font-weight:700}
+.trust{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:10px;background:var(--stint);margin-top:10px}
+.trust .ic{width:30px;height:30px;border-radius:8px;background:#fff;color:var(--sink);display:flex;align-items:center;justify-content:center;font-weight:800}
+.trust small{font-size:12px;color:var(--t3);line-height:1.4;display:block}
+.trust a{color:var(--sink);font-weight:700}
+.post .ph{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.post .av{width:34px;height:34px;border-radius:50%;background:var(--atint);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.po{position:relative;display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;border:1.5px solid rgba(0,0,0,.12);margin-top:6px;overflow:hidden;font-size:13px}
+.po i{position:absolute;left:0;top:0;bottom:0;background:var(--stint)}
+.po.mine{border-color:var(--s)}.po.mine i{background:var(--s);opacity:.22}
+.po span{position:relative}
+.acts{display:flex;gap:14px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);font-size:13px;color:var(--t3);font-weight:600}
+.acts .on{color:var(--pink)}
+.save{display:flex;gap:10px;align-items:center;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.08);padding:10px}
+.save .img{width:64px;height:50px;flex-shrink:0;border-radius:8px}
+.save .t{flex:1;min-width:0}
+.want{border:2px dashed var(--s);border-radius:12px;background:#fff;padding:12px;margin-top:10px}
+.want .wt{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--sink)}
+.want .bud{font-family:'Bebas Neue';font-size:22px;color:var(--sink);line-height:1}
+.fld{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.fld label{font-size:12px;font-weight:700;color:var(--t1)}
+.fld input,.fld select{height:38px;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:0 10px;background:#fff}
+.fld input.focus{border-color:var(--sink);box-shadow:0 0 0 3px var(--stint)}
+.fld input.err{border-color:#9B2C1F}
+.fld .e{font-size:11px;color:#9B2C1F}
+.tg{width:40px;height:22px;border-radius:50px;background:var(--p);position:relative;border:none;flex-shrink:0}
+.tg::after{content:'';position:absolute;top:3px;left:21px;width:16px;height:16px;border-radius:50%;background:#fff}
+.tg.off{background:#C9CBC3}.tg.off::after{left:3px}
+.foot{background:var(--a1);color:var(--a1t);padding:18px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:14px}
+@media(max-width:700px){.foot{grid-template-columns:1fr 1fr}}
+.foot h5{font-family:'Barlow Condensed';font-size:15px;margin-bottom:6px}
+.foot a{display:block;font-size:12px;opacity:.8;padding:2px 0}
+.foot .sub{display:flex;margin-top:6px}.foot .sub input{flex:1;min-width:0;height:34px;border:none;border-radius:6px 0 0 6px;padding:0 8px}.foot .sub button{height:34px;border:none;background:var(--p);color:var(--pt);border-radius:0 6px 6px 0;padding:0 10px;font-family:'Barlow Condensed';font-weight:700;letter-spacing:1px}
+.tabsx{display:flex;gap:4px;border-bottom:1px solid rgba(0,0,0,.1);margin-bottom:10px}
+.tabsx span{padding:8px 10px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--t3)}
+.tabsx span.on{color:var(--pink);box-shadow:inset 0 -2px 0 var(--pink)}
+.prev{grid-template-columns:1fr}
+.btnlist{display:flex;flex-direction:column;gap:10px}
+.bl{border-radius:10px;padding:12px;background:#fff}
+.bln{display:block;font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t4);margin-bottom:8px}
+.tl{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.ib{width:38px;height:38px;border-radius:50%;border:none;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.sec3{padding:34px 26px;text-align:center}
+.eyec{font-family:'Barlow';font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase}
+.hc{font-family:'Barlow Condensed';font-weight:700;font-size:38px;line-height:1.05;text-transform:uppercase;margin:6px 0 20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:left}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+@media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
+.hw{border-radius:8px;padding:22px 20px}
+.hwt{display:flex;justify-content:space-between;align-items:flex-start}
+.hwt i{font-size:30px}
+.num{font-family:'Barlow Condensed';font-weight:700;font-size:46px;line-height:.9}
+.hw b,.mv b,.tw b{display:block;font-family:'Barlow Condensed';font-weight:700;font-size:19px;text-transform:uppercase;margin:10px 0 8px}
+.hw p,.mv p{font-size:14px;line-height:1.6}
+.mv{border:1px solid;border-radius:12px;padding:22px 20px}
+.mv i{font-size:28px}
+.mv b{margin:10px 0 4px}
+.tw{background:#fff;color:#1A1916;border-radius:12px;padding:20px;display:flex;flex-direction:column}
+.tw p{font-size:14px;line-height:1.5;color:#3B3D3A}
+.mm{display:block;margin-top:14px;border-radius:8px;overflow:hidden;height:130px;border:1px solid rgba(0,0,0,.08)}
+.mm svg{width:100%;height:100%;display:block}
+.mm.likes{display:flex;align-items:center;gap:10px;padding:0 16px;font-size:13px;color:#3B3D3A}
+.avs{display:flex}.avs span{width:28px;height:28px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#1A1916}
+.avs span:first-child{margin-left:0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1A1916;color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:50;font-weight:600}
+.toast.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside>
+  <div class="ah"><h1>Theme kit</h1><p>75 palettes: Rugged, Social and Off-road. Click to preview, ↑ ↓ to step through, rate each one 1 to 5 stars (or press 1–5).</p></div>
+  <div class="ftabs" id="ftabs"></div>
+  <div class="minr" id="minr"></div>
+  <div class="list" id="list" role="listbox" aria-label="Color palettes"></div>
+ </aside>
+ <main>
+  <div class="top"><div><h2 id="pname"></h2><div class="sub" id="pdesc"></div></div><span class="stars big" id="bigstars" aria-label="Rate this theme"></span><span class="sp"></span><button class="tb" id="shuffle" title="Shuffle which color plays which role">⤨ Shuffle roles</button><button class="tb" id="reset">↺ Reset</button><button class="tb" id="copyCss">Copy CSS</button></div>
+  <section id="topSec"><div class="lab">Top rated · click to compare</div><div class="toprated" id="toprated"></div></section>
+  <div class="kit">
+   <section><div class="lab">Theme colors · click a color to copy it · ⇄ to swap roles</div><div class="roles" id="roles"></div><div class="warn" id="warn"></div><div class="checks" id="checks"></div></section>
+   <section><div class="lab">Logo</div><div class="logos" id="logos"></div><div class="icons" id="icons"></div></section>
+  </div>
+  <section><div class="lab">On the website · header, buttons, homepage sections, footer</div><div class="prev" id="prev"></div></section>
+  <section><div class="lab">CSS variables</div><div class="code" id="css"></div></section>
+ </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const PAL=[
+ ['Rust & Pine','Your current colors',  '#C45B28','#2D5A3F','#E8A33C','#1A1916'],
+ ['Canyon Clay','Warm red clay with olive','#B4532A','#4A5A40','#E3B26B','#2A2420'],
+ ['Sandstone Sunset','Bright orange, slate blue','#D2693C','#3F4E5A','#F2C27B','#241F1C'],
+ ['Juniper Forest','Green-led, rust as support','#2F5D3A','#B24E1F','#D8C08A','#16201A'],
+ ['Alpine Lake','Lake blue, rust and gold','#2F5D7C','#C45B28','#F2C14E','#162028'],
+ ['High Desert','Soft tan and sage','#B07A3E','#5B6B4F','#E9D7B2','#2B2A26'],
+ ['Basalt & Ember','Near-black lead, ember orange','#2B2B2B','#E0602F','#F4B860','#5A6A62'],
+ ['Moab Red','Deep red rock, navy','#A23B24','#2E4057','#E7B05C','#1D1A19'],
+ ['Glacier Blue','Cool blue with orange pop','#3C7A9E','#2D3A2E','#F0A04B','#141B21'],
+ ['Olive Drab','Military olive and copper','#5B6236','#C26A2E','#E8D3A2','#1E2117'],
+ ['Sagebrush','Muted sage, rust accent','#6E8060','#A3542A','#E6D5B8','#24291F'],
+ ['Copper Canyon','Copper and deep teal','#B87333','#2F4A4A','#F2D08A','#22201C'],
+ ['Midnight Trail','Navy lead, amber and sage','#1F2A44','#D9822B','#7FA88E','#0F1420'],
+ ['Slickrock','Coral orange, denim blue','#E07A3F','#3D5A80','#F6D7A7','#293241'],
+ ['Pine & Granite','Pine green and stone gray','#355E3B','#7C7C78','#D8A657','#1C1F1D'],
+ ['Burnt Orange','Bold orange, dark moss','#CC5500','#2E3B2F','#F2B134','#191A17'],
+ ['Marsh Teal','Teal lead, terracotta','#2A6F6A','#D1693A','#F1C27D','#152523'],
+ ['Rusted Steel','Oxide red and gunmetal','#8E3B26','#4A4E54','#D9A15B','#1B1C1E'],
+ ['Golden Hour','Gold lead, forest and rust','#C98A1E','#3A4D39','#B24E1F','#20201C'],
+ ['Monument Valley','Red rock with sage','#B5462F','#6E8B74','#F0C987','#2A1E1A'],
+ ['Arctic Expedition','Deep teal and bright orange','#0F4C5C','#E36414','#FB8B24','#0B1A1F'],
+ ['Twilight Mesa','Dusky plum and terracotta','#5E3A57','#D9734E','#F2C88B','#1E1620'],
+ ['Tundra Gray','Cool gray, copper and moss','#4B5D67','#C9733B','#A8C5A0','#1C2227'],
+ ['Campfire','Ember red and charcoal blue','#B23A2E','#2F3E46','#F4A261','#1A1A1A'],
+ ['Overland Khaki','Khaki, forest and orange','#A0844F','#2E4A3A','#D2691E','#25231E'],
+ ["Trail Blue", "Friendly blue, sage, warm orange", "#2F6EB5", "#5C7A6A", "#F0A35E", "#1D2430"],
+ ["Sage Social", "Calm green with dusty blue", "#3D7A64", "#6A7E98", "#E5B567", "#1F2926"],
+ ["Soft Rust", "Your rust, toned down", "#B9653F", "#5E7466", "#E6B97A", "#23272B"],
+ ["Slate & Clay", "Blue-gray lead, clay accent", "#46637A", "#B97556", "#E5CFA6", "#1D242A"],
+ ["Dusty Teal", "Soft teal and copper", "#3A7D84", "#A86B4B", "#F0C987", "#1A2528"],
+ ["Muted Ember", "Warm orange with steel blue", "#C06A45", "#4E6E80", "#F3D2A2", "#22201F"],
+ ["Lakeside", "Clear blue and soft green", "#3B6EA5", "#7A9A82", "#F4B860", "#1B2330"],
+ ["Warm Graphite", "Graphite lead, rust and sage", "#3A3F45", "#C8714A", "#8FB09B", "#16191C"],
+ ["Pine Social", "Pine green with denim", "#2F6B4F", "#4F6D8F", "#E8A55B", "#1A231F"],
+ ["Canyon Mist", "Muted clay and gray-green", "#A9644A", "#7C8F8A", "#EED9BD", "#26221F"],
+ ["Fogline", "Foggy blue, tan and sage", "#5A7489", "#C0855E", "#A9C1A3", "#1F262C"],
+ ["Ridge Blue", "Deep blue, leather brown", "#335C81", "#9C6B4E", "#DDB373", "#18212A"],
+ ["Moss & Cream", "Moss green, cream, saddle", "#5C7A4E", "#B07B56", "#EADFC8", "#21251D"],
+ ["Terracotta Soft", "Soft terracotta, blue-gray", "#C7704B", "#607D8B", "#F1D6B8", "#262A2D"],
+ ["Night Sky", "Navy lead, warm and sage", "#2E3A59", "#D08A5A", "#9CB7A4", "#12172A"],
+ ["Basecamp", "Green-gray with tan", "#4C6B5C", "#C17F59", "#EBC38A", "#1E2522"],
+ ["Coastal Dune", "Sea blue and sand", "#3E7A8C", "#C9A27E", "#F2E3C9", "#1C2A30"],
+ ["Ochre Calm", "Soft ochre with slate teal", "#C2913E", "#4D6A6D", "#E9DCC3", "#222524"],
+ ["Red Rock Muted", "Dusty red rock and sage", "#A85A4A", "#6F8580", "#E8C9A4", "#241F1E"],
+ ["Spruce", "Spruce teal and copper", "#2E5E5A", "#C27C4E", "#D9C9A6", "#172322"],
+ ["Indigo Trail", "Muted indigo, warm tan", "#3D4F8C", "#C98A55", "#9DB8A0", "#181C2E"],
+ ["Clay & Charcoal", "Clay orange and charcoal", "#B5694A", "#3E4247", "#E5D3BE", "#1A1C1E"],
+ ["Morning Fog", "Soft blue, latte, mint", "#6C8CA3", "#B88A65", "#CFD9C9", "#23292E"],
+ ["Evergreen Social", "Deep green with peach", "#1F6F5C", "#D08463", "#F0C68E", "#14211E"],
+ ["Desert Bloom", "Muted coral and teal-gray", "#C27C6B", "#5F7C7A", "#EFD7B5", "#26201F"]];
+const OFF=[
+ ['Woodland Camo','Forest green, bark brown, khaki','#4B5D3A','#6B4F35','#C2B280','#1F2418'],
+ ['Desert Camo','Sand, tan and coffee','#B89A68','#7A5C3E','#E6D8B8','#3B3226'],
+ ['Multicam','Olive, brown and khaki blend','#7C7D52','#6E5A3F','#C9B98F','#2A2A22'],
+ ['Coyote Brown','Coyote tan with ranger green','#81613C','#4F5B3A','#D8C3A0','#241E17'],
+ ['Ranger Green','Ranger green and rust','#4A5A3C','#A0522D','#CDBE95','#1D2218'],
+ ['OD Green','Olive drab, gunmetal, amber','#556B2F','#3E3E3A','#E0A030','#1C1F17'],
+ ['Tactical Black','Black gear with a hot orange','#2B2D2F','#6B705C','#E07B39','#121314'],
+ ['Recovery Orange','Safety orange recovery gear','#E2581A','#3B4430','#F2C14E','#1A1C17'],
+ ['Mud Season','Wet mud and moss','#6B4E37','#4D5B44','#B89B72','#211A15'],
+ ['Red Dirt','Red clay trails and sage','#9C3D27','#59614A','#D9A574','#221A17'],
+ ['Rock Crawler','Granite gray with rust','#5E6266','#C45B28','#A3A68A','#1A1C1E'],
+ ['Sand Dune','Dune gold and canvas','#C9984E','#6A5B44','#F3E3C3','#2B241B'],
+ ['Winch Line','Synthetic rope red and steel','#B3202A','#2F3337','#E6C26E','#141516'],
+ ['Diff Lock Yellow','Warning yellow and olive','#D9A800','#2E3426','#7A7F6A','#161813'],
+ ['Sarge Green','Classic army green and leather','#5B6F4A','#9E7B4F','#DCC9A2','#1F241B'],
+ ['Gunmetal & Brass','Gunmetal, brass and sage','#3D4247','#B08D57','#8E9B7A','#16181A'],
+ ['Bronze Wheels','Bronze rims, dark green','#8C6A3F','#2F3A2E','#C9B08A','#191C17'],
+ ['Trail Rated','Khaki and black, rust pop','#A8916A','#2E2E2B','#C45B28','#1A1A18'],
+ ['Basalt Camo','Volcanic grays','#4E4F4B','#6F6A5A','#A39E8A','#1E1F1D'],
+ ['Tundra Camo','Snow, slate and ice','#7E898C','#4F5D5E','#D9DEDC','#232A2C'],
+ ['Swamp','Bayou green and mud','#3F4A2F','#6E5C3B','#A3A36B','#181D14'],
+ ['Copper Ore','Copper with dark pine','#A55D35','#3C4B3F','#D7B27A','#1E1C19'],
+ ['Night Ops','Night green, moss and brass','#2B3A30','#8DA05E','#C9A44A','#0E120F'],
+ ['Overland Tan','Tan canvas and orange','#A88F68','#4B5A45','#D86C2C','#26221B'],
+ ['Hunter Orange','Blaze orange and timber','#E06A1B','#4A3F2E','#B7A07A','#1C1814']];
+PAL.push(...OFF);
+const SETS=[['rugged','Rugged',0,25,'Rugged · bold and earthy'],['social','Social',25,50,'Social · calmer, app-like'],['offroad','Off-road',50,75,'Off-road · trail and camo']];
+const setOf=i=>SETS.find(x=>i>=x[2]&&i<x[3]);
+const ROLES=['Primary','Secondary','Accent','Accent 1'];
+const USE=['Buttons, prices, active tabs','Links, success, secondary buttons','Badges, highlights, the &','Nav, footer, dark sections'];
+const MARK=`<g fill="MARK"><path d="M123.144,466.776c-.891.318-2.237-1.09-2.008-2.008l2.677-10.711a3.543,3.543,0,0,1,2.008-2.092l1.422-.67a2.633,2.633,0,0,0,1.422-2.343l-.167-2.761c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.975,2.975,0,0,1,1.422,1.925l2.845,10.293c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.151-2.594,1.088l-.084,4.351a2.164,2.164,0,0,1-1.339,1.841Z" transform="translate(-102.817 -425.26)"/><path d="M102.146,457.4c.078-.75,1.117-1.823,1.758-1.424l6.4,3.981c.524.326.573,1.205.419,1.8l-1.926,7.459a1.787,1.787,0,0,1-2.3.964l-4.143-2.724a2.666,2.666,0,0,1-1-2.389Z" transform="translate(-91.85 -431.549)"/><path d="M87.9,458.56a.8.8,0,0,1,1,.628l-.377,7.5a3.423,3.423,0,0,1-1.13,2.766l-5.776,3.6c-.468.293-1.59.091-1.59-.46v-8.214a2.792,2.792,0,0,1,1.507-2.138Z" transform="translate(-80.033 -433.003)"/><path d="M160.628,439.272c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.981c-.523.326-.572,1.205-.418,1.8l1.925,7.459a1.789,1.789,0,0,0,2.3.963l4.143-2.724a2.664,2.664,0,0,0,1-2.388Z" transform="translate(-119.935 -421.495)"/><path d="M175.609,440.432a.805.805,0,0,0-1,.629l.377,7.5a3.431,3.431,0,0,0,1.129,2.766l5.776,3.6c.468.293,1.59.091,1.59-.46v-8.214a2.791,2.791,0,0,0-1.507-2.137Z" transform="translate(-132.489 -422.949)"/><path d="M123.144,430.249c-.891.318-2.237-1.09-2.008-2.008l2.677-10.711a3.544,3.544,0,0,1,2.008-2.092l1.422-.67a2.632,2.632,0,0,0,1.422-2.343l-.167-2.762c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.974,2.974,0,0,1,1.422,1.925l2.845,10.292c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.15-2.594,1.088l-.084,4.351a2.165,2.165,0,0,1-1.339,1.841Z" transform="translate(-102.817 -405)"/><path d="M102.146,420.872c.078-.75,1.117-1.823,1.758-1.425l6.4,3.982c.524.325.573,1.2.419,1.8l-1.926,7.459a1.788,1.788,0,0,1-2.3.964l-4.143-2.724a2.664,2.664,0,0,1-1-2.388Z" transform="translate(-91.85 -411.288)"/><path d="M87.9,422.033c.342-.2,1.024.234,1,.628l-.377,7.5a3.425,3.425,0,0,1-1.13,2.766l-5.776,3.6c-.468.293-1.59.091-1.59-.461v-8.213a2.791,2.791,0,0,1,1.507-2.137Z" transform="translate(-80.033 -412.743)"/><path d="M160.628,402.745c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.981c-.523.326-.572,1.2-.418,1.8l1.925,7.459a1.789,1.789,0,0,0,2.3.964l4.143-2.724a2.665,2.665,0,0,0,1-2.389Z" transform="translate(-119.935 -401.234)"/><path d="M175.609,403.906a.8.8,0,0,0-1,.629l.377,7.5a3.43,3.43,0,0,0,1.129,2.766l5.776,3.6c.468.293,1.59.091,1.59-.461v-8.213a2.791,2.791,0,0,0-1.507-2.138Z" transform="translate(-132.489 -402.689)"/><path d="M123.144,503.3c-.891.319-2.237-1.09-2.008-2.008l2.677-10.711a3.544,3.544,0,0,1,2.008-2.092l1.422-.67a2.633,2.633,0,0,0,1.422-2.343l-.167-2.761c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.975,2.975,0,0,1,1.422,1.925l2.845,10.292c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.15-2.594,1.087l-.084,4.352a2.164,2.164,0,0,1-1.339,1.841Z" transform="translate(-102.817 -445.52)"/><path d="M102.146,493.925c.078-.75,1.117-1.823,1.758-1.425l6.4,3.981c.524.326.573,1.205.419,1.8l-1.926,7.459a1.788,1.788,0,0,1-2.3.964l-4.143-2.724a2.665,2.665,0,0,1-1-2.389Z" transform="translate(-91.85 -451.809)"/><path d="M87.9,495.086a.8.8,0,0,1,1,.628l-.377,7.5a3.423,3.423,0,0,1-1.13,2.766l-5.776,3.6c-.468.292-1.59.091-1.59-.461v-8.214a2.791,2.791,0,0,1,1.507-2.137Z" transform="translate(-80.033 -453.263)"/><path d="M160.628,475.8c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.98c-.523.326-.572,1.206-.418,1.8l1.925,7.459a1.788,1.788,0,0,0,2.3.964l4.143-2.724a2.664,2.664,0,0,0,1-2.388Z" transform="translate(-119.935 -441.755)"/><path d="M175.609,476.958a.805.805,0,0,0-1,.629l.377,7.5a3.429,3.429,0,0,0,1.129,2.766l5.776,3.6c.468.292,1.59.09,1.59-.461v-8.213a2.791,2.791,0,0,0-1.507-2.137Z" transform="translate(-132.489 -443.208)"/></g>`;
+const logo=(mark,word,amp)=>`<svg viewBox="0 0 264.25 57.827" role="img" aria-label="Rigs and Routes logo">${MARK.replace('MARK',mark)}<text transform="translate(60.25 42.692)" fill="${word}" font-size="32" font-family="Oswald, 'Bebas Neue', Impact, sans-serif" font-weight="700" textLength="200" lengthAdjust="spacingAndGlyphs"><tspan x="0" y="0">RIGS </tspan><tspan fill="${amp}">&amp;</tspan><tspan> ROUTES</tspan></text></svg>`;
+const icon=mark=>`<svg viewBox="0 0 58 58" aria-hidden="true">${MARK.replace('MARK',mark)}</svg>`;
+const hexRgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lum=h=>{const c=hexRgb(h).map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+const contrast=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const onColor=h=>contrast(h,'#FFFFFF')>=3?'#FFFFFF':'#1A1916';
+/* darken a color until it reads as text on a light surface */
+const ink=(h,bg='#FFFFFF',min=4.5)=>{let c=h,w=0;while(contrast(c,bg)<min&&w<.9){w+=.05;c=mix(h,'#000000',w)}return c};
+const mix=(h,t,w)=>'#'+hexRgb(h).map((v,i)=>Math.round(v*(1-w)+hexRgb(t)[i]*w).toString(16).padStart(2,'0')).join('').toUpperCase();
+const grade=r=>r>=7?'AAA':r>=4.5?'AA':r>=3?'AA large':'Low';
+/* state + storage */
+let cur=0,view='all',minR=0,menu=null;
+let RATE={},ORDER={};
+try{RATE=JSON.parse(localStorage.getItem('rr-theme-ratings')||'{}');ORDER=JSON.parse(localStorage.getItem('rr-theme-order')||'{}');
+ const old=JSON.parse(localStorage.getItem('rr-theme-favs')||'[]');old.forEach(i=>{if(!RATE[i])RATE[i]=4})}catch(e){}
+const save=()=>{try{localStorage.setItem('rr-theme-ratings',JSON.stringify(RATE));localStorage.setItem('rr-theme-order',JSON.stringify(ORDER))}catch(e){}};
+const order=i=>ORDER[i]||[0,1,2,3];
+const colors=(i=cur)=>{const base=PAL[i].slice(2),o=order(i);return o.map(k=>base[k])};
+const visible=()=>{let xs=PAL.map((_,i)=>i);if(view==='rated')xs=xs.filter(i=>RATE[i]>=Math.max(1,minR)).sort((a,b)=>(RATE[b]-RATE[a])||a-b);else{if(view!=='all'){const s=SETS.find(x=>x[0]===view);xs=xs.filter(i=>i>=s[2]&&i<s[3])}if(minR)xs=xs.filter(i=>(RATE[i]||0)>=minR)}return xs};
+const starsHtml=(i,big)=>`<span class="stars${big?' big':''}" role="radiogroup" aria-label="Rating for ${PAL[i][0]}">${[1,2,3,4,5].map(n=>`<button class="${(RATE[i]||0)>=n?'on':''}" data-rate="${i}:${n}" role="radio" aria-checked="${RATE[i]===n}" aria-label="${n} star${n>1?'s':''}" title="${n} star${n>1?'s':''}">★</button>`).join('')}</span>`;
+/* flat illustrations (no gradients) */
+function scene(kind,h){const sky={dawn:'#E9D9C4',day:'#D7E3E8',dusk:'#E7C9B0'}[kind]||'#DCE4E0';
+ return `<svg viewBox="0 0 400 ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="${h}" fill="${sky}"/><circle cx="320" cy="${h*.28}" r="${h*.12}" fill="#F3E7CF"/><path d="M0 ${h*.62} L70 ${h*.38} L130 ${h*.55} L210 ${h*.3} L290 ${h*.52} L360 ${h*.36} L400 ${h*.48} L400 ${h} L0 ${h}Z" fill="#8E9A86"/><path d="M0 ${h*.75} L90 ${h*.58} L180 ${h*.72} L260 ${h*.6} L400 ${h*.74} L400 ${h} L0 ${h}Z" fill="#6E7B66"/><rect y="${h*.86}" width="400" height="${h*.14}" fill="#5A5246"/>${kind!=='none'?`<g transform="translate(130 ${h*.56}) scale(${h/200})"><rect x="0" y="40" width="140" height="38" rx="8" fill="#3B3D3A"/><rect x="20" y="14" width="78" height="32" rx="6" fill="#3B3D3A"/><rect x="28" y="20" width="28" height="18" rx="3" fill="#B9C8D2"/><rect x="62" y="20" width="28" height="18" rx="3" fill="#B9C8D2"/><rect x="18" y="6" width="84" height="6" rx="2" fill="#2A2B29"/><circle cx="32" cy="80" r="17" fill="#1A1916"/><circle cx="112" cy="80" r="17" fill="#1A1916"/><circle cx="32" cy="80" r="7" fill="#8C8C86"/><circle cx="112" cy="80" r="7" fill="#8C8C86"/></g>`:''}</svg>`}
+
+const PX={
+ jeepRoad:{id:2432198,u:'https://images.pexels.com/photos/2432198/pexels-photo-2432198.jpeg?auto=compress&cs=tinysrgb&w=1200',alt:'A classic jeep parked on a sandy road surrounded by trees'},
+ jeepBeach:{id:12308279,u:'https://images.pexels.com/photos/12308279/pexels-photo-12308279.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'Jeep driving along a sandy beach on a cloudy day'},
+ desertRoad:{id:27878413,u:'https://images.pexels.com/photos/27878413/pexels-photo-27878413/free-photo-of-a-car-driving-down-a-dirt-road-in-the-desert.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'A car driving down a dirt road in the desert'},
+ camperDesert:{id:3443255,u:'https://images.pexels.com/photos/3443255/pexels-photo-3443255.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'Campervan driving through an arid desert under a clear sky'},
+ camperRocks:{id:16824299,u:'https://images.pexels.com/photos/16824299/pexels-photo-16824299/free-photo-of-man-posing-by-camper.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'Man standing by a camper in front of eroded rock formations'},
+ jeepsSurf:{id:36486464,u:'https://images.pexels.com/photos/36486464/pexels-photo-36486464/free-photo-of-adventure-beach-scene-with-off-road-vehicles.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'Off-road vehicles parked on a sunny beach'},
+ surfCar:{id:14110177,u:'https://images.pexels.com/photos/14110177/pexels-photo-14110177.jpeg?auto=compress&cs=tinysrgb&w=600',alt:'A car with surfboards on its roof on a sandy beach road'},
+ rvDry:{id:8243201,u:'https://images.pexels.com/photos/8243201/pexels-photo-8243201.jpeg?auto=compress&cs=tinysrgb&w=800',alt:'An RV parked in a dry landscape under a blue sky'}};
+const photo=(k,h,fb='day')=>{const x=PX[k];return `<span class="img ph" style="height:${typeof h==='number'?h+'px':h}">${scene(fb,typeof h==='number'?h:200)}<img src="${x.u}" alt="${x.alt}" loading="lazy" onerror="this.remove()"></span>`};
+const lift=(h,bg,min=3)=>{let c=h,w=0;while(contrast(c,bg)<min&&w<.9){w+=.05;c=mix(h,'#FFFFFF',w)}return c};
+const miniMap=(kind)=>{const land={plan:'#CFE3B8',off:'#EEF0EA',rec:'#D9C7A3'}[kind],line={plan:'#9C7A4C',off:'#A8B0A0',rec:'#A8916A'}[kind];
+ const topo=[...Array(9)].map((_,i)=>`<ellipse cx="${150+i*3}" cy="${75}" rx="${20+i*16}" ry="${10+i*8}" fill="none" stroke="${line}" stroke-width=".8" opacity=".55"/>`).join('');
+ if(kind==='plan')return `<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="${land}"/>${topo}<path d="M20 50 L60 60 L80 40 L120 55 L115 100 L140 130" fill="none" stroke="#C45B28" stroke-width="3" stroke-linecap="round"/><path d="M140 130 L170 90 L210 85" fill="none" stroke="#3E8BD0" stroke-width="3" stroke-linecap="round"/><path d="M210 85 L230 40 L250 20 M230 40 L240 120" fill="none" stroke="#E2B12C" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="50" r="5" fill="#2D5A3F" stroke="#fff" stroke-width="2"/><circle cx="240" cy="120" r="5" fill="#7B3FA6" stroke="#fff" stroke-width="2"/></svg>`;
+ if(kind==='off')return `<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="${land}"/>${topo}<path d="M0 40 C60 60 90 20 150 50 S240 90 300 70" fill="none" stroke="#8FB6D9" stroke-width="2"/><rect x="70" y="25" width="170" height="100" rx="6" fill="rgba(255,255,255,.25)" stroke="#C45B28" stroke-width="2.5"/><path d="M90 70 L120 85 L150 80 L190 65 L220 68" fill="none" stroke="#C45B28" stroke-width="3" stroke-linecap="round"/><circle cx="90" cy="70" r="5" fill="#2D5A3F" stroke="#fff" stroke-width="2"/><circle cx="220" cy="68" r="5" fill="#1A1916" stroke="#fff" stroke-width="2"/></svg>`;
+ return `<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="${land}"/>${topo}<path d="M0 105 C60 100 120 115 170 95 S220 60 240 45" fill="none" stroke="#2A2620" stroke-width="2"/><g transform="translate(232 36) rotate(-35)"><rect x="-10" y="-18" width="20" height="36" rx="4" fill="#2F4A57"/><rect x="-8" y="-12" width="16" height="9" rx="2" fill="#9FB3C4"/></g><rect x="6" y="6" width="82" height="16" rx="3" fill="#fff"/><circle cx="14" cy="14" r="3" fill="#E5483B"/><text x="22" y="18" font-size="9" font-family="Arial" font-weight="700" fill="#1A1916">4:15:56</text><rect x="74" y="9" width="10" height="10" rx="2" fill="#E5483B"/></svg>`};
+function previews(c){const [P,S,A,A1]=c;
+ const DK=A1, card=mix(A1,'#FFFFFF',.12), line=mix(A1,'#FFFFFF',.18), onDk=onColor(A1), mut=onDk==='#FFFFFF'?'rgba(255,255,255,.72)':'rgba(26,25,22,.7)';
+ const hiDk=lift(P,DK,3), hiCard=lift(P,card,3), acDk=lift(A,DK,3), pInk=ink(P,'#FFFFFF'), sInk=ink(S,'#FFFFFF');
+ const nav=`<div class="x-nav">${logo(P,onColor(A1),hiDk)}<span class="sp"></span><a class="on" style="box-shadow:inset 0 -2px 0 ${hiDk}">Classifieds</a><a>Gear</a><a>Trips</a><a>Community</a><span class="av">CY</span></div>`;
+ const steps1=[['ti-list-check','Create your listing','List your rig or trailer with full mod details: brand, model, condition.'],['ti-search','Search & filter','Find vehicles by specific mods, price range, location, or vehicle type.'],['ti-arrows-right-left','Compare gear','Browse the gear catalog, compare specs across brands, and find the right parts.'],['ti-heart-handshake','Connect & buy','Message sellers directly, buy through trusted partners, and hit the trail.']];
+ const steps2=[['ti-link','Share your group page','Post the link in your Facebook group or Discord.'],['ti-file-text','Set your rules','Members agree before they join.'],['ti-calendar-plus','Post the next run','RSVPs and the roster fill in.']];
+ const steps3=[['ti-route-2','Plan the route','Build it, or clone a route the community already ran.','plan'],['ti-cloud-download','Save it offline','Download the map area before you lose signal.','off'],['ti-player-record','Record the trail','Time, miles and your exact line, ready to export.','rec'],['ti-users-group','Share with the group',"Post the trip to your group's feed.",null]];
+ return `
+ <div class="scr wide"><div class="scrh">Header</div>${nav}</div>
+ <div class="scr wide"><div class="scrh">Buttons the site uses</div><div class="sbody btnlist">
+  <div class="bl"><span class="bln">On light pages</span><div class="row"><button class="b p">Message seller</button><button class="b s">Join group</button><button class="b o">Browse listings</button><button class="b a">Get featured</button><button class="b d">View expedition</button><button class="b q">Cancel</button><button class="b p" disabled style="opacity:.4;cursor:not-allowed">Disabled</button><button class="b p sm">Small</button><a class="tl" style="color:${pInk}">Text link →</a></div></div>
+  <div class="bl" style="background:${DK};color:${onDk}"><span class="bln" style="color:${mut}">On dark sections</span><div class="row"><button class="b" style="background:${P};color:${onColor(P)}">Start your group free</button><button class="b" style="background:${A};color:${onColor(A)}">RSVP</button><button class="b" style="background:transparent;border-color:${onDk==='#FFFFFF'?'rgba(255,255,255,.5)':'rgba(0,0,0,.4)'};color:${onDk}">Learn more</button><button class="b" style="background:${onDk};color:${A1}">Sign in</button><a class="tl" style="color:${hiDk}">Text link →</a></div></div>
+  <div class="bl"><span class="bln">Icon and pill buttons</span><div class="row"><button class="ib" style="background:${P};color:${onColor(P)}" aria-label="Record"><i class="ti ti-player-record"></i></button><button class="ib" style="background:#fff;border:1.5px solid rgba(0,0,0,.18);color:${pInk}" aria-label="Save"><i class="ti ti-heart"></i></button><button class="ib" style="background:${S};color:${onColor(S)}" aria-label="Share"><i class="ti ti-share"></i></button><span class="chip2 on">All</span><span class="chip2">Vehicles</span><span class="chip2" style="background:${mix(P,'#FFFFFF',.86)};border-color:transparent;color:${ink(P,mix(P,'#FFFFFF',.86))}">For sale</span></div></div>
+ </div></div>
+ <div class="scr wide"><div class="scrh">Homepage · How it works</div><div class="sec3" style="background:${DK};color:${onDk}"><div class="eyec" style="color:${mut}">How it works</div><div class="hc">List it. Find it. Build it.</div>
+  <div class="g4">${steps1.map((x,i)=>`<div class="hw" style="background:${card}"><div class="hwt"><i class="ti ${x[0]}" style="color:${hiCard}"></i><span class="num" style="color:${hiCard}">0${i+1}</span></div><b>${x[1]}</b><p style="color:${mut}">${x[2]}</p></div>`).join('')}</div></div></div>
+ <div class="scr wide"><div class="scrh">Homepage · Moving your club over</div><div class="sec3" style="background:${DK};color:${onDk};text-align:left"><div class="eyec" style="color:${mut}">Moving your club over</div><div class="hc" style="text-align:left">Up and running <span style="color:${hiDk}">in an evening</span></div>
+  <div class="g3">${steps2.map(x=>`<div class="mv" style="border-color:${line}"><i class="ti ${x[0]}" style="color:${acDk}"></i><b>${x[1]}</b><p style="color:${mut}">${x[2]}</p></div>`).join('')}</div><button class="b" style="background:${P};color:${onColor(P)};margin-top:16px">Start your group free</button></div></div>
+ <div class="scr wide"><div class="scrh">Homepage · How a trip works</div><div class="sec3" style="background:${DK};color:${onDk}"><div class="eyec" style="color:${mut}">How a trip works</div><div class="hc">Plan it. Drive it. <span style="color:${hiDk}">Share it.</span></div>
+  <div class="g4">${steps3.map((x,i)=>`<div class="tw"><div class="hwt"><i class="ti ${x[0]}" style="color:${sInk}"></i><span class="num" style="color:${pInk}">0${i+1}</span></div><b>${x[1]}</b><p>${x[2]}</p>${x[3]?`<span class="mm">${miniMap(x[3])}</span>`:`<span class="mm likes"><span class="avs"><span style="background:${mix(A,'#FFFFFF',.6)}">JP</span><span style="background:${mix(S,'#FFFFFF',.7)}">MR</span></span>Likes and comments</span>`}</div>`).join('')}</div>
+  <button class="b" style="background:${P};color:${onColor(P)};margin-top:18px">Plan your first trip</button></div></div>
+ <div class="scr wide"><div class="scrh">Footer</div><div class="foot"><div>${logo(P,onColor(A1),hiDk).replace('<svg ','<svg style="height:22px;width:auto" ')}<p style="font-size:12px;opacity:.75;margin-top:8px;line-height:1.5">Buy and sell rigs and gear, plan trips, find your crew.</p></div><div><h5>Marketplace</h5><a>Browse vehicles</a><a>Sell your gear</a><a>Wanted</a></div><div><h5>Community</h5><a>Groups</a><a>Events</a><a>Forums</a></div><div><h5>Subscribe</h5><a>Trail news and new features</a><div class="sub"><input placeholder="email@domain.com" aria-label="Email"><button>JOIN</button></div></div></div></div>`}
+function draw(){
+ const [P,S,A,A1]=colors();const pal=PAL[cur],set=setOf(cur);
+ const r=document.documentElement.style;[['--p',P],['--s',S],['--a',A],['--a1',A1],['--pt',onColor(P)],['--st',onColor(S)],['--at',onColor(A)],['--a1t',onColor(A1)],['--ptint',mix(P,'#FFFFFF',.86)],['--stint',mix(S,'#FFFFFF',.86)],['--atint',mix(A,'#FFFFFF',.78)],['--pdark',mix(P,'#000000',.2)],['--pink',ink(P,'#F4F5F0')],['--sink',ink(S,'#F4F5F0')],['--aink',ink(A,'#F4F5F0')]].forEach(([k,v])=>r.setProperty(k,v));
+ const rated=PAL.map((_,i)=>i).filter(i=>RATE[i]);
+ document.getElementById('ftabs').innerHTML=[['all','All 75'],...SETS.map(s=>[s[0],`${s[1]} 25`]),['rated',`★ Rated ${rated.length}`]].map(t=>`<button class="${view===t[0]?'on':''}" data-view="${t[0]}">${t[1]}</button>`).join('');
+ document.getElementById('minr').innerHTML=`Show ${[0,3,4,5].map(n=>`<button class="${minR===n?'on':''}" data-min="${n}">${n?'★'+n+(n<5?'+':''):'Any'}</button>`).join('')}`;
+ const vis=visible();
+ document.getElementById('list').innerHTML=vis.length?vis.map(i=>{const x=PAL[i],cs=colors(i);const hdr=view==='all'&&!minR&&[0,25,50].includes(i)?`<div class="grp">${setOf(i)[4]}</div>`:'';return hdr+`<div class="optw${i===cur?' on':''}" data-i="${i}" role="option" aria-selected="${i===cur}" tabindex="0"><span class="sw">${cs.map(h=>`<i style="background:${h}"></i>`).join('')}</span><span class="nm"><b>${String(i+1).padStart(2,'0')} · ${x[0]}</b><small>${x[1]}</small></span>${starsHtml(i)}</div>`}).join(''):`<div class="empty">${view==='rated'?'Nothing rated yet.<br>Tap the stars next to a palette, or press 1–5.':'No palettes match that rating.'}</div>`;
+ document.getElementById('pname').textContent=`${String(cur+1).padStart(2,'0')} · ${pal[0]}`;
+ document.getElementById('pdesc').textContent=`${set[1]} · ${pal[1]}${ORDER[cur]?' · roles shuffled':''}`;
+ document.getElementById('bigstars').innerHTML=starsHtml(cur,true).replace(/^<span class="stars big"[^>]*>|<\/span>$/g,'');
+ document.getElementById('topSec').style.display=rated.length?'':'none';
+ document.getElementById('toprated').innerHTML=rated.sort((a,b)=>(RATE[b]-RATE[a])||a-b).slice(0,12).map(i=>`<button class="tr${i===cur?' on':''}" data-i="${i}"><span class="sw">${colors(i).map(h=>`<i style="background:${h}"></i>`).join('')}</span>${PAL[i][0]} <em>${'★'.repeat(RATE[i])}</em></button>`).join('');
+ const vals=[P,S,A,A1];
+ document.getElementById('roles').innerHTML=vals.map((h,k)=>{const fg=onColor(h),cr=contrast(h,fg);return `<div class="role"><button class="chip" data-hex="${h}" style="background:${h};color:${fg}" aria-label="Copy ${ROLES[k]} ${h}"><span class="copied">Copied</span><span>${h}</span><span class="cr" title="${fg==='#FFFFFF'?'White':'Dark'} text contrast">${fg==='#FFFFFF'?'Aa':'Aa'} ${cr.toFixed(1)} ${grade(cr)}</span></button><div class="shade">${[.85,.6,.35].map(w=>`<i style="background:${mix(h,'#FFFFFF',w)}"></i>`).join('')}<i style="background:${h}"></i>${[.25,.45].map(w=>`<i style="background:${mix(h,'#000000',w)}"></i>`).join('')}</div><div class="info"><span><b>${ROLES[k]}</b><small>${USE[k]}</small></span><button class="sw2" data-menu="${k}" aria-label="Swap ${ROLES[k]} with another role" aria-expanded="${menu===k}" title="Swap with…">⇄</button></div>${menu===k?`<div class="menu" role="menu"><div class="ml">Swap ${ROLES[k]} with</div>${vals.map((h2,j)=>j===k?'':`<button data-swap="${k}:${j}"><i style="background:${h2}"></i>${ROLES[j]}</button>`).join('')}</div>`:''}</div>`}).join('');
+ const warn=[];[[P,'Primary'],[S,'Secondary']].forEach(([c,n])=>{const r=contrast(c,onColor(c));if(r<4.5)warn.push(`${onColor(c)==='#FFFFFF'?'White':'Dark'} text on ${n} is ${r.toFixed(1)}:1. Fine for bold uppercase buttons, but use the darker shade (${mix(c,'#000000',.2)}) for small text.`)});if(contrast(P,A1)<3)warn.push('The logo mark (Primary) is hard to see on Accent 1. Use Accent for the mark on dark backgrounds, or shuffle roles.');if(lum(A1)>.2)warn.push('Accent 1 is fairly light for a nav bar and footer. Shuffle a darker color into Accent 1.');
+ const pairs=[['Button on Primary',P,onColor(P),'buttons, price tags'],['Button on Secondary',S,onColor(S),'secondary buttons'],['Badge on Accent',A,onColor(A),'badges, RSVP'],['Nav on Accent 1',A1,onColor(A1),'nav, footer text'],['Primary as text',  '#F4F5F0',ink(P,'#F4F5F0'),'eyebrows, prices'],['Secondary as text','#F4F5F0',ink(S,'#F4F5F0'),'links, outline buttons']];
+ document.getElementById('checks').innerHTML=pairs.map(([n,bg,fg,u])=>{const r=contrast(bg,fg),cls=r>=4.5?'pass':r>=3?'ok':'fail';return `<div class="ck"><span class="sm" style="background:${bg};color:${fg}">Aa</span><span class="t">${n}<small>${u}${fg.toUpperCase()!==onColor(bg)&&bg==='#F4F5F0'&&fg!==P&&fg!==S?' · auto-darkened':''}</small></span><span class="r ${cls}">${r.toFixed(1)} ${cls==='pass'?'AA':cls==='ok'?'bold only':'fail'}</span></div>`}).join('');
+ const w=document.getElementById('warn');w.style.display=warn.length?'block':'none';w.innerHTML=warn.join('<br>');
+ document.getElementById('logos').innerHTML=`<div class="lg" style="background:${A1}">${logo(P,onColor(A1),P)}</div><div class="lg" style="background:#F4F5F0">${logo(P,'#1A1916',P)}</div><div class="lg" style="background:${P}">${logo(onColor(P),onColor(P),A1)}</div><div class="lg" style="background:${S}">${logo(A,onColor(S),A)}</div>`;
+ document.getElementById('icons').innerHTML=[[A1,P],['#FFFFFF',P],[P,onColor(P)],[S,A],[A,A1]].map(x=>`<div style="background:${x[0]}">${icon(x[1])}</div>`).join('');
+ document.getElementById('prev').innerHTML=previews(vals);
+ document.getElementById('css').textContent=`:root {\n  /* ${pal[0]}${ORDER[cur]?' (roles shuffled)':''} */\n  --color-primary: ${P};\n  --color-primary-contrast: ${onColor(P)};\n  --color-primary-tint: ${mix(P,'#FFFFFF',.86)};\n  --color-primary-dark: ${mix(P,'#000000',.2)};\n  --color-secondary: ${S};\n  --color-secondary-contrast: ${onColor(S)};\n  --color-secondary-tint: ${mix(S,'#FFFFFF',.86)};\n  --color-accent: ${A};\n  --color-accent-contrast: ${onColor(A)};\n  --color-accent-1: ${A1};\n  --color-accent-1-contrast: ${onColor(A1)};\n  /* colored text on light backgrounds (4.5:1 or better) */\n  --color-primary-text: ${ink(P,'#F4F5F0')};\n  --color-secondary-text: ${ink(S,'#F4F5F0')};\n  --color-accent-text: ${ink(A,'#F4F5F0')};\n}`;
+}
+const toast=t=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),1400)};
+async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}}
+function rate(i,n){RATE[i]=RATE[i]===n?0:n;if(!RATE[i])delete RATE[i];save();toast(RATE[i]?`${PAL[i][0]}: ${'★'.repeat(n)}`:`Cleared rating for ${PAL[i][0]}`)}
+document.addEventListener('click',e=>{
+ const rt=e.target.closest('[data-rate]');if(rt){const [i,n]=rt.dataset.rate.split(':').map(Number);rate(i,n);draw();return}
+ const v=e.target.closest('[data-view]');if(v){view=v.dataset.view;const vis=visible();if(vis.length&&!vis.includes(cur))cur=vis[0];draw();return}
+ const mn=e.target.closest('[data-min]');if(mn){minR=+mn.dataset.min;const vis=visible();if(vis.length&&!vis.includes(cur))cur=vis[0];draw();return}
+ const sw=e.target.closest('[data-swap]');if(sw){const [a,b]=sw.dataset.swap.split(':').map(Number);const o=[...order(cur)];[o[a],o[b]]=[o[b],o[a]];ORDER[cur]=o;if(o.join()==='0,1,2,3')delete ORDER[cur];save();menu=null;draw();toast(`Swapped ${ROLES[a]} and ${ROLES[b]}`);return}
+ const m=e.target.closest('[data-menu]');if(m){menu=menu===+m.dataset.menu?null:+m.dataset.menu;draw();return}
+ const hx=e.target.closest('[data-hex]');if(hx){copy(hx.dataset.hex);const r=hx.closest('.role');r.classList.add('ok');setTimeout(()=>r.classList.remove('ok'),900);return}
+ const o=e.target.closest('[data-i]');if(o){cur=+o.dataset.i;menu=null;draw();return}
+ if(menu!==null&&!e.target.closest('.menu')){menu=null;draw()}});
+document.getElementById('shuffle').onclick=()=>{const base=order(cur).join();let o;do{o=[0,1,2,3].sort(()=>Math.random()-.5)}while(o.join()===base);ORDER[cur]=o;if(o.join()==='0,1,2,3')delete ORDER[cur];save();draw();toast('Roles shuffled')};
+document.getElementById('reset').onclick=()=>{delete ORDER[cur];save();draw();toast('Original roles restored')};
+document.getElementById('copyCss').onclick=()=>{copy(document.getElementById('css').textContent);toast('CSS variables copied')};
+document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,select,textarea'))return;
+ if(/^[1-5]$/.test(e.key)){rate(cur,+e.key);draw();return}
+ if(e.key==='Escape'&&menu!==null){menu=null;draw();return}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){const vis=visible();if(!vis.length)return;e.preventDefault();const k=vis.indexOf(cur);cur=vis[((k<0?0:k)+(e.key==='ArrowDown'?1:-1)+vis.length)%vis.length];menu=null;draw();document.querySelector('.optw.on')?.scrollIntoView({block:'nearest'})}
+ if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.i){cur=+e.target.dataset.i;draw()}});
+draw();
+</script>
+</body>
+</html>
