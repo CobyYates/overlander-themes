@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rigs &amp; Routes · splash screen options</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+<style>
+:root{--mark:#C45B28;--bg:#1A1916;--word:#FFFFFF;--amp:#C45B28}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:#2a2926;color:#fff;-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid #E8A33C;outline-offset:2px}
+.top{padding:14px 18px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;background:#1f1e1b;z-index:5;border-bottom:1px solid rgba(255,255,255,.08)}
+.row{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.lab{font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.5);min-width:72px}
+.pb{height:30px;padding:0 11px;border-radius:6px;border:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);font-weight:700;font-size:12px}
+.pb.on{background:#B24E1F;color:#fff}.pb.s.on{background:#fff;color:#1A1916}
+.note{font-size:13px;color:rgba(255,255,255,.75);max-width:900px;line-height:1.5}
+.stage{display:flex;gap:28px;justify-content:center;align-items:flex-start;padding:26px 16px 60px;flex-wrap:wrap}
+.dev{display:flex;flex-direction:column;align-items:center;gap:10px}
+.dev .cap{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.phone{width:340px;height:680px;border:10px solid #0d0d0c;border-radius:42px;overflow:hidden;position:relative;background:var(--bg)}
+.tablet{width:520px;height:390px;border:12px solid #0d0d0c;border-radius:28px;overflow:hidden;position:relative;background:var(--bg)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg);transition:opacity .35s}
+.screen.is-done{opacity:0;pointer-events:none}
+.app{position:absolute;inset:0;background:#F4F5F0;display:flex;flex-direction:column}
+.app .nav{height:46px;background:#1A1916;display:flex;align-items:center;padding:0 12px}
+.app .nav svg{height:18px;width:auto}
+.app .sk{margin:10px;border-radius:10px;background:#fff;height:120px;border:1px solid rgba(0,0,0,.06)}
+.app .sk.s{height:60px}
+.mark{width:96px;height:auto;overflow:visible}
+.tablet .mark{width:84px}
+.word{font-family:Oswald,'Bebas Neue',Impact,sans-serif;font-weight:700;font-size:26px;letter-spacing:.06em;color:var(--word);white-space:nowrap}
+.word .amp{color:var(--amp)}
+.tag{font-size:12px;color:rgba(255,255,255,.55);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.bar{width:120px;height:3px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--mark)}
+.mark path{transform-box:fill-box;transform-origin:center}
+/* hidden initial states */
+.play .mark path,.play .word,.play .tag,.play .bar{opacity:0}
+/* 1 rise */
+.a-rise.play .mark path{animation:rise .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc((2 - var(--r))*120ms + var(--c)*25ms)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* 2 draw */
+.a-draw.play .mark path{fill:transparent;stroke:var(--mark);stroke-width:1.2;stroke-dasharray:80;stroke-dashoffset:80;opacity:1;animation:draw .9s ease forwards,fillin .35s ease forwards;animation-delay:calc(var(--i)*35ms),calc(900ms + var(--i)*20ms)}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fillin{to{fill:var(--mark);stroke-width:0}}
+/* 3 fade scale */
+.a-fade.play .mark{animation:fadescale .6s cubic-bezier(.2,.8,.2,1) forwards;opacity:0}
+.a-fade.play .mark path{opacity:1}
+@keyframes fadescale{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+/* 4 route trace */
+.a-route.play .mark path{animation:pop .35s ease forwards;animation-delay:calc(var(--i)*30ms)}
+.a-route.play .bar{animation:fade .3s ease .2s forwards}
+.a-route.play .bar i{animation:load 1.3s cubic-bezier(.4,0,.2,1) .3s forwards}
+@keyframes load{to{width:100%}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+/* 5 sweep */
+.a-sweep.play .mark path{animation:sweep .45s ease forwards;animation-delay:calc(var(--c)*90ms + var(--r)*20ms)}
+@keyframes sweep{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+/* 6 pulse */
+.a-pulse.play .mark path{opacity:1}
+.a-pulse.play .mark{animation:fade .4s ease forwards,breathe 1.4s ease-in-out .4s infinite;opacity:0}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.94);opacity:.75}}
+/* 7 horizon wipe */
+.a-wipe.play .mark path{opacity:1}
+.a-wipe.play .mark{clip-path:inset(100% 0 0 0);animation:wipe .8s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+/* 8 tread roll */
+.a-tread.play .mark path{animation:tread .55s cubic-bezier(.3,1.4,.5,1) forwards;animation-delay:calc(var(--r)*110ms + var(--c)*30ms)}
+@keyframes tread{from{opacity:0;transform:translateY(-16px) rotate(-8deg)}to{opacity:1;transform:none}}
+/* 9 static */
+.a-static.play .mark path,.a-static.play .word,.a-static.play .tag{opacity:1;animation:none!important}
+/* shared word/tag */
+.play .word{animation:fadeup .5s ease forwards;animation-delay:var(--wd,700ms)}
+.play .tag{animation:fade .5s ease forwards;animation-delay:calc(var(--wd,700ms) + 200ms)}
+@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.play .mark,.play .mark path,.play .word,.play .tag,.play .bar{animation:none!important;opacity:1!important;clip-path:none!important;transform:none!important}.a-draw.play .mark path{fill:var(--mark)!important;stroke-width:0!important}}
+.rm .play .mark,.rm .play .mark path,.rm .play .word,.rm .play .tag,.rm .play .bar{animation:none!important;opacity:1!important;clip-path:none!important;transform:none!important}
+.rm .a-draw.play .mark path{fill:var(--mark)!important;stroke-width:0!important}
+.timing{font-size:12px;color:rgba(255,255,255,.6)}
+
+/* shared pieces */
+.ctr{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:14px}
+.scr .mark{width:88px;height:auto;overflow:visible;display:block}
+.scr .word{font-family:Oswald,Impact,sans-serif;font-weight:700;font-size:25px;letter-spacing:.06em;white-space:nowrap;color:var(--fg)}
+.scr .word .amp{color:var(--mark)}
+.scr .tag{font-size:12px;color:var(--mut);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.lockup{position:absolute;left:0;right:0;bottom:70px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scr .lockup .mark{width:44px}
+.scr .lockup .word{font-size:20px}
+.tile{width:54px;height:54px;border-radius:14px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--mark)}
+.tile.g{color:var(--pine)}.tile.y{color:var(--gold)}
+.lbl{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut)}
+@keyframes pfade{from{opacity:0}to{opacity:1}}
+@keyframes pfadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ppop{0%{opacity:0;transform:scale(.4)}70%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+.in{opacity:0;animation:pfade .5s ease forwards;animation-delay:var(--d,0ms)}
+.up{opacity:0;animation:pfadeup .5s ease forwards;animation-delay:var(--d,0ms)}
+.popin{opacity:0;animation:ppop .4s cubic-bezier(.3,1.3,.5,1) forwards;animation-delay:var(--d,0ms)}
+/* 0 pack */
+.fly{position:absolute;left:50%;top:44%;margin:-27px 0 0 -27px;opacity:0;animation:flyin .35s ease forwards,flyto .5s cubic-bezier(.6,0,.4,1) forwards;animation-delay:var(--d),calc(var(--d) + 650ms);transform:translate(var(--x),var(--y))}
+@keyframes flyin{from{opacity:0;transform:translate(var(--x),var(--y)) scale(.5)}to{opacity:1;transform:translate(var(--x),var(--y)) scale(1)}}
+@keyframes flyto{to{opacity:0;transform:translate(0,0) scale(.25)}}
+.bump{animation:bump .25s ease 6;animation-delay:900ms}
+@keyframes bump{50%{transform:scale(1.07)}}
+/* 1 loadout grid */
+.grid{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);display:grid;grid-template-columns:repeat(3,54px);gap:10px;animation:shrink .5s cubic-bezier(.6,0,.4,1) 1500ms forwards}
+@keyframes shrink{to{transform:translate(-50%,-50%) scale(.2);opacity:0}}
+/* 2 route */
+.rt{position:absolute;inset:0}
+.rt path.line{fill:none;stroke:var(--mark);stroke-width:3;stroke-linecap:round;stroke-dasharray:6 8}
+.rt path.cover{fill:none;stroke:var(--bg);stroke-width:6;stroke-dasharray:900;stroke-dashoffset:0;animation:uncover 1.8s ease-in-out 200ms forwards}
+@keyframes uncover{to{stroke-dashoffset:-900}}
+.wp{position:absolute;transform:translate(-27px,-27px)}
+.wp.r{transform:translate(calc(-100% + 27px),-27px)}
+.wp b{font-family:'Barlow Condensed';font-size:17px;letter-spacing:.5px;text-transform:uppercase;display:block}
+.wp small{font-size:12px;color:var(--mut)}
+/* 3 truck */
+.ground{position:absolute;left:0;right:0;top:58%;height:2px;background:rgba(255,255,255,.15)}
+.truck{position:absolute;left:50%;top:58%;width:230px;margin-left:-115px;transform:translateY(-100%);animation:drive .9s cubic-bezier(.6,0,.9,.4) 2100ms forwards}
+@keyframes drive{to{transform:translate(420px,-100%)}}
+.cargo{position:absolute;font-size:24px;color:var(--gold);opacity:0;animation:drop .45s cubic-bezier(.3,1.4,.5,1) forwards;animation-delay:var(--d)}
+@keyframes drop{from{opacity:0;transform:translateY(-70px)}to{opacity:1;transform:none}}
+/* 4 compass */
+.comp{position:absolute;left:50%;top:42%;width:200px;height:200px;margin:-100px 0 0 -100px}
+.comp .ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.18)}
+.comp .ring.i{inset:22px;border-style:dashed;border-color:rgba(255,255,255,.1)}
+.needle{position:absolute;left:50%;top:50%;width:8px;height:130px;margin:-65px 0 0 -4px;animation:spin 1.5s cubic-bezier(.2,.8,.2,1) forwards,fadeout .3s ease 1500ms forwards}
+.needle::before{content:'';position:absolute;left:0;top:0;border:4px solid transparent;border-bottom:65px solid var(--mark);border-top:0}
+.needle::after{content:'';position:absolute;left:0;bottom:0;border:4px solid transparent;border-top:65px solid rgba(255,255,255,.5);border-bottom:0}
+@keyframes spin{from{transform:rotate(-540deg)}to{transform:rotate(0)}}
+@keyframes fadeout{to{opacity:0}}
+.card{position:absolute;transform:translate(-50%,-50%)}
+.cin{display:flex;flex-direction:column;align-items:center;gap:4px}
+.win{display:flex;align-items:center;gap:10px}
+.wp.r .win{flex-direction:row-reverse}
+.card .tile{width:46px;height:46px;font-size:24px}
+/* 5 words */
+.words{position:absolute;left:0;right:0;top:36%;text-align:center}
+.wd{position:absolute;left:0;right:0;opacity:0;animation:word 700ms ease forwards;animation-delay:var(--d)}
+.wd i{font-size:54px;color:var(--mark);display:block;margin-bottom:8px}
+.wd b{font-family:'Barlow Condensed';font-weight:700;font-size:40px;text-transform:uppercase;letter-spacing:.5px}
+@keyframes word{0%{opacity:0;transform:translateY(14px)}20%,75%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-14px)}}
+/* 6 topo */
+.topo ellipse{fill:none;stroke:rgba(255,255,255,.16);stroke-width:1.2;stroke-dasharray:1200;stroke-dashoffset:1200;animation:drawc 1.2s ease forwards;animation-delay:var(--d)}
+@keyframes drawc{to{stroke-dashoffset:0}}
+.pin{position:absolute;transform:translate(-50%,-100%);opacity:0;animation:pindrop .45s cubic-bezier(.3,1.4,.5,1) forwards;animation-delay:var(--d);display:flex;flex-direction:column;align-items:center}
+.pin .hd{width:44px;height:44px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--mark);display:flex;align-items:center;justify-content:center}
+.pin .hd i{transform:rotate(45deg);font-size:22px;color:#fff}
+.pin .lbl{margin-top:10px;color:#fff}
+@keyframes pindrop{from{opacity:0;transform:translate(-50%,-160%)}to{opacity:1;transform:translate(-50%,-100%)}}
+/* 7 convoy */
+.track{position:absolute;left:0;right:0;top:46%;border-top:2px dashed rgba(255,255,255,.2)}
+.convoy{position:absolute;top:46%;left:0;display:flex;gap:22px;transform:translate(-110%,-100%);animation:roll 1.9s cubic-bezier(.4,0,.4,1) 150ms forwards;font-size:46px;color:var(--mark)}
+.convoy i:nth-child(2){color:var(--pine)}.convoy i:nth-child(3){color:var(--gold)}.convoy i:nth-child(4){color:#fff}
+@keyframes roll{to{transform:translate(340px,-100%)}}
+/* 8 toolbox */
+.box{position:absolute;left:50%;top:60%;width:150px;height:74px;margin-left:-75px;border-radius:10px;background:var(--mark)}
+.box::before{content:'';position:absolute;left:55px;top:-14px;width:40px;height:16px;border:4px solid var(--mark);border-bottom:none;border-radius:8px 8px 0 0}
+.lid{position:absolute;left:50%;top:60%;width:150px;height:16px;margin:-6px 0 0 -75px;border-radius:6px;background:#9E4720;transform-origin:left center;animation:lid .5s ease 200ms forwards}
+@keyframes lid{to{transform:rotate(-105deg)}}
+.out{position:absolute;left:50%;top:60%;margin:-27px 0 0 -27px;opacity:0;animation:outof .6s cubic-bezier(.2,.9,.3,1) forwards;animation-delay:var(--d)}
+@keyframes outof{from{opacity:0;transform:translate(0,10px) scale(.4)}to{opacity:1;transform:translate(var(--x),var(--y)) scale(1)}}
+/* 9 hub */
+.hub line{stroke:rgba(255,255,255,.22);stroke-width:1.5;stroke-dasharray:140;stroke-dashoffset:140;animation:drawc .5s ease forwards;animation-delay:var(--d)}
+/* 10 signpost */
+.post{position:absolute;left:50%;top:22%;width:8px;height:300px;margin-left:-4px;border-radius:4px;background:#6B4F3A;transform-origin:bottom;animation:grow .5s ease forwards}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.sign{position:absolute;left:50%;height:42px;display:flex;align-items:center;gap:8px;padding:0 10px;background:var(--mark);color:#fff;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:.5px;text-transform:uppercase;opacity:0;animation-duration:.45s;animation-timing-function:cubic-bezier(.3,1.3,.5,1);animation-fill-mode:forwards;animation-delay:var(--d);white-space:nowrap}
+.sign i{font-size:17px}
+.sign.rt2{margin-left:6px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%);padding-right:22px;animation-name:sr}
+.sign.lf{transform:translateX(-100%);margin-left:-6px;clip-path:polygon(16px 0,100% 0,100% 100%,16px 100%,0 50%);padding-left:22px;animation-name:sl;background:#2D5A3F}
+@keyframes sr{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+@keyframes sl{from{opacity:0;transform:translateX(-70%)}to{opacity:1;transform:translateX(-100%)}}
+.scr.rm *{animation-duration:.01ms!important;animation-delay:0ms!important}
+@media(prefers-reduced-motion:reduce){.scr *{animation-duration:.01ms!important;animation-delay:0ms!important}}
+
+
+:root{--fg:#FFFFFF;--mut:rgba(255,255,255,.6);--card:#2A2926;--pine:#7FA88E;--gold:#E8A33C}
+.group{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.pb.dis{opacity:.35;pointer-events:none}
+.side{max-width:340px;font-size:14px;line-height:1.55;color:rgba(255,255,255,.8)}
+.side h2{font-family:'Barlow Condensed';font-size:24px;color:#fff;margin-bottom:6px}
+.side ul{margin:10px 0 0 18px}.side li{margin-bottom:4px}
+.side .tm{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);border-radius:50px;padding:3px 10px}
+.side .kind{display:inline-block;font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#E8A33C;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="top">
+ <div class="row"><span class="lab">Logo only</span><span class="group" id="ab"></span></div>
+ <div class="row"><span class="lab">Show purpose</span><span class="group" id="cb"></span></div>
+ <div class="row"><span class="lab">Background</span><button class="pb s on" data-bg="dark">Dark</button><button class="pb s" data-bg="light">Light</button><button class="pb s" data-bg="rust">Rust</button>
+  <span class="lab" style="margin-left:10px">Hand-off</span><button class="pb s on" data-hand="1">Fade into the app</button><button class="pb s" data-hand="0">Hold on splash</button>
+  <span class="lab" style="margin-left:10px">Motion</span><button class="pb s" id="rm" aria-pressed="false">Simulate reduced motion</button>
+  <button class="pb" id="replay" style="margin-left:auto;background:#fff;color:#1A1916">↻ Replay</button></div>
+ <p class="note" id="note"></p>
+</div>
+<div class="stage" id="stage"></div>
+<script>
+const PARTS=[{"d": "M123.144,466.776c-.891.318-2.237-1.09-2.008-2.008l2.677-10.711a3.543,3.543,0,0,1,2.008-2.092l1.422-.67a2.633,2.633,0,0,0,1.422-2.343l-.167-2.761c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.975,2.975,0,0,1,1.422,1.925l2.845,10.293c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.151-2.594,1.088l-.084,4.351a2.164,2.164,0,0,1-1.339,1.841Z", "t": "translate(-102.817 -425.26)", "r": 1, "c": 2}, {"d": "M102.146,457.4c.078-.75,1.117-1.823,1.758-1.424l6.4,3.981c.524.326.573,1.205.419,1.8l-1.926,7.459a1.787,1.787,0,0,1-2.3.964l-4.143-2.724a2.666,2.666,0,0,1-1-2.389Z", "t": "translate(-91.85 -431.549)", "r": 1, "c": 1}, {"d": "M87.9,458.56a.8.8,0,0,1,1,.628l-.377,7.5a3.423,3.423,0,0,1-1.13,2.766l-5.776,3.6c-.468.293-1.59.091-1.59-.46v-8.214a2.792,2.792,0,0,1,1.507-2.138Z", "t": "translate(-80.033 -433.003)", "r": 1, "c": 0}, {"d": "M160.628,439.272c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.981c-.523.326-.572,1.205-.418,1.8l1.925,7.459a1.789,1.789,0,0,0,2.3.963l4.143-2.724a2.664,2.664,0,0,0,1-2.388Z", "t": "translate(-119.935 -421.495)", "r": 1, "c": 3}, {"d": "M175.609,440.432a.805.805,0,0,0-1,.629l.377,7.5a3.431,3.431,0,0,0,1.129,2.766l5.776,3.6c.468.293,1.59.091,1.59-.46v-8.214a2.791,2.791,0,0,0-1.507-2.137Z", "t": "translate(-132.489 -422.949)", "r": 1, "c": 4}, {"d": "M123.144,430.249c-.891.318-2.237-1.09-2.008-2.008l2.677-10.711a3.544,3.544,0,0,1,2.008-2.092l1.422-.67a2.632,2.632,0,0,0,1.422-2.343l-.167-2.762c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.974,2.974,0,0,1,1.422,1.925l2.845,10.292c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.15-2.594,1.088l-.084,4.351a2.165,2.165,0,0,1-1.339,1.841Z", "t": "translate(-102.817 -405)", "r": 0, "c": 2}, {"d": "M102.146,420.872c.078-.75,1.117-1.823,1.758-1.425l6.4,3.982c.524.325.573,1.2.419,1.8l-1.926,7.459a1.788,1.788,0,0,1-2.3.964l-4.143-2.724a2.664,2.664,0,0,1-1-2.388Z", "t": "translate(-91.85 -411.288)", "r": 0, "c": 1}, {"d": "M87.9,422.033c.342-.2,1.024.234,1,.628l-.377,7.5a3.425,3.425,0,0,1-1.13,2.766l-5.776,3.6c-.468.293-1.59.091-1.59-.461v-8.213a2.791,2.791,0,0,1,1.507-2.137Z", "t": "translate(-80.033 -412.743)", "r": 0, "c": 0}, {"d": "M160.628,402.745c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.981c-.523.326-.572,1.2-.418,1.8l1.925,7.459a1.789,1.789,0,0,0,2.3.964l4.143-2.724a2.665,2.665,0,0,0,1-2.389Z", "t": "translate(-119.935 -401.234)", "r": 0, "c": 3}, {"d": "M175.609,403.906a.8.8,0,0,0-1,.629l.377,7.5a3.43,3.43,0,0,0,1.129,2.766l5.776,3.6c.468.293,1.59.091,1.59-.461v-8.213a2.791,2.791,0,0,0-1.507-2.138Z", "t": "translate(-132.489 -402.689)", "r": 0, "c": 4}, {"d": "M123.144,503.3c-.891.319-2.237-1.09-2.008-2.008l2.677-10.711a3.544,3.544,0,0,1,2.008-2.092l1.422-.67a2.633,2.633,0,0,0,1.422-2.343l-.167-2.761c-.044-.729.843-1.9,1.506-1.59l1.088.5a2.975,2.975,0,0,1,1.422,1.925l2.845,10.292c.31,1.123-1.246,2.986-2.343,2.594l-3.515-1.255c-.883-.315-2.576.15-2.594,1.087l-.084,4.352a2.164,2.164,0,0,1-1.339,1.841Z", "t": "translate(-102.817 -445.52)", "r": 2, "c": 2}, {"d": "M102.146,493.925c.078-.75,1.117-1.823,1.758-1.425l6.4,3.981c.524.326.573,1.205.419,1.8l-1.926,7.459a1.788,1.788,0,0,1-2.3.964l-4.143-2.724a2.665,2.665,0,0,1-1-2.389Z", "t": "translate(-91.85 -451.809)", "r": 2, "c": 1}, {"d": "M87.9,495.086a.8.8,0,0,1,1,.628l-.377,7.5a3.423,3.423,0,0,1-1.13,2.766l-5.776,3.6c-.468.292-1.59.091-1.59-.461v-8.214a2.791,2.791,0,0,1,1.507-2.137Z", "t": "translate(-80.033 -453.263)", "r": 2, "c": 0}, {"d": "M160.628,475.8c-.077-.75-1.117-1.823-1.757-1.425l-6.4,3.98c-.523.326-.572,1.206-.418,1.8l1.925,7.459a1.788,1.788,0,0,0,2.3.964l4.143-2.724a2.664,2.664,0,0,0,1-2.388Z", "t": "translate(-119.935 -441.755)", "r": 2, "c": 3}, {"d": "M175.609,476.958a.805.805,0,0,0-1,.629l.377,7.5a3.429,3.429,0,0,0,1.129,2.766l5.776,3.6c.468.292,1.59.09,1.59-.461v-8.213a2.791,2.791,0,0,0-1.507-2.137Z", "t": "translate(-132.489 -443.208)", "r": 2, "c": 4}];
+
+const ANIMS={
+ rise:['Rise in','The mark builds from the bottom row up, like stacked tread, then the wordmark fades in. Confident and on-brand. About 1.1s.',900],
+ fade:['Fade and settle','The whole mark fades in while settling from 92% scale, then the name. The most "Apple" option: calm, never feels slow. About 0.9s.',600],
+ draw:['Draw on','Each piece is outlined, then fills with color. Feels crafted and premium; best for the first launch after install. About 1.5s.',1250],
+ route:['Mark + progress','Pieces pop in, then a thin progress bar runs underneath. Honest when the load is real, since people see something moving. About 1.6s.',650],
+ sweep:['Left-to-right sweep','Columns appear left to right like a vehicle driving across. Subtle motion with direction. About 1s.',750],
+ tread:['Tread drop','Rows drop in with a tiny bounce, like tires settling. A bit more playful while staying tidy. About 1.1s.',850],
+ wipe:['Horizon wipe','The mark is revealed from the bottom up like the sun over a ridge, in one smooth move. Very clean. About 0.9s.',700],
+ pulse:['Breathing loader','The mark fades in and gently pulses until the app is ready. Use when loads vary; never feels stuck.',500],
+ static:['Static (PWA default)','What iOS and Android show for an installed app: no motion, just the logo on the background color. Your baseline.',0]};
+const BGS={dark:{bg:'#1A1916',mark:'#C45B28',word:'#FFFFFF',amp:'#C45B28'},light:{bg:'#F4F5F0',mark:'#C45B28',word:'#1A1916',amp:'#C45B28'},rust:{bg:'#C45B28',mark:'#FFFFFF',word:'#FFFFFF',amp:'#1A1916'}};
+let curA='rise',bg='dark',hand=true,rm=false,timers=[];
+const mark=()=>`<svg class="mark" viewBox="0 0 58 58" aria-hidden="true"><g fill="var(--mark)">${PARTS.map((p,i)=>`<g transform="${p.t}"><path d="${p.d}" style="--r:${p.r};--c:${p.c};--i:${p.r*5+p.c}"/></g>`).join('')}</g></svg>`;
+const navLogo=`<svg viewBox="0 0 264 58" aria-label="Rigs and Routes"><g fill="#C45B28">${PARTS.map(p=>`<path d="${p.d}" transform="${p.t}"/>`).join('')}</g><text x="62" y="43" fill="#fff" font-size="32" font-family="Oswald,Impact,sans-serif" font-weight="700" textLength="196" lengthAdjust="spacingAndGlyphs">RIGS <tspan fill="#C45B28">&amp;</tspan> ROUTES</text></svg>`;
+function screenHtml(){const a=ANIMS[curA];return `<div class="app" aria-hidden="true"><div class="nav">${navLogo}</div><div class="sk"></div><div class="sk s"></div><div class="sk s"></div></div><div class="screen a-${curA} play" role="img" aria-label="Rigs and Routes is loading" style="--wd:${a[2]}ms">${mark()}<div class="word">RIGS <span class="amp">&amp;</span> ROUTES</div>${curA==='route'?'<div class="bar"><i></i></div>':''}${curA!=='route'?'<div class="tag">Find your next route</div>':''}</div>`}
+
+const markP=()=>`<svg class="mark" viewBox="0 0 58 58" aria-hidden="true"><g fill="var(--mark)">${PARTS.map(p=>`<path d="${p.d}" transform="${p.t}"/>`).join('')}</g></svg>`;
+const word=`<div class="word">RIGS <span class="amp">&amp;</span> ROUTES</div>`;
+const lockup=(d,tag)=>`<div class="lockup"><div class="popin" style="--d:${d}ms">${markP()}</div><div class="up" style="--d:${d+150}ms">${word}</div>${tag?`<div class="tag in" style="--d:${d+350}ms">${tag}</div>`:''}</div>`;
+const center=(d,tag,cls='')=>`<div class="ctr"><div class="popin ${cls}" style="--d:${d}ms">${markP()}</div><div class="up" style="--d:${d+200}ms">${word}</div>${tag?`<div class="tag in" style="--d:${d+400}ms">${tag}</div>`:''}</div>`;
+const T=[['mdi-tag','Classifieds',''],['mdi-map-marker-path','Routes','g'],['mdi-tent','Camping','y'],['mdi-account-group','Groups','g'],['mdi-calendar-star','Events',''],['mdi-garage','Garage','y'],['mdi-compass','Maps',''],['mdi-forum','Forums','g'],['mdi-record-circle','Record',''],['mdi-download','Offline','y']];
+const tile=(t,style='',cls='')=>`<span class="tile ${t[2]} ${cls}" style="${style}"><i class="mdi ${t[0]}"></i></span>`;
+const CP=[
+['Pack it in','Your idea: the tools float in around the logo, then get pulled into it one by one while the mark bumps. Says "everything is in here."',2600,['Icons appear in a ring','Each one flies into the mark','Name and tagline appear'],
+ ()=>T.map((t,i)=>{const a=i/T.length*Math.PI*2-Math.PI/2;return `<span class="fly" style="--x:${Math.round(Math.cos(a)*118)}px;--y:${Math.round(Math.sin(a)*150)}px;--d:${i*90}ms">${tile(t)}</span>`}).join('')+`<div class="ctr"><div class="bump">${markP()}</div><div class="up" style="--d:2000ms">${word}</div><div class="tag in" style="--d:2250ms">Everything for the trail</div></div>`],
+['Loadout grid','Tools snap into a tidy grid like a packed drawer system, then the whole kit collapses into the logo.',2600,['Nine tiles click into place','The grid shrinks to a point','Logo takes its place'],
+ ()=>`<div class="grid">${T.slice(0,9).map((t,i)=>tile(t,`--d:${i*110}ms`,'popin')).join('')}</div>`+center(1850,'Your whole kit in one app')],
+['Follow the route','A dashed trail draws down the screen through four stops: Buy, Plan, Drive, Share. Shows the journey the app covers.',2900,['Route draws top to bottom','Each stop lights up as the line reaches it','Logo lands at the end'],
+ ()=>{const pts=[[70,90,'mdi-tag','Buy','Find your rig',0],[250,200,'mdi-map-marker-path','Plan','Build the route',1],[70,310,'mdi-steering','Drive','Record the trail',0],[250,420,'mdi-account-group','Share','With your crew',1]];
+ return `<svg class="rt" viewBox="0 0 320 660"><path class="line" d="M70 90 C200 90 250 120 250 200 S70 230 70 310 S250 340 250 420 S160 470 160 520"/><path class="cover" d="M70 90 C200 90 250 120 250 200 S70 230 70 310 S250 340 250 420 S160 470 160 520"/></svg>`+pts.map((p,i)=>`<div class="wp${p[5]?' r':''}" style="left:${p[0]}px;top:${p[1]}px"><div class="win popin" style="--d:${200+i*450}ms">${tile([p[2],'',i%2?'g':''])}<span style="text-align:${p[5]?'right':'left'}"><b>${p[3]}</b><small>${p[4]}</small></span></div></div>`).join('')+lockup(2100)}],
+['Load the rig','Gear drops onto a truck one piece at a time, then it drives off and leaves the logo. Playful and very overland.',3300,['Truck is parked','Tools drop into the bed and onto the rack','It drives away, logo appears'],
+ ()=>`<div class="ground"></div><div class="truck"><svg viewBox="0 0 230 110" width="230"><rect x="0" y="52" width="230" height="34" rx="8" fill="#C45B28"/><path d="M118 52 L132 22 L186 22 L204 52Z" fill="#C45B28"/><path d="M138 28 L182 28 L194 50 L130 50Z" fill="#9FB3C4"/><rect x="6" y="16" width="100" height="5" rx="2" fill="#6E706A"/><rect x="10" y="20" width="4" height="32" fill="#6E706A"/><rect x="98" y="20" width="4" height="32" fill="#6E706A"/><circle cx="52" cy="88" r="20" fill="#0d0d0c"/><circle cx="52" cy="88" r="8" fill="#777"/><circle cx="178" cy="88" r="20" fill="#0d0d0c"/><circle cx="178" cy="88" r="8" fill="#777"/></svg>${[['mdi-tent',14,-10],['mdi-map-marker-path',44,-10],['mdi-account-group',74,-10],['mdi-tag',20,24],['mdi-calendar-star',50,24],['mdi-forum',80,24]].map((c,i)=>`<i class="mdi ${c[0]} cargo" style="left:${c[1]}px;top:${c[2]}px;--d:${300+i*260}ms"></i>`).join('')}</div>`+center(2700,'Packed and ready')],
+['Compass','A compass needle spins and settles, then four directions light up: Classifieds, Trips, Gear, Groups. The logo becomes the center.',2700,['Needle spins and settles','Four areas appear at N, E, S, W','Logo replaces the needle'],
+ ()=>`<div class="comp"><div class="ring"></div><div class="ring i"></div><div class="needle"></div><div class="popin" style="--d:1600ms;position:absolute;left:50%;top:50%;margin:-30px 0 0 -30px"><svg class="mark" style="width:60px" viewBox="0 0 58 58"><g fill="var(--mark)">${PARTS.map(p=>`<path d="${p.d}" transform="${p.t}"/>`).join('')}</g></svg></div>${[[50,-8,T[0]],[108,50,T[1]],[50,108,T[5]],[-8,50,T[3]]].map((c,i)=>`<div class="card" style="left:${c[0]}%;top:${c[1]}%"><div class="cin popin" style="--d:${1100+i*130}ms">${tile(c[2])}<span class="lbl">${['Classifieds','Trips','Gear','Groups'][i]}</span></div></div>`).join('')}</div><div class="lockup" style="bottom:60px"><div class="up" style="--d:1900ms">${word}</div><div class="tag in" style="--d:2100ms">Find your direction</div></div>`],
+['Three words','One big icon and word at a time: Buy rigs. Plan routes. Find your crew. Then the logo. The clearest way to say what the app does.',3200,['"Buy rigs"','"Plan routes"','"Find your crew"','Logo'],
+ ()=>`<div class="words">${[['mdi-tag','Buy rigs'],['mdi-map-marker-path','Plan routes'],['mdi-account-group','Find your crew']].map((w,i)=>`<div class="wd" style="--d:${i*750}ms"><i class="mdi ${w[0]}"></i><b>${w[1]}</b></div>`).join('')}</div>`+center(2350,'All in one place')],
+['Drop the pins','Topo lines draw outward and three pins drop: Rigs, Routes, People. Feels like opening a map.',2700,['Contour lines draw','Pins drop onto the map','Logo and name fade in'],
+ ()=>`<svg class="rt topo" viewBox="0 0 320 660">${[...Array(9)].map((_,i)=>`<ellipse cx="${160+i*4}" cy="${270+i*3}" rx="${30+i*30}" ry="${20+i*22}" style="--d:${i*90}ms"/>`).join('')}</svg>${[[86,220,'mdi-car-lifted-pickup','Rigs'],[236,260,'mdi-map-marker-path','Routes'],[150,360,'mdi-account-group','People']].map((p,i)=>`<div class="pin" style="left:${p[0]}px;top:${p[1]}px;--d:${900+i*250}ms"><span class="hd"><i class="mdi ${p[2]}"></i></span><span class="lbl">${p[3]}</span></div>`).join('')}`+lockup(1900,'Explore together')],
+['Convoy','A line of rigs rolls across the screen along a dashed trail; the logo appears in their wake. Puts community and trips first.',2800,['Four rigs drive across','Trail stays behind','Logo fades in on the trail'],
+ ()=>`<div class="track"></div><div class="convoy"><i class="mdi mdi-car-lifted-pickup"></i><i class="mdi mdi-rv-truck"></i><i class="mdi mdi-jeepney"></i><i class="mdi mdi-car-pickup"></i></div>`+`<div class="ctr" style="top:60%"><div class="popin" style="--d:1900ms">${markP()}</div><div class="up" style="--d:2100ms">${word}</div><div class="tag in" style="--d:2300ms">Roll out together</div></div>`],
+['Open the toolbox','A toolbox lid flips open and the tools rise out and fan into an arc. The reverse of "Pack it in": here is what you get.',2600,['Lid opens','Six tools fan out','Name appears under the box'],
+ ()=>`<div class="box"></div><div class="lid"></div>${T.slice(0,6).map((t,i)=>{const a=Math.PI+(i+.5)/6*Math.PI;return `<span class="out" style="--x:${Math.round(Math.cos(a)*120)}px;--y:${Math.round(Math.sin(a)*150-10)}px;--d:${600+i*120}ms">${tile(t)}</span>`}).join('')}<div class="lockup" style="bottom:54px"><div class="up" style="--d:1700ms">${word}</div><div class="tag in" style="--d:1900ms">Tools for the trail</div></div>`],
+['Hub and spokes','The logo sits in the middle and lines reach out to six labeled tools. Says "one hub that connects it all" and doubles as a mini feature map.',2500,['Logo appears','Lines reach out','Six labeled tools pop in'],
+ ()=>{const R=104,cx=160,cy=290;const items=T.slice(0,6).map((t,i)=>{const a=i/6*Math.PI*2-Math.PI/2;return [cx+Math.cos(a)*R,cy+Math.sin(a)*R*1.25,t,i]});
+ return `<svg class="rt hub" viewBox="0 0 320 660">${items.map(p=>`<line x1="${cx}" y1="${cy}" x2="${p[0].toFixed(0)}" y2="${p[1].toFixed(0)}" style="--d:${500+p[3]*110}ms"/>`).join('')}</svg>${items.map(p=>`<div class="card" style="left:${p[0]}px;top:${p[1]}px"><div class="cin popin" style="--d:${750+p[3]*110}ms">${tile(p[2])}<span class="lbl">${p[2][1]}</span></div></div>`).join('')}<div class="popin" style="--d:100ms;position:absolute;left:${cx-32}px;top:${cy-32}px;background:var(--bg);border-radius:50%;padding:6px"><svg class="mark" style="width:52px" viewBox="0 0 58 58"><g fill="var(--mark)">${PARTS.map(p=>`<path d="${p.d}" transform="${p.t}"/>`).join('')}</g></svg></div><div class="lockup" style="bottom:52px"><div class="up" style="--d:1700ms">${word}</div><div class="tag in" style="--d:1900ms">One hub for all of it</div></div>`}],
+['Trail signpost','A wooden post rises and four trail signs swing in: Classifieds, Trips, Gear, Community. Familiar to anyone who has stood at a trailhead.',2700,['Post rises','Signs slide in left and right','Logo below'],
+ ()=>`<div class="post"></div>${[['mdi-tag','Buy & sell','rt2',160],['mdi-map-marker-path','Trips','lf',212],['mdi-tent','Gear','rt2',264],['mdi-account-group','Community','lf',316]].map((s,i)=>`<div class="sign ${s[2]}" style="top:${s[3]}px;--d:${500+i*220}ms"><i class="mdi ${s[0]}"></i>${s[1]}</div>`).join('')}`+lockup(1700,'Pick your trail')]];
+
+
+let mode='logo',curP=0;
+function playLogo(){timers.forEach(clearTimeout);timers=[];const c=BGS[bg];const r=document.documentElement.style;Object.entries(c).forEach(([k,v])=>r.setProperty('--'+k,v));
+ const st=document.getElementById('stage');st.className='stage'+(rm?' rm':'');
+ st.innerHTML=`<div class="dev"><div class="phone">${screenHtml()}</div><span class="cap">Phone</span></div><div class="dev"><div class="tablet">${screenHtml()}</div><span class="cap">Tablet</span><span class="timing" id="timing"></span></div>`;
+ const total=curA==='static'?900:curA==='route'?1900:ANIMS[curA][2]+900;
+ document.getElementById('timing').textContent=hand?`Splash shows for about ${(total/1000).toFixed(1)}s, then fades to the app`:'Holding on the splash';
+ if(hand)timers.push(setTimeout(()=>document.querySelectorAll('.screen').forEach(s=>s.classList.add('is-done')),rm?400:total))}
+function playPurpose(){timers.forEach(clearTimeout);timers=[];const r=document.documentElement.style;Object.entries(BGS.dark).forEach(([k,v])=>r.setProperty('--'+k,v));
+ const c=CP[curP];const st=document.getElementById('stage');st.className='stage';
+ st.innerHTML=`<div class="dev"><div class="phone"><div class="scr${rm?' rm':''}" id="scr" role="img" aria-label="Rigs and Routes splash animation"></div></div><span class="cap">Phone</span></div><div class="side"><span class="kind">Shows the purpose</span><h2>${c[0]}</h2><p>${c[1]}</p><ul>${c[3].map(x=>`<li>${x}</li>`).join('')}</ul><span class="tm">About ${(c[2]/1000).toFixed(1)}s</span></div>`;
+ const s=document.getElementById('scr');s.innerHTML=c[4]()}
+const play=()=>mode==='logo'?playLogo():playPurpose();
+function draw(){
+ document.getElementById('ab').innerHTML=Object.entries(ANIMS).map(([k,v],i)=>`<button class="pb${mode==='logo'&&curA===k?' on':''}" data-a="${k}">${i+1} · ${v[0]}</button>`).join(' ');
+ document.getElementById('cb').innerHTML=CP.map((c,i)=>`<button class="pb${mode==='purpose'&&curP===i?' on':''}" data-c="${i}">${i?i+' · ':'★ '}${c[0]}</button>`).join(' ');
+ document.querySelectorAll('[data-bg],[data-hand]').forEach(b=>b.classList.toggle('dis',mode!=='logo'));
+ document.getElementById('note').innerHTML=mode==='logo'?`<b>Logo animation · ${ANIMS[curA][0]}.</b> ${ANIMS[curA][1]}`:`<b>Purpose concept · ${CP[curP][0]}.</b> ${CP[curP][1]}`;
+ play()}
+const ALL=[...Object.keys(ANIMS).map(k=>['logo',k]),...CP.map((_,i)=>['purpose',i])];
+function step(d){let i=ALL.findIndex(x=>x[0]===mode&&(mode==='logo'?x[1]===curA:x[1]===curP));i=(i+d+ALL.length)%ALL.length;mode=ALL[i][0];if(mode==='logo')curA=ALL[i][1];else curP=ALL[i][1];draw()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a],[data-c],[data-bg],[data-hand],#rm,#replay');if(!b)return;
+ if(b.dataset.a){mode='logo';curA=b.dataset.a;draw();return}
+ if(b.dataset.c!==undefined){mode='purpose';curP=+b.dataset.c;draw();return}
+ if(b.dataset.bg){bg=b.dataset.bg;document.querySelectorAll('[data-bg]').forEach(x=>x.classList.toggle('on',x===b))}
+ if(b.dataset.hand!==undefined){hand=b.dataset.hand==='1';document.querySelectorAll('[data-hand]').forEach(x=>x.classList.toggle('on',x===b))}
+ if(b.id==='rm'){rm=!rm;b.classList.toggle('on',rm);b.setAttribute('aria-pressed',rm)}
+ play()});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);if(e.key===' '&&e.target===document.body){e.preventDefault();play()}});
+draw();
+
+</script>
+</body>
+</html>
